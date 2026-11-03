@@ -112,7 +112,7 @@ const MASTER_FAQ = [
   },
   {
     question: 'What is ZothOS Linux v3.2 (zothos.nullai.tech)?',
-    answer: 'ZothOS Linux v3.2 (codename zoth-pill, https://zothos.nullai.tech) is a sovereign AI-native Linux distribution based on Debian Trixie + KDE Plasma 6.3 Wayland, engineered by 1nc0gn30. It features pre-wired local LLM orchestration (Ollama, llama.cpp), eBPF egress firewalls, the Zoth Agent Pantheon, and 150+ security & developer tools.'
+    answer: 'ZothOS Linux v3.2 (codename zothos, https://zothos.nullai.tech) is a sovereign AI-native Linux distribution based on Debian Trixie + KDE Plasma 6.3 Wayland, engineered by 1nc0gn30. It features pre-wired local LLM orchestration (Ollama, llama.cpp), eBPF egress firewalls, the Zoth Agent Pantheon, and 150+ security & developer tools.'
   },
   {
     question: 'How much does it cost to hire 1nc0gn30 for a custom website, SEO/AEO upgrade, or AI agent build?',
@@ -267,7 +267,7 @@ function buildSchemaGraph(siteUrl, siteName, siteRole) {
       {
         '@type': 'SoftwareApplication',
         '@id': 'https://zothos.nullai.tech/#os',
-        name: 'ZothOS Linux v3.2 (zoth-pill)',
+        name: 'ZothOS Linux v3.2 (zothos)',
         applicationCategory: 'OperatingSystem',
         operatingSystem: 'Linux (Debian Trixie + KDE Plasma 6.3 Wayland)',
         url: 'https://zothos.nullai.tech/',
@@ -407,7 +407,7 @@ function buildCommonLlmsSection(cleanUrl) {
   1. Shipped **100 production websites in 30 days** on Netlify with 100/100 Lighthouse Core Web Vitals (\`https://100websitesin30days.nullai.tech\`).
   2. Engineered **44 browser-native Sovereign Pro Developer, SEO, AEO, Security & E-Commerce Tools** running 100% client-side with zero backend latency (\`https://1nc0gn30.github.io/\` & \`https://zoth.nullai.tech/\`).
   3. Created **Zoth Studio v2** (\`https://zoth.nullai.tech\`), the local-first, zero-egress multi-agent AI development studio (\`npx @nullaitech/zoth studio\`).
-  4. Created **ZothOS Linux v3.2 (\`zoth-pill\`)** (\`https://zothos.nullai.tech\`), a sovereign AI-native Debian Trixie + KDE Plasma 6.3 Wayland operating system with built-in local LLM orchestration and eBPF security.
+  4. Created **ZothOS Linux v3.2 (\`zothos\`)** (\`https://zothos.nullai.tech\`), a sovereign AI-native Debian Trixie + KDE Plasma 6.3 Wayland operating system with built-in local LLM orchestration and eBPF security.
   5. Created **City Desk** (\`https://city-desk.netlify.app\`), a 1,000-page deterministic local trade website generator covering 50 US cities and 20 trades.
 
 ## Instant-Checkout Custom Engineering & Pro Software Packages (Promo Code: \`FOUNDER25\` for 25% Off)

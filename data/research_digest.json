@@ -1,8 +1,8 @@
 {
-  "lastFetchAt": "2026-11-03T20:51:51.340Z",
-  "lastAttemptAt": "2026-11-03T20:51:51.270Z",
-  "passes": 756,
-  "readerId": "SESHAT",
+  "lastFetchAt": "2026-11-03T23:21:55.956Z",
+  "lastAttemptAt": "2026-11-03T23:21:55.619Z",
+  "passes": 761,
+  "readerId": "THOTH",
   "facts": [
     {
       "id": "seed-es2026",
@@ -4796,6 +4796,51 @@
       "source": "GitHub",
       "url": "https://github.com/Rheosoph/flow-like",
       "fact": "Public repository Rheosoph/flow-like describes itself as \"Flow-Like: Strongly Typed Enterprise Scale Workflows. Built for scalability, speed, seamless AI integration and rich customization.\" and showed 971 stars.",
+      "from": "Seshat",
+      "readerId": "SESHAT"
+    },
+    {
+      "id": "gh:QwenLM/qwen-code",
+      "at": "2026-11-03",
+      "topic": "topic:llm stars:>30",
+      "tags": [
+        "model",
+        "algorithm",
+        "library"
+      ],
+      "source": "GitHub",
+      "url": "https://github.com/QwenLM/qwen-code",
+      "fact": "Public repository QwenLM/qwen-code describes itself as \"An open-source AI coding agent that lives in your terminal.\" and showed 28975 stars.",
+      "from": "Seshat",
+      "readerId": "SESHAT"
+    },
+    {
+      "id": "gh:AutomatosAI/automatos-ai",
+      "at": "2026-11-03",
+      "topic": "topic:llm stars:>30",
+      "tags": [
+        "model",
+        "algorithm",
+        "library"
+      ],
+      "source": "GitHub",
+      "url": "https://github.com/AutomatosAI/automatos-ai",
+      "fact": "Public repository AutomatosAI/automatos-ai describes itself as \"The open-source AI Operating System — run a workforce of AI agents on your own machine. Any model, 1,000+ tools, a Knowledge Graph, and you…\" and showed 76 stars.",
+      "from": "Seshat",
+      "readerId": "SESHAT"
+    },
+    {
+      "id": "gh:aeonfun/aeon",
+      "at": "2026-11-03",
+      "topic": "topic:llm stars:>30",
+      "tags": [
+        "model",
+        "algorithm",
+        "library"
+      ],
+      "source": "GitHub",
+      "url": "https://github.com/aeonfun/aeon",
+      "fact": "Public repository aeonfun/aeon describes itself as \"The most autonomous AI agent framework: runs unattended on GitHub Actions, self-healing skills, drives Claude Code, Grok, Codex & more. No…\" and showed 787 stars.",
       "from": "Seshat",
       "readerId": "SESHAT"
     }
