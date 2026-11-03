@@ -1,7 +1,7 @@
 {
-  "lastFetchAt": "2026-11-03T16:21:45.649Z",
-  "lastAttemptAt": "2026-11-03T16:21:45.397Z",
-  "passes": 747,
+  "lastFetchAt": "2026-11-03T18:21:47.922Z",
+  "lastAttemptAt": "2026-11-03T18:21:47.637Z",
+  "passes": 751,
   "readerId": "THOTH",
   "facts": [
     {
@@ -4766,6 +4766,36 @@
       "source": "GitHub",
       "url": "https://github.com/mastra-ai/mastra",
       "fact": "Public repository mastra-ai/mastra describes itself as \"Mastra is the modern TypeScript framework for AI-powered applications and agents.\" and showed 29307 stars.",
+      "from": "Seshat",
+      "readerId": "SESHAT"
+    },
+    {
+      "id": "gh:mloda-ai/mloda",
+      "at": "2026-11-03",
+      "topic": "topic:llm stars:>30",
+      "tags": [
+        "model",
+        "algorithm",
+        "library"
+      ],
+      "source": "GitHub",
+      "url": "https://github.com/mloda-ai/mloda",
+      "fact": "Public repository mloda-ai/mloda describes itself as \"mloda.ai - Open Data Access for AI and ML. Plugin-based. Traceable. Framework-agnostic.\" and showed 100 stars.",
+      "from": "Seshat",
+      "readerId": "SESHAT"
+    },
+    {
+      "id": "gh:Rheosoph/flow-like",
+      "at": "2026-11-03",
+      "topic": "topic:llm stars:>30",
+      "tags": [
+        "model",
+        "algorithm",
+        "library"
+      ],
+      "source": "GitHub",
+      "url": "https://github.com/Rheosoph/flow-like",
+      "fact": "Public repository Rheosoph/flow-like describes itself as \"Flow-Like: Strongly Typed Enterprise Scale Workflows. Built for scalability, speed, seamless AI integration and rich customization.\" and showed 971 stars.",
       "from": "Seshat",
       "readerId": "SESHAT"
     }
