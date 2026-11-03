@@ -1,8 +1,8 @@
 {
-  "lastFetchAt": "2026-11-03T18:21:47.922Z",
-  "lastAttemptAt": "2026-11-03T18:21:47.637Z",
-  "passes": 751,
-  "readerId": "THOTH",
+  "lastFetchAt": "2026-11-03T20:51:51.340Z",
+  "lastAttemptAt": "2026-11-03T20:51:51.270Z",
+  "passes": 756,
+  "readerId": "SESHAT",
   "facts": [
     {
       "id": "seed-es2026",
@@ -3846,21 +3846,6 @@
       "readerId": "SESHAT"
     },
     {
-      "id": "gh:promptfoo/promptfoo",
-      "at": "2026-10-30",
-      "topic": "topic:llm stars:>30",
-      "tags": [
-        "model",
-        "algorithm",
-        "library"
-      ],
-      "source": "GitHub",
-      "url": "https://github.com/promptfoo/promptfoo",
-      "fact": "Public repository promptfoo/promptfoo describes itself as \"Test your prompts, agents, and RAGs. Red teaming/pentesting/vulnerability scanning for AI. Compare performance of GPT, Claude, Gemini, Deep…\" and showed 26641 stars.",
-      "from": "Seshat",
-      "readerId": "SESHAT"
-    },
-    {
       "id": "gh:strands-agents/box",
       "at": "2026-10-30",
       "topic": "topic:llm stars:>30",
@@ -3872,6 +3857,21 @@
       "source": "GitHub",
       "url": "https://github.com/strands-agents/box",
       "fact": "Public repository strands-agents/box describes itself as \"Run AI agents in a sandbox that restricts what they can execute, read, write, and reach on the network. Box combines OS isolation with defa…\" and showed 487 stars.",
+      "from": "Seshat",
+      "readerId": "SESHAT"
+    },
+    {
+      "id": "gh:rtk-ai/rtk",
+      "at": "2026-10-30",
+      "topic": "topic:llm stars:>30",
+      "tags": [
+        "model",
+        "algorithm",
+        "library"
+      ],
+      "source": "GitHub",
+      "url": "https://github.com/rtk-ai/rtk",
+      "fact": "Public repository rtk-ai/rtk describes itself as \"CLI proxy that reduces LLM token consumption by 60-90% on common dev commands. Single Rust binary, zero dependencies\" and showed 85071 stars.",
       "from": "Seshat",
       "readerId": "SESHAT"
     },
@@ -4235,6 +4235,21 @@
       "readerId": "SESHAT"
     },
     {
+      "id": "gh:zhangliang605/latest_arxiv_analyze_ai",
+      "at": "2026-11-02",
+      "topic": "topic:llm stars:>30",
+      "tags": [
+        "model",
+        "algorithm",
+        "library"
+      ],
+      "source": "GitHub",
+      "url": "https://github.com/zhangliang605/latest_arxiv_analyze_ai",
+      "fact": "Public repository zhangliang605/latest_arxiv_analyze_ai describes itself as \"600+ papers analyzed by LLM every day!\" and showed 33 stars.",
+      "from": "Seshat",
+      "readerId": "SESHAT"
+    },
+    {
       "id": "gh:langchain-ai/langgraph",
       "at": "2026-11-02",
       "topic": "topic:llm stars:>30",
@@ -4261,21 +4276,6 @@
       "source": "GitHub",
       "url": "https://github.com/TaewoooPark/Agent-Blackbox",
       "fact": "Public repository TaewoooPark/Agent-Blackbox describes itself as \"Local-first flight recorder for coding agents : replay every run as a live session map, score the context bill, and write the fix back into…\" and showed 81 stars.",
-      "from": "Seshat",
-      "readerId": "SESHAT"
-    },
-    {
-      "id": "gh:langchain-ai/open-swe",
-      "at": "2026-11-02",
-      "topic": "topic:llm stars:>30",
-      "tags": [
-        "model",
-        "algorithm",
-        "library"
-      ],
-      "source": "GitHub",
-      "url": "https://github.com/langchain-ai/open-swe",
-      "fact": "Public repository langchain-ai/open-swe describes itself as \"LangChain's software factory\" and showed 11161 stars.",
       "from": "Seshat",
       "readerId": "SESHAT"
     },
