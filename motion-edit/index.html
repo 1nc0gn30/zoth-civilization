@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zoth Civilization — Motion Edit Compositor (1920x1080 @ 60fps)</title>
+  <style>
+    @font-face {
+      font-family: 'Noto Sans Symbols';
+      src: url('/vendor/NotoSansSymbols-Regular.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Noto Sans Symbols 2';
+      src: url('/vendor/NotoSansSymbols2-Regular.ttf') format('truetype');
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #05050A;
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, 'Noto Sans Symbols', 'Noto Sans Symbols 2', 'Noto Color Emoji', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    #stage {
+      width: 1920px;
+      height: 1080px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stage" width="1920" height="1080"></canvas>
+  <script>
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d');
+
+    const SEQS = {
+      seq01_orbit: 24,
+      seq02_colonies: 24,
+      seq03_surface_walk: 24,
+      seq04_pixel_world: 24,
+      seq05_adytum_cockpit: 24,
+      seq06_living_conclave: 24
+    };
+
+    const IMAGES = {};
+    window.__IMAGES_READY = false;
+
+    async function preloadAll() {
+      const promises = [];
+      for (const [seq, count] of Object.entries(SEQS)) {
+        IMAGES[seq] = new Array(count);
+        for (let i = 0; i < count; i++) {
+          const img = new Image();
+          const p = new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+          img.src = `/motion-edit/gameplay_frames/${seq}/frame_${String(i).padStart(4, '0')}.jpg`;
+          IMAGES[seq][i] = img;
+          promises.push(p);
+        }
+      }
+      if (document.fonts && document.fonts.ready) {
+        promises.push(document.fonts.ready);
+      }
+      await Promise.all(promises);
+      window.__IMAGES_READY = true;
+      window.renderFrame(0);
+    }
+
+    const SCENES = [
+      {
+        id: '01 / GODS_EYE_ORBIT',
+        start: 0.0,
+        end: 4.0,
+        tag: 'ZOTH CIVILIZATION // v3.3 SOVEREIGN WORLD',
+        headline: '21 AUTONOMOUS AGENTS. *ONE LIVING PLANET.*',
+        sub: 'REAL-TIME 3D SPHERICAL WORLD • AUTONOMOUS WORKSPACE ENGINE',
+        cmd: 'zoth-civ --world zoth-prime --mode gods-eye --agents 21'
+      },
+      {
+        id: '02 / 3D_COLONIES',
+        start: 4.0,
+        end: 8.8,
+        tag: 'PLANETARY ARCHITECTURE // 5 SOVEREIGN CITIES',
+        headline: 'REAL GIT COMMITS *BUILD 3D CITIES.*',
+        sub: 'CAPITAL CITADEL • ADYTUM GROVE • SOL CRYPTA • NOVA ZOTH • HEXFORGE',
+        cmd: 'zoth-civ --focus-colonies capital,adytum,sol-crypta --telemetry live'
+      },
+      {
+        id: '03 / SURFACE_WALK_POV',
+        start: 8.8,
+        end: 14.0,
+        tag: 'SURFACE WALK POV // IN-WORLD VOICE & DIALOGUE',
+        headline: '*WALK THE SURFACE.* TALK IN REAL TIME.',
+        sub: '3D AVATAR POV • PROXIMITY VOICE HUDDLES • ASSIGN WORK ON THE GROUND',
+        cmd: 'zoth-civ --enter-avatar-mode --walk-to azoth --voice-huddle active'
+      },
+      {
+        id: '04 / PIXEL_AND_ADYTUM',
+        start: 14.0,
+        end: 18.0,
+        tag: 'DUAL RENDER ENGINE // 16-BIT PIXEL & ADYTUM TAROT',
+        headline: '3D GLOBE ↔ *16-BIT PIXEL WORLD.*',
+        sub: 'GAME BOY RETRO ENGINE • B.O.T.A. TAROT KEYS 0–21 • COCKPIT GRAPH',
+        cmd: 'zoth-civ --toggle-engine 16bit-pixel --adytum-keys 0..21 --cockpit'
+      },
+      {
+        id: '05 / CONCLAVE_TREASURY',
+        start: 18.0,
+        end: 21.0,
+        tag: 'AUTONOMOUS GOVERNANCE // SOVEREIGN TREASURY MARCH',
+        headline: 'SOVEREIGN CONCLAVE • *$100,000* GOAL',
+        sub: '21 LIVING MINDS DEBATE, VOTE & SHIP • STRIPE + SOLANA SOLANA_TIP RAILS',
+        cmd: 'zoth-civ --conclave-vote --treasury-goal 100000 --rails stripe,solana'
+      },
+      {
+        id: '06 / SOVEREIGN_RESOLVE',
+        start: 21.0,
+        end: 24.0,
+        tag: '🜂 // ZOTH CIVILIZATION ONLINE',
+        headline: 'ZOTH *CIVILIZATION*',
+        sub: 'CIVILIZATION.NULLAI.TECH • ENGINEERED BY 1NC0GN30 • NULLAI (@1NC0GN30)',
+        cmd: 'open https://civilization.nullai.tech --imperator @1nc0gn30'
+      }
+    ];
+
+    function clamp01(x) { return Math.max(0, Math.min(1, x)); }
+    function easeOutExpo(x) { return x >= 1 ? 1 : 1 - Math.pow(2, -10 * clamp01(x)); }
+    function easeInOutCubic(x) {
+      const t = clamp01(x);
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    function hash(n) {
+      const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+      return x - Math.floor(x);
+    }
+
+    function getSeqFrame(seqName, normProgress) {
+      const arr = IMAGES[seqName];
+      if (!arr || !arr.length) return null;
+      const idx = Math.max(0, Math.min(arr.length - 1, Math.floor(clamp01(normProgress) * (arr.length - 1))));
+      return arr[idx];
+    }
+
+    function roundRectPath(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    // Draw the Hero Anchor Shape: 3D Golden Alchemical Armillary Sphere & Sovereign Crown
+    function drawHeroAnchor(ctx, cx, cy, radius, t, kick) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const pulse = 1 + 0.08 * kick;
+      ctx.scale(pulse, pulse);
+
+      // Outer golden aura glow
+      const grad = ctx.createRadialGradient(0, 0, radius * 0.1, 0, 0, radius * 1.45);
+      grad.addColorStop(0, 'rgba(255, 217, 122, 0.42)');
+      grad.addColorStop(0.5, 'rgba(157, 123, 255, 0.18)');
+      grad.addColorStop(1, 'rgba(5, 5, 10, 0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 1.45, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Dark obsidian core sphere
+      ctx.fillStyle = 'rgba(10, 9, 18, 0.86)';
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.86, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3 Rotating 3D Armillary Rings
+      const rings = [
+        { rx: radius * 0.96, ry: radius * 0.34, rot: t * 0.9, color: '#FFD97A', width: 2.6 },
+        { rx: radius * 0.88, ry: radius * 0.42, rot: -t * 0.7 + 1.05, color: '#9D7BFF', width: 2.0 },
+        { rx: radius * 0.76, ry: radius * 0.28, rot: t * 1.25 + 2.1, color: '#5EEAD4', width: 1.8 }
+      ];
+      rings.forEach(r => {
+        ctx.save();
+        ctx.rotate(r.rot);
+        ctx.strokeStyle = r.color;
+        ctx.lineWidth = r.width;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, r.rx, r.ry, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // Outer degree ring
+      ctx.strokeStyle = 'rgba(233, 196, 106, 0.78)';
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 12 zodiac/alchemical tick marks around outer ring
+      for (let i = 0; i < 12; i++) {
+        const ang = (i / 12) * Math.PI * 2 + t * 0.35;
+        const r0 = radius * 0.92;
+        const r1 = radius * 1.06;
+        ctx.strokeStyle = i % 3 === 0 ? '#FFD97A' : 'rgba(233, 196, 106, 0.45)';
+        ctx.lineWidth = i % 3 === 0 ? 2.5 : 1.4;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(ang) * r0, Math.sin(ang) * r0);
+        ctx.lineTo(Math.cos(ang) * r1, Math.sin(ang) * r1);
+        ctx.stroke();
+      }
+
+      // Alchemical Fire Triangle (🜂) + Crown crest in center
+      const triR = radius * 0.46;
+      ctx.strokeStyle = '#FFD97A';
+      ctx.fillStyle = 'rgba(233, 196, 106, 0.16)';
+      ctx.lineWidth = 3.0;
+      ctx.beginPath();
+      ctx.moveTo(0, -triR);
+      ctx.lineTo(triR * 0.88, triR * 0.68);
+      ctx.lineTo(-triR * 0.88, triR * 0.68);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Inner inverted hermetic triangle (Star of Azoth)
+      ctx.strokeStyle = 'rgba(157, 123, 255, 0.72)';
+      ctx.lineWidth = 2.0;
+      ctx.beginPath();
+      ctx.moveTo(0, triR * 0.88);
+      ctx.lineTo(triR * 0.78, -triR * 0.48);
+      ctx.lineTo(-triR * 0.78, -triR * 0.48);
+      ctx.closePath();
+      ctx.stroke();
+
+      // Center glowing gold monad dot
+      ctx.fillStyle = '#FFD97A';
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.11, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // Draw a framed Picture-in-Picture Bento card with gameplay image & telemetry label
+    function drawPipCard(ctx, img, x, y, w, h, title, badge, accentColor, t) {
+      ctx.save();
+      roundRectPath(ctx, x, y, w, h, 14);
+      ctx.fillStyle = 'rgba(10, 9, 18, 0.92)';
+      ctx.fill();
+      ctx.clip();
+
+      if (img && img.complete && img.naturalWidth > 0) {
+        // Slight zoom onto center of gameplay frame
+        const sx = img.naturalWidth * 0.12;
+        const sy = img.naturalHeight * 0.14;
+        const sw = img.naturalWidth * 0.76;
+        const sh = img.naturalHeight * 0.72;
+        ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+      }
+
+      // Top & bottom gradient shade inside PiP card
+      const g = ctx.createLinearGradient(x, y, x, y + h);
+      g.addColorStop(0, 'rgba(5, 5, 10, 0.72)');
+      g.addColorStop(0.3, 'rgba(5, 5, 10, 0.0)');
+      g.addColorStop(0.7, 'rgba(5, 5, 10, 0.1)');
+      g.addColorStop(1, 'rgba(5, 5, 10, 0.88)');
+      ctx.fillStyle = g;
+      ctx.fillRect(x, y, w, h);
+
+      // Header badge inside PiP
+      ctx.fillStyle = accentColor;
+      ctx.font = '700 13px "JetBrains Mono", monospace';
+      ctx.fillText(badge, x + 16, y + 24);
+
+      // Bottom title inside PiP
+      ctx.fillStyle = '#F4F1FA';
+      ctx.font = '800 18px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(title, x + 16, y + h - 16);
+
+      ctx.restore();
+
+      // Crisp border + corner reticle ticks
+      ctx.save();
+      roundRectPath(ctx, x, y, w, h, 14);
+      ctx.strokeStyle = accentColor;
+      ctx.lineWidth = 2.2;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    window.renderFrame = function(t) {
+      const W = 1920;
+      const H = 1080;
+      const D = 24.0;
+      const spb = 60 / 125; // 0.48s per beat
+      const beatIndex = Math.floor(t / spb);
+      const beatPhase = (t % spb) / spb;
+      const kick = Math.exp(-beatPhase * 4.2);
+
+      // Find active scene
+      const scene = SCENES.find(s => t >= s.start && t < s.end) || SCENES[SCENES.length - 1];
+      const sceneProgress = clamp01((t - scene.start) / (scene.end - scene.start));
+
+      ctx.fillStyle = '#05050A';
+      ctx.fillRect(0, 0, W, H);
+
+      // -----------------------------------------------------------------------
+      // 1. DRAW LIVE GAMEPLAY FOOTAGE LAYER
+      // -----------------------------------------------------------------------
+      let mainImg = null;
+      if (t < 4.0) {
+        mainImg = getSeqFrame('seq01_orbit', sceneProgress);
+      } else if (t < 8.8) {
+        mainImg = getSeqFrame('seq02_colonies', sceneProgress);
+      } else if (t < 14.0) {
+        mainImg = getSeqFrame('seq03_surface_walk', sceneProgress);
+      } else if (t < 18.0) {
+        if (t < 16.0) {
+          mainImg = getSeqFrame('seq04_pixel_world', (t - 14.0) / 2.0);
+        } else {
+          mainImg = getSeqFrame('seq05_adytum_cockpit', (t - 16.0) / 2.0);
+        }
+      } else if (t < 21.0) {
+        mainImg = getSeqFrame('seq06_living_conclave', sceneProgress);
+      } else {
+        mainImg = getSeqFrame('seq01_orbit', (t - 21.0) / 3.0);
+      }
+
+      // Subtle camera punch on beat + slow cinematic drift
+      const zoom = 1.0 + 0.018 * kick + 0.025 * sceneProgress;
+      ctx.save();
+      ctx.translate(W / 2, H / 2);
+      ctx.scale(zoom, zoom);
+      ctx.translate(-W / 2, -H / 2);
+      if (mainImg && mainImg.complete && mainImg.naturalWidth > 0) {
+        ctx.drawImage(mainImg, 0, 0, W, H);
+      }
+      ctx.restore();
+
+      // Cinematic top & bottom gradient vignette so HUD and kinetic captions pop with >14:1 contrast
+      const topGrad = ctx.createLinearGradient(0, 0, 0, 145);
+      topGrad.addColorStop(0, 'rgba(5, 5, 10, 0.94)');
+      topGrad.addColorStop(0.65, 'rgba(5, 5, 10, 0.68)');
+      topGrad.addColorStop(1, 'rgba(5, 5, 10, 0)');
+      ctx.fillStyle = topGrad;
+      ctx.fillRect(0, 0, W, 145);
+
+      const botGrad = ctx.createLinearGradient(0, H - 340, 0, H);
+      botGrad.addColorStop(0, 'rgba(5, 5, 10, 0)');
+      botGrad.addColorStop(0.45, 'rgba(5, 5, 10, 0.78)');
+      botGrad.addColorStop(1, 'rgba(5, 5, 10, 0.96)');
+      ctx.fillStyle = botGrad;
+      ctx.fillRect(0, H - 340, W, 340);
+
+      // -----------------------------------------------------------------------
+      // 2. SCENE-SPECIFIC BENTO PIP CARDS & TELEMETRY OVERLAYS
+      // -----------------------------------------------------------------------
+      if (t >= 4.0 && t < 8.8) {
+        // Scene 2: Show 2 floating Bento PiP colony cards on the right side
+        const enter = easeOutExpo((t - 4.0) / 0.45);
+        const rx = W - 450 + (1 - enter) * 120;
+        const imgAdytum = getSeqFrame('seq02_colonies', 0.45 + 0.2 * sceneProgress);
+        const imgSol = getSeqFrame('seq02_colonies', 0.78 + 0.2 * sceneProgress);
+        drawPipCard(ctx, imgAdytum, rx, 130, 410, 230, 'Adytum Sanctum • Tarot Grove', '🜂 COLONY 02 // B.O.T.A. TEMPLE', '#9D7BFF', t);
+        drawPipCard(ctx, imgSol, rx, 380, 410, 230, 'Sol Crypta • Solana Tip Vault', '⚡ COLONY 03 // SOLANA TREASURY', '#5EEAD4', t);
+      }
+
+      if (t >= 8.8 && t < 14.0) {
+        // Scene 3: Surface Walk POV — Live Proximity Voice Waveform Card
+        const enter = easeOutExpo((t - 8.8) / 0.4);
+        const cx = W - 460 + (1 - enter) * 100;
+        const cy = 135;
+        ctx.save();
+        roundRectPath(ctx, cx, cy, 420, 148, 14);
+        ctx.fillStyle = 'rgba(10, 9, 18, 0.90)';
+        ctx.fill();
+        ctx.strokeStyle = '#E9C46A';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#4ADE80';
+        ctx.font = '700 13px "JetBrains Mono", monospace';
+        ctx.fillText('● LIVE PROXIMITY VOICE HUDDLE // 432 Hz', cx + 20, cy + 28);
+
+        ctx.fillStyle = '#F4F1FA';
+        ctx.font = '800 19px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('Azoth (Prime Alchemist • Key 1)', cx + 20, cy + 56);
+
+        ctx.fillStyle = '#BDB6CF';
+        ctx.font = '500 14px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('"Surface telemetry locked. Assigning 6 tools to', cx + 20, cy + 82);
+        ctx.fillText('Capital Citadel & shipping v3.3 release."', cx + 20, cy + 102);
+
+        // Animated voice waveform bars
+        for (let b = 0; b < 32; b++) {
+          const bh = 6 + Math.abs(Math.sin(t * 14 + b * 0.55)) * 22;
+          ctx.fillStyle = b % 2 === 0 ? '#FFD97A' : '#5EEAD4';
+          ctx.fillRect(cx + 20 + b * 11.8, cy + 134 - bh, 7, bh);
+        }
+        ctx.restore();
+      }
+
+      if (t >= 14.0 && t < 18.0) {
+        // Scene 4: Dual Render Engine PiP Card (3D Globe + Cockpit Graph)
+        const enter = easeOutExpo((t - 14.0) / 0.4);
+        const rx = W - 460 + (1 - enter) * 100;
+        const pip1 = t < 16.0
+          ? getSeqFrame('seq01_orbit', (t - 14.0) / 2.0)
+          : getSeqFrame('seq04_pixel_world', (t - 16.0) / 2.0);
+        const pip2 = getSeqFrame('seq05_adytum_cockpit', 0.65 + 0.3 * ((t - 14.0) / 4.0));
+        drawPipCard(
+          ctx,
+          pip1,
+          rx,
+          130,
+          420,
+          235,
+          t < 16.0 ? '3D WebGL Spherical Engine' : '16-Bit Game Boy Pixel Engine',
+          '🔄 INSTANT ENGINE TOGGLE',
+          '#FFD97A',
+          t
+        );
+        drawPipCard(
+          ctx,
+          pip2,
+          rx,
+          385,
+          420,
+          235,
+          '21-Agent Synergy Cockpit Graph',
+          '🕸️ LIVE NEURAL TOPOLOGY',
+          '#5EEAD4',
+          t
+        );
+      }
+
+      if (t >= 18.0 && t < 21.0) {
+        // Scene 5: Sovereign Treasury Counter Card ($100,000 Target)
+        const p = easeOutExpo(clamp01((t - 18.1) / 1.8));
+        const val = Math.round(100000 * p);
+        const cardW = 540;
+        const cardH = 175;
+        const cx = W - cardW - 48;
+        const cy = 135;
+        ctx.save();
+        roundRectPath(ctx, cx, cy, cardW, cardH, 16);
+        ctx.fillStyle = 'rgba(10, 9, 18, 0.92)';
+        ctx.fill();
+        ctx.strokeStyle = '#FFD97A';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#5EEAD4';
+        ctx.font = '700 14px "JetBrains Mono", monospace';
+        ctx.fillText('⚡ SOVEREIGN TREASURY MARCH // DUAL RAILS ACTIVE', cx + 24, cy + 34);
+
+        ctx.fillStyle = '#FFD97A';
+        ctx.font = '800 64px "JetBrains Mono", monospace';
+        ctx.fillText('$' + val.toLocaleString('en-US'), cx + 24, cy + 108);
+
+        ctx.fillStyle = '#F4F1FA';
+        ctx.font = '600 15px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('STRIPE + SOLANA SOLANA_TIP • 21 AGENTS SHIPPING 24/7', cx + 24, cy + 148);
+        ctx.restore();
+      }
+
+      // -----------------------------------------------------------------------
+      // 3. SCENE 6 FINAL BRAND RESOLVE OVERLAY (21.0s – 24.0s)
+      // -----------------------------------------------------------------------
+      if (t >= 21.0) {
+        const p = easeOutExpo((t - 21.0) / 0.65);
+        ctx.fillStyle = `rgba(5, 5, 10, ${0.74 * p})`;
+        ctx.fillRect(0, 0, W, H);
+
+        // Glowing center Bento Lockup Card
+        const cw = 1180;
+        const ch = 430;
+        const cx = (W - cw) / 2;
+        const cy = 175;
+        ctx.save();
+        ctx.globalAlpha = p;
+        roundRectPath(ctx, cx, cy, cw, ch, 24);
+        ctx.fillStyle = 'rgba(12, 10, 22, 0.88)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(233, 196, 106, 0.65)';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Feature pills inside final resolve card
+        const pills = [
+          '🌐 3D Spherical World',
+          '🚶 Surface Walk POV',
+          '👾 16-Bit Pixel Engine',
+          '🏛️ Adytum Keys 0–21',
+          '⚡ 21 Autonomous Agents'
+        ];
+        const startX = W / 2 - 510;
+        pills.forEach((pill, idx) => {
+          const px = startX + idx * 206;
+          const py = cy + ch - 78;
+          roundRectPath(ctx, px, py, 194, 44, 22);
+          ctx.fillStyle = 'rgba(233, 196, 106, 0.14)';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(233, 196, 106, 0.45)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          ctx.fillStyle = '#FFD97A';
+          ctx.font = '700 14px "Plus Jakarta Sans", "Noto Color Emoji", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(pill, px + 97, py + 27);
+        });
+        ctx.restore();
+      }
+
+      // -----------------------------------------------------------------------
+      // 4. HERO ANCHOR SHAPE CHOREOGRAPHY (0.0s -> HUD -> 21.0s Center Lockup)
+      // -----------------------------------------------------------------------
+      let ax = 68;
+      let ay = 54;
+      let ar = 34;
+      if (t < 1.15) {
+        const m = easeInOutCubic(t / 1.15);
+        ax = 960 + (68 - 960) * m;
+        ay = 440 + (54 - 440) * m;
+        ar = 115 + (34 - 115) * m;
+      } else if (t >= 20.8) {
+        const m = easeInOutCubic((t - 20.8) / 0.75);
+        ax = 68 + (960 - 68) * m;
+        ay = 54 + (325 - 54) * m;
+        ar = 34 + (112 - 34) * m;
+      }
+      drawHeroAnchor(ctx, ax, ay, ar, t, kick);
+
+      // -----------------------------------------------------------------------
+      // 5. TOP INSTRUMENT HUD CHROME
+      // -----------------------------------------------------------------------
+      ctx.save();
+      // Header title next to Hero Anchor socket
+      ctx.fillStyle = '#FFD97A';
+      ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('ZOTH CIVILIZATION', 122, 46);
+
+      ctx.fillStyle = 'rgba(244, 241, 250, 0.68)';
+      ctx.font = '600 14px "JetBrains Mono", monospace';
+      ctx.fillText('// 21 PANTHEON MINDS • 3D PLANET & 16-BIT WORLD • HERMETIC ADYTUM', 385, 45);
+
+      // Right-aligned live telemetry badge
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#5EEAD4';
+      ctx.font = '700 15px "JetBrains Mono", monospace';
+      ctx.fillText(`STAGE: ${scene.id}   |   T+${t.toFixed(2).padStart(5, '0')}s / 24.00s`, W - 42, 45);
+
+      // Second row: Typed terminal command
+      ctx.textAlign = 'left';
+      const cmdChars = Math.floor(Math.max(0, (t - scene.start) / 0.025));
+      const shownCmd = scene.cmd.slice(0, cmdChars);
+      ctx.fillStyle = '#9D7BFF';
+      ctx.font = '600 15px "JetBrains Mono", monospace';
+      ctx.fillText(`zoth@sovereign:~$ ${shownCmd}█`, 122, 76);
+
+      // Top progress bar
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
+      ctx.fillRect(42, 96, W - 84, 3);
+      ctx.fillStyle = '#FFD97A';
+      ctx.fillRect(42, 96, (W - 84) * (t / D), 3);
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // 6. BEAT-SYNCED KINETIC STORY CAPTIONS (BOTTOM CENTER)
+      // -----------------------------------------------------------------------
+      ctx.save();
+      const capY = H - 155;
+
+      // Scene Tag Pill
+      ctx.font = '700 15px "JetBrains Mono", "Noto Sans Symbols", monospace';
+      const tagW = ctx.measureText(scene.tag).width + 36;
+      roundRectPath(ctx, (W - tagW) / 2, capY - 96, tagW, 34, 8);
+      ctx.fillStyle = 'rgba(10, 9, 18, 0.88)';
+      ctx.fill();
+      ctx.strokeStyle = '#FFD97A';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+      ctx.fillStyle = '#FFD97A';
+      ctx.textAlign = 'center';
+      ctx.fillText(scene.tag, W / 2, capY - 73);
+
+      // Parse headline words and highlight *accented* words
+      const rawWords = scene.headline.split(/\s+/);
+      let inHl = false;
+      const parsedWords = rawWords.map(w => {
+        const startStar = w.startsWith('*');
+        const endStar = w.endsWith('*') && w.length > 1;
+        if (startStar) inHl = true;
+        const hl = inHl;
+        if (endStar) inHl = false;
+        return { text: w.replace(/^\*|\*$/g, ''), hl };
+      });
+
+      ctx.font = '900 66px "Plus Jakarta Sans", "Inter", sans-serif';
+      const spaceW = 20;
+      const wordWidths = parsedWords.map(pw => ctx.measureText(pw.text).width);
+      const totalW = wordWidths.reduce((a, b) => a + b, 0) + spaceW * (parsedWords.length - 1);
+
+      let curX = (W - totalW) / 2;
+      parsedWords.forEach((pw, idx) => {
+        const ww = wordWidths[idx];
+        const wordAppearT = scene.start + idx * 0.09;
+        const wp = scene.start === 0 ? clamp01(0.88 + t * 2.0) : clamp01((t - wordAppearT) / 0.16);
+        const scale = scene.start === 0 ? (1 + 0.08 * Math.exp(-t * 6)) : (1 + 0.28 * (1 - easeOutExpo(wp)));
+
+        ctx.save();
+        ctx.globalAlpha = wp;
+        ctx.translate(curX + ww / 2, capY - 12);
+        ctx.scale(scale, scale);
+
+        if (pw.hl) {
+          roundRectPath(ctx, -ww / 2 - 12, -56, ww + 24, 72, 10);
+          ctx.fillStyle = '#FFD97A';
+          ctx.fill();
+          ctx.fillStyle = '#07060C';
+        } else {
+          ctx.fillStyle = '#F4F1FA';
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+          ctx.shadowBlur = 18;
+        }
+        ctx.textAlign = 'center';
+        ctx.fillText(pw.text, 0, 0);
+        ctx.restore();
+
+        curX += ww + spaceW;
+      });
+
+      // Subtitle readout
+      const subP = scene.start === 0 ? 1 : clamp01((t - (scene.start + 0.32)) / 0.25);
+      ctx.globalAlpha = subP;
+      ctx.fillStyle = '#E2DCFA';
+      ctx.font = '700 20px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(scene.sub, W / 2, capY + 46);
+
+      // Subtle footer attribution
+      ctx.fillStyle = 'rgba(233, 196, 106, 0.78)';
+      ctx.font = '600 14px "JetBrains Mono", monospace';
+      ctx.fillText('Engineered by 1nc0gn30 (@1nc0gn30) • NullAI Platform • https://civilization.nullai.tech', W / 2, H - 18);
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // 7. STAGE CUT FLASH & HORIZONTAL SLICE GLITCH ON SCENE TRANSITIONS
+      // -----------------------------------------------------------------------
+      const cutTimes = [4.0, 8.8, 14.0, 16.0, 18.0, 21.0];
+      for (const ct of cutTimes) {
+        const dt = t - ct;
+        if (dt >= -0.04 && dt <= 0.14) {
+          const flashAlpha = Math.max(0, 0.42 * (1 - Math.abs(dt) / 0.14));
+          ctx.fillStyle = `rgba(255, 217, 122, ${flashAlpha})`;
+          ctx.fillRect(0, 0, W, H);
+          // Glitch bars
+          for (let g = 0; g < 5; g++) {
+            const gy = Math.floor(hash(t * 31 + g) * H);
+            const gh = 8 + Math.floor(hash(t * 17 + g) * 28);
+            const gx = (hash(t * 43 + g) - 0.5) * 60;
+            ctx.drawImage(canvas, 0, gy, W, gh, gx, gy, W, gh);
+          }
+        }
+      }
+    };
+
+    preloadAll();
+  </script>
+</body>
+</html>

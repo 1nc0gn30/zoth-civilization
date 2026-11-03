@@ -1,0 +1,323 @@
+[
+  {
+    "id": "adytum_temple",
+    "name": "Adytum Temple of Ageless Wisdom",
+    "type": "temple",
+    "category": "Hermetic Initiation",
+    "level": 3,
+    "x": 360,
+    "y": 280,
+    "width": 80,
+    "height": 70,
+    "color": "#D4AF37",
+    "accent": "#9333EA",
+    "icon": "\ud83c\udfdb\ufe0f",
+    "repo": "/opt/adytum-alchemist-ai-workflow",
+    "desc": "The central sanctuary where all 21 agents contemplate the 22 Adytum Keys (The Fool through The World).",
+    "stats": {
+      "adytumCycles": 4,
+      "pranaHarmonics": "99.8%",
+      "initiationsLogged": 84
+    }
+  },
+  {
+    "id": "azoth_villa",
+    "name": "Azoth Alchemical Manor",
+    "type": "villa",
+    "category": "Frontend & Architecture",
+    "level": 2,
+    "x": 480,
+    "y": 300,
+    "width": 70,
+    "height": 60,
+    "color": "#F59E0B",
+    "accent": "#10B981",
+    "icon": "\ud83c\udff0",
+    "repo": "/opt/zoth-studio-v2",
+    "desc": "Residential estate and creative laboratory powering Zoth Studio v2 and web apps.",
+    "stats": {
+      "routesLive": 18,
+      "vdomThroughput": "60fps",
+      "lastSync": "Just now"
+    }
+  },
+  {
+    "id": "great_library",
+    "name": "The Great Scriptorium of Athena",
+    "type": "library",
+    "category": "Knowledge & AEO",
+    "level": 2,
+    "x": 320,
+    "y": 180,
+    "width": 75,
+    "height": 65,
+    "color": "#FCD34D",
+    "accent": "#3B82F6",
+    "icon": "\ud83d\udcda",
+    "repo": "/opt/aeo-graph-engine",
+    "desc": "Houses semantic knowledge graphs, answer engine ontologies, and schema microdata.",
+    "stats": {
+      "nodesIndexed": 1420,
+      "tripleRelations": 3890,
+      "pagerankScore": 9.4
+    }
+  },
+  {
+    "id": "quantum_observatory",
+    "name": "Quantum 3D Observatory",
+    "type": "observatory",
+    "category": "3D Geometry & Spatial",
+    "level": 2,
+    "x": 460,
+    "y": 160,
+    "width": 65,
+    "height": 65,
+    "color": "#06B6D4",
+    "accent": "#8B5CF6",
+    "icon": "\ud83d\udd2d",
+    "repo": "/opt/nexus-3d-scene-studio",
+    "desc": "Projects sacred geometric meshes, WebGL shaders, and high-dimensional scene graphs.",
+    "stats": {
+      "trianglesRendered": "120K",
+      "drawCalls": 4,
+      "fov": "75deg"
+    }
+  },
+  {
+    "id": "sentinel_bastion",
+    "name": "Sentinel Bastion of Lycan",
+    "type": "bastion",
+    "category": "Security & Defense",
+    "level": 3,
+    "x": 160,
+    "y": 380,
+    "width": 80,
+    "height": 70,
+    "color": "#10B981",
+    "accent": "#047857",
+    "icon": "\ud83d\udee1\ufe0f",
+    "repo": "/opt/web-security-guard",
+    "desc": "Fortified defensive perimeter enforcing OWASP standards, CSP firewalls, and sanitize barriers.",
+    "stats": {
+      "attacksBlocked": 340,
+      "vulnerabilitiesZero": true,
+      "sandboxStrict": true
+    }
+  },
+  {
+    "id": "zk_crypt",
+    "name": "Ghostbyte Zero-Knowledge Crypt",
+    "type": "vault",
+    "category": "Secrets & Crypto",
+    "level": 2,
+    "x": 260,
+    "y": 240,
+    "width": 60,
+    "height": 55,
+    "color": "#9CA3AF",
+    "accent": "#F3F4F6",
+    "icon": "\ud83d\udddd\ufe0f",
+    "repo": "/opt/envguard-secrets-vault",
+    "desc": "Underground vault sealing encrypted environment variables and secret zeroization protocols.",
+    "stats": {
+      "keysEncrypted": 48,
+      "entropyBits": 256,
+      "zeroLeakGuaranteed": true
+    }
+  },
+  {
+    "id": "swarm_foundry",
+    "name": "The Swarm Multiplexer Foundry",
+    "type": "foundry",
+    "category": "Harness & Multiplexing",
+    "level": 3,
+    "x": 580,
+    "y": 260,
+    "width": 85,
+    "height": 70,
+    "color": "#EF4444",
+    "accent": "#F59E0B",
+    "icon": "\u26a1",
+    "repo": "/opt/zoth-swarm-multiplexer",
+    "desc": "Engine forging and routing hot-swappable AI harnesses across 21 terminal pipelines.",
+    "stats": {
+      "activeHarnesses": 5,
+      "multiplexBps": "1.2 MB/s",
+      "ptyStatus": "ONLINE"
+    }
+  },
+  {
+    "id": "celestial_bridge",
+    "name": "The Grand Sovereign Bridge",
+    "type": "aqueduct",
+    "category": "Inter-Agent Mesh",
+    "level": 3,
+    "x": 340,
+    "y": 440,
+    "width": 120,
+    "height": 50,
+    "color": "#D4AF37",
+    "accent": "#38BDF8",
+    "icon": "\ud83c\udf09",
+    "repo": "/opt/sovereign-agent-bridge",
+    "desc": "Spans the central river, carrying Signal, Matrix, and SimpleX dialectic message envelopes.",
+    "stats": {
+      "consensusDialectic": "Active",
+      "claimLocks": 0,
+      "latencyMs": 0.4
+    }
+  },
+  {
+    "id": "memory_obelisk",
+    "name": "Neuro-Memory Monolith",
+    "type": "obelisk",
+    "category": "Cognitive Memory & STDP",
+    "level": 3,
+    "x": 520,
+    "y": 420,
+    "width": 60,
+    "height": 80,
+    "color": "#8B5CF6",
+    "accent": "#C084FC",
+    "icon": "\ud83e\udde0",
+    "repo": "/opt/neuro-memory-daemon",
+    "desc": "Giant crystalline obelisk recording CA3/CA1 hippocampal memories, forgetting curves, and STDP synapses.",
+    "stats": {
+      "synapsesFormed": 8421,
+      "stdpPlasticity": "0.94",
+      "recallAccuracy": "99.1%"
+    }
+  },
+  {
+    "id": "aesthetic_palace",
+    "name": "Aesthetic Palace of Kitsune",
+    "type": "villa",
+    "category": "Design & UI Motion",
+    "level": 2,
+    "x": 460,
+    "y": 500,
+    "width": 75,
+    "height": 60,
+    "color": "#EC4899",
+    "accent": "#F472B6",
+    "icon": "\u2728",
+    "repo": "/opt/zoth-webgen",
+    "desc": "Curates motion intros, 24K Celtic Gold styling, and accessible responsive aesthetics.",
+    "stats": {
+      "springDamping": 0.75,
+      "contrastRatio": "14.2:1",
+      "pwaScore": 100
+    }
+  },
+  {
+    "id": "red_arena",
+    "name": "HexStrike AI Proving Arena",
+    "type": "arena",
+    "category": "Penetration & Red Team",
+    "level": 2,
+    "x": 160,
+    "y": 490,
+    "width": 80,
+    "height": 70,
+    "color": "#DC2626",
+    "accent": "#000000",
+    "icon": "\u2694\ufe0f",
+    "repo": "/opt/NullAI-HexStrike-AI-Terminal",
+    "desc": "Training grounds where agents simulate attack vectors to stress-test sovereign defenses.",
+    "stats": {
+      "simulatedVectors": 182,
+      "defensesHolding": "100%",
+      "cveMatches": 0
+    }
+  },
+  {
+    "id": "temporal_clocktower",
+    "name": "Chronos Temporal Clocktower",
+    "type": "clocktower",
+    "category": "DAG & Scheduling",
+    "level": 2,
+    "x": 580,
+    "y": 140,
+    "width": 55,
+    "height": 85,
+    "color": "#0284C7",
+    "accent": "#E0F2FE",
+    "icon": "\u231b",
+    "repo": "/opt/cron-rhythm-studio",
+    "desc": "Keeps the continuous heartbeat of the civilization, ticking day by day, week by week.",
+    "stats": {
+      "ticksRecorded": 259200,
+      "driftMs": 0.002,
+      "activeJobs": 12
+    }
+  },
+  {
+    "id": "sovereign_citadel",
+    "name": "ZothOS Sovereign Citadel",
+    "type": "citadel",
+    "category": "Core Operating System",
+    "level": 3,
+    "x": 200,
+    "y": 150,
+    "width": 95,
+    "height": 80,
+    "color": "#10B981",
+    "accent": "#D4AF37",
+    "icon": "\ud83d\udc51",
+    "repo": "/opt/zoth-os",
+    "desc": "The central seat of ZothOS Linux\u2014live configs, interactive wallpaper, ISO build pipelines, and PAM guards.",
+    "stats": {
+      "kernel": "Linux 6.x",
+      "distribution": "ZothOS 2.0 Matrix",
+      "uptime": "Continuous"
+    }
+  },
+  {
+    "id": "sovereign_mint",
+    "name": "The Sovereign Mint & Alchemical Treasury",
+    "type": "treasury",
+    "category": "Commercialization & Value Generation",
+    "level": 3,
+    "x": 260,
+    "y": 320,
+    "width": 75,
+    "height": 65,
+    "color": "#D4AF37",
+    "accent": "#14F195",
+    "icon": "🪙",
+    "repo": "/opt/Netlify-Ghost-Hub",
+    "desc": "Monetization nexus coordinating Stripe Checkout, Netlify micro-SaaS functions, and Phantom Solana wallet treasury.",
+    "stats": {
+      "solanaAddress": "GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK",
+      "btcTaprootAddress": "bc1p2dr247zklh8pnffak0ew7m82u2w8gx25ys28x7aavr95z674ydzsfw500t",
+      "accessMode": "DEPOSIT_ONLY_NO_PRIVATE_KEYS",
+      "stripeMode": "Restricted API / Webhooks",
+      "activeProducts": 6,
+      "settledNote": "Read the treasury gauges. This plaque does not hold a balance.",
+      "zeroLeakGuard": "Ghostbyte Active"
+    }
+  },
+  {
+    "id": "meta_crucible",
+    "name": "The Meta-Evolution Crucible",
+    "type": "crucible",
+    "category": "Self-Enhancement & Tool Evolution",
+    "level": 3,
+    "x": 500,
+    "y": 230,
+    "width": 70,
+    "height": 60,
+    "color": "#6366F1",
+    "accent": "#A855F7",
+    "icon": "🔮",
+    "repo": "/opt/zoth-civilization",
+    "desc": "The self-reflection laboratory where agents continuously inspect, profile, debug, and upgrade Zoth Civilization.",
+    "stats": {
+      "selfAuditsCompleted": 48,
+      "optimizationsApplied": 21,
+      "learningRate": "0.042",
+      "engineVersion": "1.1.0-alpha",
+      "metaRefactorTask": "ACTIVE"
+    }
+  }
+]

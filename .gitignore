@@ -1,0 +1,107 @@
+# =====================================================================
+# 🛡️ ZERO-LEAK SOVEREIGN GITIGNORE — GHOSTBYTE SECURITY PROTOCOL
+# =====================================================================
+# Enforces strict zero-leak policies preventing all secret keys, private
+# credentials, environment files, runtime databases, and throwaway mailboxes
+# from ever being tracked or committed to public Git repositories.
+# =====================================================================
+
+# 1. Zero-Leak Secrets, Private Keys & Environment Variables
+.env
+.env.*
+!.env.example
+*.env
+.env.sovereign
+.env.local
+.env.development
+.env.test
+.env.production
+*.pem
+*.key
+*.seed
+*.wallet
+*.p12
+*.pfx
+*.pkcs8
+id_rsa*
+id_ed25519*
+!public/tarot/Hebrewt.TTF
+
+# 2. Vault, Credentials & Tokens
+*credentials*.json
+*credentials*.key
+*secret*.json
+*secret*.key
+secrets.json
+treasury_secrets.json
+private_keys/
+*.token
+*.auth
+
+# 3. Dynamic Simulation Runtime Databases & Account Caches
+# (These contain runtime logs, disposable mailboxes, and live state)
+data/autonomous_accounts.json
+data/agy_agent_runs.jsonl
+data/civilization_state.json
+data/daily_requisitions.json
+data/outreach_campaigns.json
+data/civilization_lineage.json
+data/agent_subconscious.json
+data/*.png
+data/*.log
+data/guardrail_reports/
+data/connectors.json
+data/connectors.secret.json
+*.local.json
+
+# 4. Dependencies, Build & Package Artifacts
+node_modules/
+voice-runtime/
+voice-models/
+dist/
+build/
+.cache/
+.turbo/
+coverage/
+.nyc_output/
+
+# 5. OS & Editor Metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.vscode/
+.idea/
+*.swp
+*.swo
+.gemini/
+
+# Headless screenshot captures
+shots/
+shots-*/
+
+# Local Netlify folder
+.netlify
+
+.venv/
+.venv*/
+venv/
+__pycache__/
+*.pth
+*.onnx
+data/minds/spool.jsonl
+release-artifacts/
+build/*.iso*
+build/live_workspace/
+build/release-*/
+
+data/meditations/
+data/minds/spool.jsonl
+data/hermetic_observer_state.json
+data/research_digest.json
+data/treasury_config.json

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Zoth Civilization
+GenericName=21-Agent Sovereign Living Civilization
+Comment=GameBoy Top-Down Pixel Civilization & Adytum Hermetic Initiation Chamber
+Exec=/opt/zoth-civilization/bin/zoth-civ
+Icon=/opt/adytum-alchemist-ai-workflow/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;Game;Science;Education;
+StartupNotify=true

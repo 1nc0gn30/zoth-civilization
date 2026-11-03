@@ -1,0 +1,65 @@
+{
+  "title": "Zoth Civilization — Live Gameplay Motion Edit",
+  "fps": 60,
+  "width": 1920,
+  "height": 1080,
+  "duration": 24.0,
+  "bpm": 125,
+  "drop": 8.8,
+  "scenes": [
+    {
+      "id": "hook_orbit",
+      "start": 0.0,
+      "end": 4.0,
+      "tag": "01 // ZOTH CIVILIZATION v3.3",
+      "headline": "21 AUTONOMOUS AGENTS. *ONE LIVING PLANET.*",
+      "sub": "REAL-TIME 3D SPHERICAL WORLD • AUTONOMOUS WORKSPACE ENGINE",
+      "cmd": "zoth-civ --world zoth-prime --mode gods-eye --agents 21"
+    },
+    {
+      "id": "colonies_flyover",
+      "start": 4.0,
+      "end": 8.8,
+      "tag": "02 // PLANETARY ARCHITECTURE",
+      "headline": "REAL GIT COMMITS *BUILD 3D CITIES.*",
+      "sub": "CAPITAL CITADEL • ADYTUM GROVE • SOL CRYPTA • NOVA ZOTH • HEXFORGE",
+      "cmd": "zoth-civ --focus-colonies capital,adytum,sol-crypta --telemetry live"
+    },
+    {
+      "id": "surface_walk_pov",
+      "start": 8.8,
+      "end": 14.0,
+      "tag": "03 // SURFACE WALK POV & LIVE VOICE",
+      "headline": "*WALK THE SURFACE.* TALK IN REAL TIME.",
+      "sub": "3D AVATAR POV • PROXIMITY VOICE HUDDLES • ASSIGN WORK ON THE GROUND",
+      "cmd": "zoth-civ --enter-avatar-mode --walk-to azoth --voice-huddle active"
+    },
+    {
+      "id": "pixel_and_adytum",
+      "start": 14.0,
+      "end": 18.0,
+      "tag": "04 // DUAL RENDER ENGINE & HERMETIC ADYTUM",
+      "headline": "3D GLOBE ↔ *16-BIT PIXEL WORLD.*",
+      "sub": "GAME BOY RETRO ENGINE • B.O.T.A. TAROT KEYS 0–21 • COCKPIT GRAPH",
+      "cmd": "zoth-civ --toggle-engine 16bit-pixel --adytum-keys 0..21 --cockpit"
+    },
+    {
+      "id": "conclave_treasury",
+      "start": 18.0,
+      "end": 21.0,
+      "tag": "05 // SOVEREIGN CONCLAVE & TREASURY MARCH",
+      "headline": "AUTONOMOUS CONCLAVE • *$100,000* GOAL",
+      "sub": "21 LIVING MINDS DEBATE, VOTE & SHIP • STRIPE + SOLANA SOLANA_TIP RAILS",
+      "cmd": "zoth-civ --conclave-vote --treasury-goal 100000 --rails stripe,solana"
+    },
+    {
+      "id": "brand_resolve",
+      "start": 21.0,
+      "end": 24.0,
+      "tag": "🜂 // SOVEREIGN WORLD ONLINE",
+      "headline": "ZOTH *CIVILIZATION*",
+      "sub": "CIVILIZATION.NULLAI.TECH • ENGINEERED BY 1NC0GN30 • NULLAI (@1NC0GN30)",
+      "cmd": "open https://civilization.nullai.tech --imperator @1nc0gn30"
+    }
+  ]
+}

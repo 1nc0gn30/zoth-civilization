@@ -1,0 +1,75 @@
+{
+  "vaultProtocol": "Ghostbyte Zero-Leak Sovereign Treasury v1.0",
+  "guardSentinel": "GHOSTBYTE (Key 4: The Emperor)",
+  "securityPolicy": {
+    "zeroLeakEnforced": true,
+    "allowOutboundTransactions": false,
+    "privateKeysRequired": false,
+    "autoScrubSecretTokens": true
+  },
+  "depositTargets": {
+    "solana": {
+      "network": "Solana (Mainnet-Beta / Devnet)",
+      "walletType": "Phantom Compatible (Public Address)",
+      "receiveAddress": "GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK",
+      "snsDomain": "nullai.sns",
+      "snsStatus": "ACTIVE_REGISTERED",
+      "accessMode": "RECEIVE_ONLY_NO_PRIVATE_KEYS",
+      "supportedCurrencies": [
+        "SOL",
+        "USDC-SPL",
+        "BONK"
+      ],
+      "explorerUrl": "https://solscan.io/account/GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK"
+    },
+    "bitcoin": {
+      "network": "Bitcoin (BIP-86 Taproot P2TR)",
+      "walletType": "Taproot Compatible (Public Address)",
+      "receiveAddress": "bc1p2dr247zklh8pnffak0ew7m82u2w8gx25ys28x7aavr95z674ydzsfw500t",
+      "accessMode": "RECEIVE_ONLY_NO_PRIVATE_KEYS",
+      "supportedCurrencies": [
+        "BTC"
+      ],
+      "explorerUrl": "https://mempool.space/address/bc1p2dr247zklh8pnffak0ew7m82u2w8gx25ys28x7aavr95z674ydzsfw500t"
+    },
+    "stripe": {
+      "mode": "Restricted Checkout / Test Webhook Gateway",
+      "accessMode": "SERVERLESS_NETLIFY_RESTRICTED_KEY",
+      "allowedScopes": [
+        "checkout.sessions:write",
+        "prices:read",
+        "products:read",
+        "webhook_endpoints:read"
+      ],
+      "strictlyForbiddenScopes": [
+        "transfers:write",
+        "payouts:write",
+        "customers:export",
+        "accounts:write"
+      ]
+    }
+  },
+  "operationsMatrix": {
+    "permittedForAgents": [
+      "Generate Solana Pay QR codes with public receive address",
+      "Generate BTC Taproot payment invoices & QR codes",
+      "Query public ledger balances via read-only RPC nodes",
+      "Construct Netlify serverless checkout functions",
+      "Create Stripe Checkout sessions via restricted key"
+    ],
+    "strictlyBlockedForAgents": [
+      "Signing outbound fund transfers from public treasury",
+      "Requesting, reading, or caching seed phrases or private keys",
+      "Dumping environment secret tokens into chat or logs",
+      "Initiating Stripe bank account payouts"
+    ]
+  },
+  "stripeAvailableUsd": 0.17,
+  "stripePendingUsd": 0,
+  "stripeHistoricalGrossUsd": 1755,
+  "stripeSucceededCount": 11,
+  "stripeCheckoutSessionsCount": 100,
+  "lastStripeSyncAt": "2026-11-03T16:38:43.868Z",
+  "stripeOpenInvoicesUsd": 100,
+  "stripeNewRevenueUsd": 1.15
+}

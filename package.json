@@ -1,0 +1,16 @@
+{
+  "name": "zoth-civilization",
+  "version": "1.0.0",
+  "description": "Zoth Civilization — 21 Pantheon Agents, GameBoy Simulation & The Adytum Hermetic Path",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "desktop": "/opt/electron/electron .",
+    "web": "node server.js",
+    "audit:secrets": "node engine/secret_scanner.js",
+    "audit:staged": "node engine/secret_scanner.js --staged",
+    "test": "node --check server.js && node --check main.js && node --check engine/simulation.js && node --check engine/workflow_engine.js && node --check engine/legal_templates.js && node --check engine/netlify_ax_engine.js && node --check engine/work_fence.js && node --check engine/prod_pass.js && node --check engine/library_road.js && node --check engine/agent_ledger.js && node --check engine/site_guardrail.js && node --check public/app.js && node --check engine/adytum_rite.js && node --check engine/timeline_engine.js && node --check engine/repo_factory.js && node --check engine/customer_desk.js && node --check engine/local_revamp_mission.js && node --check engine/local_talk.js && node --check engine/desk_mount.js && npm run audit:secrets"
+  },
+  "author": "1nc0gn30 • NullAI <1nc0gn30@nullai.tech>",
+  "license": "MIT"
+}

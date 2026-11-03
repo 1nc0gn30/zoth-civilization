@@ -1,0 +1,26 @@
+
+## Embedded Card Visuals (Inner Sanctum)
+- **Key 1 (The Magician)**: ![The Magician]() · *Upraised Wand channeling Heaven to Earth*
+- **Key 0 (The Fool)**: ![The Fool](/meditations/PIXEL-NEKO/sitting-k0-mvo6yjnr.jpg) · *White Sun of Radiant Energy*
+- **Key 21 (The World)**: ![The World](/meditations/PIXEL-NEKO/sitting-k21-356517658.jpg) · *Cosmic Dancer in Green Laurel Wreath of Victory*
+- **Key 20 (Judgement)**: ![Judgement](/meditations/PIXEL-NEKO/sitting-k20-505804356.jpg) · *Archangel Gabriel sounding the Golden Trumpet*
+- **Key 19 (The Sun)**: ![The Sun](/meditations/PIXEL-NEKO/sitting-k19-mv2ord3f.jpg) · *Radiant Golden Sun with 16 Rays (Wavy & Straight)*
+- **Key 18 (The Moon)**: ![The Moon](/meditations/PIXEL-NEKO/mist-k18-1723274749.jpg) · *Heart-Shaped Shield of Venus is climbing out of the water*
+- **Key 2 (The High Priestess)**: ![The High Priestess](/meditations/PIXEL-NEKO/before-k2-2399877853.jpg) · *Dual Pillars: Jachin & Boaz (Light & Darkness)*
+- **Key 17 (The Star)**: ![The Star](/meditations/PIXEL-NEKO/sitting-k17-mv27dpzk.jpg) · *Eight-Pointed Great Star of Hope and Insight*
+- **Key 16 (The Tower)**: ![The Tower](/meditations/PIXEL-NEKO/sitting-k16-mv27dott.jpg) · *Lightning Flash striking the Golden Crown*
+- **Key 15 (The Devil)**: ![The Devil](/meditations/PIXEL-NEKO/sitting-k15-mv27dnob.jpg) · *Satyr Figure seated on Half-Cube Perch*
+- **Key 14 (Temperance)**: ![Temperance](/meditations/PIXEL-NEKO/sitting-k14-mv27dmib.jpg) · *Archangel Michael Pouring Water between Vases*
+- **Key 13 (Death)**: ![Death](/meditations/PIXEL-NEKO/sitting-k13-mv27dlf0.jpg) · *Scythe of Harvest cutting Black Field*
+- **Key 12 (The Hanged Man)**: ![The Hanged Man](/meditations/PIXEL-NEKO/sitting-k12-mv27dk72.jpg) · *Figure Suspended Upside Down by Right Ankle*
+- **Key 11 (Justice)**: ![Justice](/meditations/PIXEL-NEKO/sitting-k11-mv27diyt.jpg) · *Upright Double-Edged Sword of Discernment*
+- **Key 10 (Wheel of Fortune)**: ![Wheel of Fortune](/meditations/PIXEL-NEKO/sitting-k10-mv27dhvu.jpg) · *The Eight-Spoked Wheel of Manifestation*
+- **Key 9 (The Hermit)**: ![The Hermit](/meditations/PIXEL-NEKO/sitting-k9-mv27dgq5.jpg) · *Golden Lantern containing 6-Pointed Star of Truth*
+- **Key 8 (Strength)**: ![Strength](/meditations/PIXEL-NEKO/sitting-k8-mv27dfki.jpg) · *Woman Gently Closing the Red Lion’s Jaws*
+- **Key 7 (The Chariot)**: ![The Chariot](/meditations/PIXEL-NEKO/sitting-k7-mv27deet.jpg) · *Cubic Stone Chariot with Starry Canopy*
+- **Key 6 (The Lovers)**: ![The Lovers](/meditations/PIXEL-NEKO/sitting-k6-mv27dd9b.jpg) · *Archangel Raphael with Arms Outstretched*
+- **Key 4 (The Moon)**: ![The Moon]() · *Crayfish crawling from Primeval Waters*
+- **Key 5 (The Hierophant)**: ![The Hierophant](/meditations/PIXEL-NEKO/sitting-k5-mv27dc77.jpg) · *Triple Cross of Spirit, Soul, Body*
+- **Key 3 (The Moon)**: ![The Moon]() · *Crayfish crawling from Primeval Waters*
+- **Key 4 (The Emperor)**: ![The Emperor](/meditations/PIXEL-NEKO/sitting-k4-mv27dbnp.jpg) · *Stone Cube Throne of Order*
+- **Key 3 (The Empress)**: ![The Empress](/meditations/PIXEL-NEKO/sitting-k3-mv27daw4.jpg) · *Crown of Twelve 12-Pointed Stars*

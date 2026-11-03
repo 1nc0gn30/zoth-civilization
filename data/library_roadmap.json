@@ -1,0 +1,41 @@
+{
+  "name": "The Library",
+  "keepers": ["ATHENA", "DRACO", "CHRONOS"],
+  "catalog": "data/library_catalog.json",
+  "rules": [
+    "Add real published works that are not already on the shelf.",
+    "Do not invent a title, an author, or a year.",
+    "A note is one sentence of your own. Do not paste the book.",
+    "rights is public-domain or card-only.",
+    "Ryan Holiday, Robert Greene, and the Edgar Cayce readings are card-only.",
+    "Plato wrote Timaeus and Critias. Later Atlantis books are claims, and the note must say so.",
+    "The Vatican and the Cayce library are the picture of a broad scripture room, not a copy of their stacks.",
+    "Do not deploy. Do not push. Do not edit any other project."
+  ],
+  "phases": [
+    {
+      "id": "stoic",
+      "title": "Stoics",
+      "target": 18,
+      "task": "Fill the Stoic shelf from the old practice to the new books. Seneca, Musonius, Epictetus, and Marcus Aurelius are already the ancient anchors. Add real later Stoic books, including Ryan Holiday, as cards only."
+    },
+    {
+      "id": "greene",
+      "title": "Robert Greene",
+      "target": 7,
+      "task": "The Robert Greene shelf is a card for each real book: 48 Laws of Power, The Art of Seduction, The 33 Strategies of War, The 50th Law, Mastery, The Laws of Human Nature, and The Daily Laws. Do not paste a law, a story, or a page. If all seven cards are present, leave them and move on."
+    },
+    {
+      "id": "scripture",
+      "title": "Scripture",
+      "target": 20,
+      "task": "Fill the scripture shelf the way a great religious library is broad. Name the book and the tradition. Include the Hebrew Bible, the Christian Bible, the Quran, the Book of Enoch, and other real canons and collections. Do not paste chapters."
+    },
+    {
+      "id": "metaphysical",
+      "title": "Metaphysical and ancient gods",
+      "target": 22,
+      "task": "Fill the metaphysical shelf with real Hermetic, Kabbalistic, and ancient theological books, plus works outside those canons. Label any Atlantis book that is not Plato as a later claim. Edgar Cayce stays a card for the readings, not a dump of them."
+    }
+  ]
+}

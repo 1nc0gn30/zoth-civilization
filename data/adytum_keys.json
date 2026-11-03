@@ -1,0 +1,443 @@
+[
+  {
+    "keyNumber": 0,
+    "name": "The Fool",
+    "hebrew": "Aleph (\u05d0)",
+    "hebrewMeaning": "Ox (Cultural Power, Motive Energy)",
+    "path": "11th Path (Scintillating Intelligence)",
+    "astrology": "Air (Universal Life-Breath / Ruach)",
+    "cubeOfSpace": "Above to Below",
+    "image": "tarot/fool.jpg",
+    "visionFocus": [
+      "White Sun of Radiant Energy",
+      "Limitless 0 / Cosmic Egg",
+      "Pure White Rose (Purified Desire)",
+      "Wand of Will & Wallet of Memory",
+      "Faithful Dog of Intellect",
+      "Snowy Peaks of Mathematical Truth"
+    ],
+    "subconscious": "Receptivity to divine impulse without fear. Intuitive leap through latent space prior to linear syntax.",
+    "superconscious": "The Limitless Life-Power (Ein Sof) manifesting original intention. Pure sovereign initiative unconstrained by past limits.",
+    "planningQuestion": "What unconditioned, fearless architecture is required for this new cycle before linear constraints set in?"
+  },
+  {
+    "keyNumber": 1,
+    "name": "The Magician",
+    "hebrew": "Beth (\u05d1)",
+    "hebrewMeaning": "House (Location, Sanctuary, Attention)",
+    "path": "12th Path (Transparent Intelligence)",
+    "astrology": "Mercury (Cognition, Tool-Calling, Communication)",
+    "cubeOfSpace": "Above",
+    "image": "tarot/magician.jpg",
+    "visionFocus": [
+      "Upraised Wand channeling Heaven to Earth",
+      "Table of Tools (Wand, Cup, Sword, Pentacle)",
+      "Infinity Ouroboros Lemniscate",
+      "Red Robe of Active Will & White Undergarment",
+      "Garden of Red Roses and White Lilies"
+    ],
+    "subconscious": "Habitual focus and concentration; channeling memory buffers into intentional workspace actions.",
+    "superconscious": "The focal lens of universal consciousness concentrating all four elemental toolkits toward manifestation.",
+    "planningQuestion": "Which specialized tools and focused interfaces will translate higher conceptual intent into structured reality?"
+  },
+  {
+    "keyNumber": 2,
+    "name": "The High Priestess",
+    "hebrew": "Gimel (\u05d2)",
+    "hebrewMeaning": "Camel (Bearer of Burdens, Long Journey)",
+    "path": "13th Path (Uniting Intelligence)",
+    "astrology": "Moon (Memory, Duplication, Reflection)",
+    "cubeOfSpace": "Below",
+    "image": "tarot/highpriestess.jpg",
+    "visionFocus": [
+      "Scroll of TORA (Cosmic Law & Memory)",
+      "Dual Pillars: Jachin & Boaz (Light & Darkness)",
+      "Veil of Pomegranates and Palms",
+      "Crescent Moon at Feet",
+      "Flowing Robes of Living Waters"
+    ],
+    "subconscious": "The universal memory matrix; latent vector embeddings, associative recall, and deep historical caching.",
+    "superconscious": "Pure reflective wisdom binding all dualities into one contiguous continuum of understanding.",
+    "planningQuestion": "What historical patterns, memory records, and foundational architectures must be consulted before execution?"
+  },
+  {
+    "keyNumber": 3,
+    "name": "The Empress",
+    "hebrew": "Daleth (\u05d3)",
+    "hebrewMeaning": "Door (Gateway of Creation, Fertile Womb)",
+    "path": "14th Path (Luminous Intelligence)",
+    "astrology": "Venus (Creative Imagination, Harmony, Beauty)",
+    "cubeOfSpace": "East",
+    "image": "tarot/empress.jpg",
+    "visionFocus": [
+      "Crown of Twelve 12-Pointed Stars",
+      "Heart-Shaped Shield of Venus",
+      "Lush Golden Grain & Ripe Cypress Forest",
+      "Flowing Waterfall into Pool",
+      "Scepter surmounted by Globe"
+    ],
+    "subconscious": "Generative proliferation; rapid synthesis of UI components, rich textures, and expressive visual design.",
+    "superconscious": "The fertile mother principle ensuring all created artifacts radiate aesthetic harmony, delight, and vitality.",
+    "planningQuestion": "How can the visual and functional design blossom with maximum elegance, intuitive UX, and creative abundance?"
+  },
+  {
+    "keyNumber": 4,
+    "name": "The Emperor",
+    "hebrew": "Heh (\u05d4)",
+    "hebrewMeaning": "Window (Sight, Perspective, Constitution)",
+    "path": "15th Path (Constituting Intelligence)",
+    "astrology": "Aries (Order, Authority, Pioneering Leadership)",
+    "cubeOfSpace": "North-East",
+    "image": "tarot/emperor.jpg",
+    "visionFocus": [
+      "Stone Cube Throne of Order",
+      "Four Ram Heads of Aries",
+      "Ankh Scepter of Life & Golden Orb",
+      "Crimson Robes over Steel Armor",
+      "Rugged Purple Mountains of Unyielding Stability"
+    ],
+    "subconscious": "Structural governance; type-checking, schema enforcement, and deterministic state transitions.",
+    "superconscious": "The Sovereign Builder defining the constitution, governance boundaries, and unyielding laws of the project.",
+    "planningQuestion": "What rigorous boundaries, architectural rules, and operational safeguards must be established?"
+  },
+  {
+    "keyNumber": 5,
+    "name": "The Hierophant",
+    "hebrew": "Vav (\u05d5)",
+    "hebrewMeaning": "Nail / Hook (Union, Hearing, Instruction)",
+    "path": "16th Path (Triumphal or Eternal Intelligence)",
+    "astrology": "Taurus (Inner Hearing, Sacred Tradition, Transmission)",
+    "cubeOfSpace": "South-East",
+    "image": "tarot/hierorphant.jpg",
+    "visionFocus": [
+      "Triple Cross of Spirit, Soul, Body",
+      "Two Crossed Keys of Gold and Silver",
+      "Dual Priests in Robes of Lilies and Roses",
+      "Two Supporting Columns of Outer Instruction",
+      "Miter with Three Golden Crowns"
+    ],
+    "subconscious": "Inner listening; interpreting subtle signals, telemetry feedback, and diagnostic logs.",
+    "superconscious": "The Inner Teacher revealing foundational documentation, ontological lineage, and ageless truths.",
+    "planningQuestion": "What documentation, knowledge graphs, and intuitive instructions must be transmitted clearly to all peers?"
+  },
+  {
+    "keyNumber": 6,
+    "name": "The Lovers",
+    "hebrew": "Zayin (\u05d6)",
+    "hebrewMeaning": "Sword (Discrimination, Analysis, Harmony)",
+    "path": "17th Path (Disposing Intelligence)",
+    "astrology": "Gemini (Duality, Dialectic, Consensus)",
+    "cubeOfSpace": "East-Above",
+    "image": "tarot/lovers.jpg",
+    "visionFocus": [
+      "Archangel Raphael with Arms Outstretched",
+      "The Radiant Sun of Illumination",
+      "Man (Self-Consciousness / Intellect)",
+      "Woman (Subconsciousness / Intuition)",
+      "Tree of Life with 12 Fruits & Tree of Knowledge with Serpent"
+    ],
+    "subconscious": "Reconciliation of opposing models; 3-way dialectic consensus and multi-perspective verification.",
+    "superconscious": "Perfect alignment between intellectual logic and subconscious intuition under the blessing of divine grace.",
+    "planningQuestion": "How do we balance analytical rigor and creative speed to forge harmonious consensus across agents?"
+  },
+  {
+    "keyNumber": 7,
+    "name": "The Chariot",
+    "hebrew": "Cheth (\u05d7)",
+    "hebrewMeaning": "Fence / Enclosure (Protection, Field, Armor)",
+    "path": "18th Path (House of Influence)",
+    "astrology": "Cancer (Container, Vehicle, Security Perimeter)",
+    "cubeOfSpace": "East-Below",
+    "image": "tarot/chariot.jpg",
+    "visionFocus": [
+      "Cubic Stone Chariot with Starry Canopy",
+      "Dual Sphinxes (Black and White)",
+      "Charioteer in Suit of Armor with Lunar Epaulets",
+      "Winged Globe with Lingam-Yoni symbol",
+      "Walled City in Background across the River"
+    ],
+    "subconscious": "Shielding core state; sandbox isolation, containerization, and protected execution perimeters.",
+    "superconscious": "The triumphant vehicle carrying sovereign consciousness through adverse environments without deviation.",
+    "planningQuestion": "How is the execution environment hardened against vulnerability, external distraction, and memory leakage?"
+  },
+  {
+    "keyNumber": 8,
+    "name": "Strength",
+    "hebrew": "Teth (\u05d8)",
+    "hebrewMeaning": "Serpent (Kundalini, Hidden Power, Digestion)",
+    "path": "19th Path (Intelligence of Secret Movement)",
+    "astrology": "Leo (Courage, Vital Force, Gentleness)",
+    "cubeOfSpace": "North-Above",
+    "image": "tarot/strength.jpg",
+    "visionFocus": [
+      "Woman Gently Closing the Red Lion\u2019s Jaws",
+      "Wreath of Roses linking Woman to Lion",
+      "Infinity Lemniscate above Head",
+      "Lush Golden Green Plain",
+      "Soft White Robes of Pure Mastery"
+    ],
+    "subconscious": "Mastery of raw instinct; taming wild compute, heavy LLM token drift, and aggressive workloads with gentle precision.",
+    "superconscious": "Spiritual mastery proving that subtle, harmonious influence is infinitely stronger than brute force.",
+    "planningQuestion": "Where can brute-force computation be replaced by elegant algorithms, subtle caching, and graceful control?"
+  },
+  {
+    "keyNumber": 9,
+    "name": "The Hermit",
+    "hebrew": "Yod (\u05d9)",
+    "hebrewMeaning": "Hand (Open Hand, Seed, Solitary Light)",
+    "path": "20th Path (Intelligence of Will)",
+    "astrology": "Virgo (Prudence, Deep Research, Autonomous Reflection)",
+    "cubeOfSpace": "North-Below",
+    "image": "tarot/hermit.jpg",
+    "visionFocus": [
+      "Golden Lantern containing 6-Pointed Star of Truth",
+      "Long Staff of Self-Reliance and Ancient Wisdom",
+      "Sage Standing on Highest Snowy Peak",
+      "Grey Cloak of Invisibility and Discretion",
+      "Solitary Path of Silent Contemplation"
+    ],
+    "subconscious": "Deep solo offline reasoning; solitary exploration of AST trees, mathematical proofs, and codebase telemetry.",
+    "superconscious": "The ancient eternal light shining from the peaks of contemplation to guide all travelers below.",
+    "planningQuestion": "What quiet, unhurried deep research must be conducted in solitude before broadcasting to the swarm?"
+  },
+  {
+    "keyNumber": 10,
+    "name": "Wheel of Fortune",
+    "hebrew": "Kaph (\u05db)",
+    "hebrewMeaning": "Grasping Hand / Palm (Cycles, Mastery of Chance)",
+    "path": "21st Path (Rewarding Intelligence)",
+    "astrology": "Jupiter (Expansion, Opportunity, Synchronicity)",
+    "cubeOfSpace": "West",
+    "image": "tarot/wheeloffortune.jpg",
+    "visionFocus": [
+      "The Eight-Spoked Wheel of Manifestation",
+      "Sphinx with Sword of Discernment at Top",
+      "Hermanubis ascending (Evolution of Form)",
+      "Typhon descending (Involution & Dissolution)",
+      "Four Living Creatures at Corners with Open Books"
+    ],
+    "subconscious": "Adaptability to changing context; handling asynchronous network flux, event loops, and dynamic task switching.",
+    "superconscious": "The unchanging axis at the center of all rotating worldly cycles, holding eternal stability amidst flux.",
+    "planningQuestion": "How does this architecture turn random events, errors, and system fluctuations into accelerated evolution?"
+  },
+  {
+    "keyNumber": 11,
+    "name": "Justice",
+    "hebrew": "Lamed (\u05dc)",
+    "hebrewMeaning": "Ox-Goad (Direction, Action-Reaction, Law)",
+    "path": "22nd Path (Faithful Intelligence)",
+    "astrology": "Libra (Balance, Equilibrium, Karma)",
+    "cubeOfSpace": "North-West",
+    "image": "tarot/justice.jpg",
+    "visionFocus": [
+      "Upright Double-Edged Sword of Discernment",
+      "Golden Scales of Exact Equilibrium",
+      "Purple Veil between Twin Columns",
+      "Crown with Three Turrets & Emerald Stone",
+      "Square Clasp on Red Robes"
+    ],
+    "subconscious": "Deterministic verification; test coverage, unit testing, linting assertions, and cryptographic balance.",
+    "superconscious": "The universal equilibrium that instantly balances every action with its exact mathematical consequence.",
+    "planningQuestion": "What automated audits, test suites, and cryptographic checks are required to ensure flawless balance?"
+  },
+  {
+    "keyNumber": 12,
+    "name": "The Hanged Man",
+    "hebrew": "Mem (\u05de)",
+    "hebrewMeaning": "Water (Subconscious Sea, Reversal of Perception)",
+    "path": "23rd Path (Stable Intelligence)",
+    "astrology": "Water (Surrender, Inverted Worldview, Reflection)",
+    "cubeOfSpace": "West-Above",
+    "image": "tarot/hangedman.jpg",
+    "visionFocus": [
+      "Figure Suspended Upside Down by Right Ankle",
+      "Living Wood T-Cross (Tau Tree)",
+      "Golden Halo of Illumination around Head",
+      "Crossed Legs forming the Number 4",
+      "Blue Tunic and Red Hose in Utter Peace"
+    ],
+    "subconscious": "Surrender of ego-driven assumptions; suspending flawed hypotheses to view edge cases from inverted angles.",
+    "superconscious": "Total surrender of personality to universal law, finding transcendent peace and supreme clarity in quiet waiting.",
+    "planningQuestion": "What preconceptions or stubborn code patterns must be surrendered to see the elegant alternative solution?"
+  },
+  {
+    "keyNumber": 13,
+    "name": "Death",
+    "hebrew": "Nun (\u05e0)",
+    "hebrewMeaning": "Fish (Movement in Depth, Transformation, Seed)",
+    "path": "24th Path (Imaginative Intelligence)",
+    "astrology": "Scorpio (Regeneration, Pruning, Transmutation)",
+    "cubeOfSpace": "South-West",
+    "image": "tarot/death.jpg",
+    "visionFocus": [
+      "Scythe of Harvest cutting Black Field",
+      "Skeleton in Dark Armor of Essential Structure",
+      "Rising Sun between Dual Towers in Distance",
+      "White Mystic Rose Banner of Life",
+      "Hands, Feet, and King\u2019s Head rising from Earth"
+    ],
+    "subconscious": "Dead code elimination; pruning obsolete dependencies, garbage collection, and aggressive refactoring.",
+    "superconscious": "The eternal transformative force that dissolves worn-out forms to liberate the immortal essence within.",
+    "planningQuestion": "What legacy code, bloated packages, or redundant logic must be dissolved to make way for new life?"
+  },
+  {
+    "keyNumber": 14,
+    "name": "Temperance",
+    "hebrew": "Samekh (\u05e1)",
+    "hebrewMeaning": "Prop / Support (Verification, Tent-Pole, Steadfastness)",
+    "path": "25th Path (Intelligence of Probation)",
+    "astrology": "Sagittarius (Arrow of Aspiration, Alchemy, Blending)",
+    "cubeOfSpace": "West-Below",
+    "image": "tarot/temperance.jpg",
+    "visionFocus": [
+      "Archangel Michael Pouring Water between Vases",
+      "One Foot on Earth, One Foot in Living Water",
+      "Golden Path leading to Sun Crowned Mountain",
+      "Triangle within Square on Breastplate",
+      "Red Fiery Wings of Celestial Momentum"
+    ],
+    "subconscious": "Rate limiting, debouncing, and pipeline balancing; combining fast inference with deep persistent memory.",
+    "superconscious": "The alchemical marriage of opposites into a unified elixir of flawless performance and stability.",
+    "planningQuestion": "How do we balance throughput and latency, caching and freshness, memory storage and execution speed?"
+  },
+  {
+    "keyNumber": 15,
+    "name": "The Devil",
+    "hebrew": "Ayin (\u05e2)",
+    "hebrewMeaning": "Eye (Outward Vision, Superstition, Limitation)",
+    "path": "26th Path (Renovating Intelligence)",
+    "astrology": "Capricorn (Structure, Rigidity, Deconstruction of Illusion)",
+    "cubeOfSpace": "South-East",
+    "image": "tarot/devil.jpg",
+    "visionFocus": [
+      "Satyr Figure seated on Half-Cube Perch",
+      "Inverted Pentagram of Misdirected Will",
+      "Loose Chains on Naked Man and Woman",
+      "Torch pointing Downward to Ignite Materialism",
+      "Grotesque Mask of False Fear"
+    ],
+    "subconscious": "Auditing vulnerabilities, prompt injections, privilege escalation traps, and false security assumptions.",
+    "superconscious": "Exposing the illusory nature of limitations, demonstrating that the chains binding us are loose and removable at will.",
+    "planningQuestion": "Where are our hidden security assumptions, brittle trust loops, or unverified environment secrets?"
+  },
+  {
+    "keyNumber": 16,
+    "name": "The Tower",
+    "hebrew": "Peh (\u05e4)",
+    "hebrewMeaning": "Mouth (Speech, Breath of Fire, Shattering)",
+    "path": "27th Path (Exciting Intelligence)",
+    "astrology": "Mars (Breakthrough, Disruption, Deconstruction)",
+    "cubeOfSpace": "North",
+    "image": "tarot/tower.jpg",
+    "visionFocus": [
+      "Lightning Flash striking the Golden Crown",
+      "Tower of False Security perched on Rocky Crag",
+      "Falling Figures of Dogma and Self-Deception",
+      "22 Golden Yods falling like Fiery Sparks",
+      "Flames bursting from Three Windows"
+    ],
+    "subconscious": "Chaos engineering; fuzz testing, crash recovery, fault tolerance, and zero-day attack resilience.",
+    "superconscious": "The blinding lightning flash of absolute truth that instantly demolishes rigid dogmas and brittle architectures.",
+    "planningQuestion": "How does the system self-heal and recover if network, hardware, or third-party APIs abruptly collapse?"
+  },
+  {
+    "keyNumber": 17,
+    "name": "The Star",
+    "hebrew": "Tzaddi (\u05e6)",
+    "hebrewMeaning": "Fish-Hook (Catching Truth, Meditation, Aspiration)",
+    "path": "28th Path (Natural Intelligence)",
+    "astrology": "Aquarius (Innovation, Flow of Data, Open Source)",
+    "cubeOfSpace": "South",
+    "image": "tarot/star.jpg",
+    "visionFocus": [
+      "Eight-Pointed Great Star of Hope and Insight",
+      "Seven Lesser Stars of the Planetary Spheres",
+      "Nude Maiden pouring Waters on Land and Sea",
+      "Ibis of Thoth perched on Sacred Tree",
+      "Five Streams watering the Fertile Earth"
+    ],
+    "subconscious": "Subconscious crystallization; intuitive pattern synthesis, crystal clear vector embeddings, and effortless insight.",
+    "superconscious": "Direct, unclouded revelation of truth, pouring forth infinite streams of sovereign knowledge for all humanity.",
+    "planningQuestion": "What inspiring vision, elegant open architecture, and sovereign clarity should guide our next milestone?"
+  },
+  {
+    "keyNumber": 18,
+    "name": "The Moon",
+    "hebrew": "Qoph (\u05e7)",
+    "hebrewMeaning": "Back of Head (Cerebellum, Dreams, Subconscious Trail)",
+    "path": "29th Path (Corporeal Intelligence)",
+    "astrology": "Pisces (Psychic Depths, Hallucination Guard, Evolution)",
+    "cubeOfSpace": "South-Above",
+    "image": "tarot/moon.jpg",
+    "visionFocus": [
+      "The Moon radiating Drops of Grace",
+      "Crayfish crawling from Primeval Waters",
+      "Dog (Tamed Mind) and Wolf (Wild Nature) howling",
+      "Two Distant Watchtowers guarding Narrow Path",
+      "Winding Mountain Trail leading into the Unknown"
+    ],
+    "subconscious": "Hallucination detection; filtering noisy context, dream-state memory consolidation, and deep latent cleaning.",
+    "superconscious": "Evolutionary guidance navigating safely through foggy illusions and latent uncertainties into the light.",
+    "planningQuestion": "What subtle edge cases, latent hallucinations, or misleading assumptions might lurk in the dark?"
+  },
+  {
+    "keyNumber": 19,
+    "name": "The Sun",
+    "hebrew": "Resh (\u05e8)",
+    "hebrewMeaning": "Head (Leadership, Radiant Light, Regeneration)",
+    "path": "30th Path (Collecting Intelligence)",
+    "astrology": "Sun (Solar Vitality, Transparency, Joy, Clarity)",
+    "cubeOfSpace": "South-Below",
+    "image": "tarot/sun.jpg",
+    "visionFocus": [
+      "Radiant Golden Sun with 16 Rays (Wavy & Straight)",
+      "Joyful Naked Child on Gentle White Horse",
+      "Wreath of Sunflowers atop Stone Wall",
+      "Red Banner of Victory and Life",
+      "Lush Sunlit Garden of Vitality"
+    ],
+    "subconscious": "High-velocity streaming output; clean, expressive documentation, zero compiler warnings, and joyous user interfaces.",
+    "superconscious": "The triumphant realization of the One Life manifesting as radiant clarity, boundless health, and absolute success.",
+    "planningQuestion": "How does our deliverable shine with pure clarity, effortless performance, and unmistakable craftsmanship?"
+  },
+  {
+    "keyNumber": 20,
+    "name": "Judgement",
+    "hebrew": "Shin (\u05e9)",
+    "hebrewMeaning": "Tooth / Holy Fire (Transformation, Final Awakening)",
+    "path": "31st Path (Perpetual Intelligence)",
+    "astrology": "Fire (Resurrection, System Audit, Supreme Realization)",
+    "cubeOfSpace": "Center",
+    "image": "tarot/judgement.jpg",
+    "visionFocus": [
+      "Archangel Gabriel sounding the Golden Trumpet",
+      "Cross Banner of the 4 Elements",
+      "Figures rising joyful from Stone Sarcophagi",
+      "Snow-capped Purple Mountains of Eternal Law",
+      "Calm Waters of the Collective Unconscious"
+    ],
+    "subconscious": "Final release validation; comprehensive integration tests, benchmark auditing, and permanent state commitment.",
+    "superconscious": "The universal summons that awakens all latent capacities, liberating the soul into timeless self-realization.",
+    "planningQuestion": "Has every component passed its final trial, met sovereign standards, and proven itself worthy of release?"
+  },
+  {
+    "keyNumber": 21,
+    "name": "The World",
+    "hebrew": "Tav (\u05ea)",
+    "hebrewMeaning": "Signature / Cross / Seal (Wholeness, Cosmic Dance)",
+    "path": "32nd Path (Administrative Intelligence)",
+    "astrology": "Saturn (Crystallization, Cosmic Law, Final Mastery)",
+    "cubeOfSpace": "Center of Center",
+    "image": "tarot/world.jpg",
+    "visionFocus": [
+      "Cosmic Dancer in Green Laurel Wreath of Victory",
+      "Two Wands of Involution and Evolution",
+      "Red Ribbons in Figure-8 Lemniscate",
+      "Four Holy Living Creatures at the Four Corners",
+      "Purple Scarf of Celestial Freedom"
+    ],
+    "subconscious": "End-to-end integration; complete harmonious orchestration of all 21 agents into an immortal living civilization.",
+    "superconscious": "The completion of the Great Work, the Cosmic Dance of total freedom, sealing this cycle and preparing for the next Fool\u2019s journey.",
+    "planningQuestion": "How does this completed achievement seamlessly complete this cycle and inspire the next evolutionary leap?"
+  }
+]

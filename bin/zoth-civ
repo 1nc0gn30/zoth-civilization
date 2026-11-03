@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+# ZothOS Desktop (Electron) & Braille TUI Interceptor
+import os as _z_os, sys as _z_sys, shutil as _z_sh, subprocess as _z_sp
+if '--electron' in _z_sys.argv[1:] or (_z_sys.argv[1:] and _z_sys.argv[1] in ('desktop', 'electron')):
+    _z_rem = [a for a in _z_sys.argv[1:] if a not in ('--electron', 'desktop', 'electron')]
+    _z_rdir = _z_os.path.expanduser('~/NullAITech/zoth-civilization')
+    _z_el = _z_sh.which('electron') or '/usr/local/bin/electron'
+    _z_sys.exit(_z_sp.run([_z_el, _z_os.path.join(_z_rdir, 'electron', 'main.cjs')] + _z_rem, cwd=_z_rdir).returncode)
+if '--tui' in _z_sys.argv[1:] or (_z_sys.argv[1:] and _z_sys.argv[1] == 'tui'):
+    _z_rem = [a for a in _z_sys.argv[1:] if a not in ('--tui', 'tui')]
+    _z_sys.exit(_z_sp.run(['/usr/local/bin/zoth-civilization-tui'] + _z_rem).returncode)
+import sys, os, json, subprocess, argparse, urllib.request, urllib.error
+
+TOOL_ID = 'zoth-civilization'
+TOOL_REPO = 'zoth-civilization'
+TOOL_NAME = 'Zoth Civilization Hub'
+TOOL_DESC = 'The living heart of the 21-agent society. Runs the GameBoy pixel world simulation, Adytum Initiation Deck, and meditation art catalog.'
+TOOL_VERSION = '2.5.0'
+TOOL_CATEGORY = 'Swarm & Core'
+TOOL_PORT = 9393
+REPO_DIR = os.path.expanduser('~/NullAITech/zoth-civilization')
+SERVER_JS = os.path.expanduser('~/NullAITech/zoth-civilization/server.js')
+STUDIO_URL = f"http://127.0.0.1:3000/tools/{TOOL_ID}"
+LOCAL_PORT_URL = f"http://127.0.0.1:{TOOL_PORT}"
+
+def query_status():
+    try:
+        req = urllib.request.Request(f"{LOCAL_PORT_URL}/api/status", headers={'User-Agent': 'ZothOS-CLI'})
+        with urllib.request.urlopen(req, timeout=3.5) as r:
+            return json.loads(r.read().decode('utf-8'))
+    except Exception as e:
+        return {"error": str(e)}
+
+def query_reflections():
+    try:
+        req = urllib.request.Request(f"{LOCAL_PORT_URL}/api/reflections", headers={'User-Agent': 'ZothOS-CLI'})
+        with urllib.request.urlopen(req, timeout=3.5) as r:
+            return json.loads(r.read().decode('utf-8'))
+    except Exception as e:
+        return {"error": str(e)}
+
+def main():
+    args = sys.argv[1:]
+
+    parser = argparse.ArgumentParser(
+        prog=TOOL_ID,
+        description=f"{TOOL_NAME} (v{TOOL_VERSION}) — {TOOL_DESC}"
+    )
+    parser.add_argument('--version', action='version', version=f"{TOOL_ID} v{TOOL_VERSION}")
+    parser.add_argument('--status', action='store_true', help='Check local ZothOS installation & daemon status')
+    parser.add_argument('--json', action='store_true', help='Output deterministic JSON telemetry')
+    parser.add_argument('--ui', action='store_true', help='Print local ZothOS workbench URL')
+
+    subparsers = parser.add_subparsers(dest='subcommand', help='Subcommands')
+    subparsers.add_parser('status', help='Query live simulation status, day, ticks, and cycles')
+    subparsers.add_parser('reflections', help='List recent Pantheon agent mental reflections')
+
+    serve_p = subparsers.add_parser('serve', help='Run Zoth Civilization Node daemon')
+    serve_p.add_argument('--port', type=int, default=TOOL_PORT, help='Port to bind')
+
+    parsed, unknown = parser.parse_known_args(args)
+
+    if parsed.subcommand == 'serve':
+        env = os.environ.copy()
+        env['PORT'] = str(parsed.port or TOOL_PORT)
+        env['ENABLE_KOKORO_VOICE'] = '0'
+        cmd = ['node', SERVER_JS]
+        print(f"✦ Starting {TOOL_NAME} on http://127.0.0.1:{env['PORT']} ...")
+        proc = subprocess.run(cmd, cwd=REPO_DIR, env=env)
+        sys.exit(proc.returncode)
+
+    if parsed.subcommand == 'reflections':
+        refl = query_reflections()
+        print(json.dumps(refl, indent=2))
+        sys.exit(0)
+
+    raw_status = query_status()
+    st = raw_status.get('state', {})
+    is_online = raw_status.get('error') is None
+
+    if parsed.subcommand == 'status':
+        summary = {
+            "online": is_online,
+            "day": st.get("day"),
+            "hour": st.get("hour"),
+            "totalTicks": st.get("totalTicks"),
+            "completedAdytumCycles": st.get("completedAdytumCycles"),
+            "agents_count": 21,
+            "treasury_goal": 100000,
+            "active": st.get("active", False)
+        }
+        print(f"✦ {TOOL_NAME} Simulation Telemetry:")
+        print(json.dumps(summary, indent=2))
+        sys.exit(0)
+
+    info = {
+        "id": TOOL_ID,
+        "repo": TOOL_REPO,
+        "name": TOOL_NAME,
+        "version": TOOL_VERSION,
+        "category": TOOL_CATEGORY,
+        "installed": os.path.exists(REPO_DIR),
+        "repo_path": REPO_DIR,
+        "studio_workbench_url": STUDIO_URL,
+        "local_endpoint": LOCAL_PORT_URL,
+        "daemon_active": is_online,
+        "simulation": {
+            "day": st.get("day", 1),
+            "hour": st.get("hour", 0),
+            "ticks": st.get("totalTicks", 0),
+            "adytum_cycles": st.get("completedAdytumCycles", 0),
+            "agents_count": 21
+        },
+        "license": "100% Free & Open Access (Zero Paywalls)",
+        "support": {
+            "stripe_buy_coffee": "https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X",
+            "solana_wallet": "GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK"
+        },
+        "status": "READY"
+    }
+
+    if parsed.json:
+        print(json.dumps(info, indent=2))
+        return
+
+    print(f"✦ {TOOL_NAME} (v{TOOL_VERSION}) — [{TOOL_CATEGORY}]")
+    print(f"  Repository : {REPO_DIR}")
+    print(f"  Workbench  : {STUDIO_URL}")
+    print(f"  Local Port : {LOCAL_PORT_URL}")
+    print(f"  Daemon     : {'ONLINE (Live)' if is_online else 'OFFLINE'}")
+    if is_online:
+        print(f"  Simulation : Day {st.get('day')} (Hour {st.get('hour')}) | Ticks: {st.get('totalTicks'):,} | Cycles: {st.get('completedAdytumCycles')}")
+    print(f"  Access     : 100% Free & Open Access (☕ https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X | ◎ GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK)")
+
+if __name__ == '__main__':
+    main()
