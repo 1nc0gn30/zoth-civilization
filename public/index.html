@@ -2274,6 +2274,22 @@
   <script src="living_minds.js"></script>
   <script src="hud_controller.js"></script>
   <script src="monetization_funnel.js"></script>
-  <script src="/assets/sovereign-upgrade.js" defer></script>
+  
+
+  <script src="/sovereign_tutorial.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      if (window.createSovereignTutorial) {
+        window.createSovereignTutorial({
+          toolId: "zoth-civilization",
+          toolName: "Zoth Civilization Hub",
+          tagline: "Dynamic multi-agent economy and simulated autonomous civilization engine!",
+          accentColor: "#D4AF37",
+          steps: [{"icon": "\ud83c\udfdb\ufe0f", "title": "Simulate an AI Society", "desc": "Watch autonomous AI agents trade resources, cast votes, build alliances, and solve problems together."}, {"icon": "\ud83e\uddec", "title": "Genetic Memory Evolution", "desc": "Agents remember their history and adapt their strategies over generations using STDP neuro-memory."}, {"icon": "\ud83c\udfae", "title": "You are the Architect", "desc": "Introduce new laws, resources, or challenges and watch how the agent civilization reacts in real time."}]
+        });
+      }
+    });
+  </script>
+
 </body>
 </html>
