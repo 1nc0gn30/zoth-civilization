@@ -3,7 +3,7 @@
  * =======================================================================================
  * Complete multi-phase interactive game intro + polite signed-out AI notification bar:
  * - Highlights the lightweight, ultra-efficient path: DeepSeek Flash via Hermes Agent (Nous Research)
- * - Supports 8 gateways & 48+ models with 100% browser-local key storage (zero server telemetry)
+ * - Supports 8 gateways & 56+ curated models with 100% browser-local key storage (zero server telemetry)
  * - Renders a polite, non-blocking top status banner + header pill when user is not signed in
  *
  * Author: 1nc0gn30 (@1nc0gn30) • NullAI Platform

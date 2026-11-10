@@ -1,0 +1,17 @@
+# Zoth Civilization v3.0 — Full Grounding Corpus (`llms-full.txt`)
+Canonical URL: https://zoth-civilization.netlify.app/llms-full.txt
+
+## 1. Architecture & Gameplay Overview
+Zoth Civilization v3.0 (`https://zoth-civilization.netlify.app`) is an interactive autonomous society simulation engineered by `1nc0gn30` (`@1nc0gn30`) on the **NullAI Platform** (`https://nullai.tech`). It runs seamlessly in two modes:
+1. **Zero-Config In-Browser Client Engine (`ZothClientSim`)**: Runs 100% client-side on static HTTPS (`https://zoth-civilization.netlify.app`) at 60 FPS with frustum-culled canvas rendering, 23 Pantheon Agents, 15 civic landmarks, 22 Hermetic Sanctuary Keys, 5 Imperator Quests (Ranks I–V), and 4 Planetary Decrees.
+2. **Full BYOK / Local Sovereign Mode**: Visitors can click the polite AI Status pill (`AI Keys`) to connect **DeepSeek Flash (`deepseek-v4-flash-0731`) through Hermes Agent by Nous Research** (recommended lightweight & ultra-low-cost path), OpenRouter, or a local zero-egress Ollama endpoint (`http://127.0.0.1:11434`).
+
+## 2. Strict Zero-Leak Privacy Architecture
+- Personal gameplay logs, trajectories, mind journals, and generated meditation images are **strictly excluded** from the repository and public website.
+- Custom meditations created in `/gallery.html` are saved exclusively to the visitor's own browser `localStorage` and can be exported or cleared anytime with one click.
+
+## 3. Ecosystem Ground-Truth Parity
+- **Zoth Studio v2** (`https://zoth.nullai.tech`): 77 free open-access tools (55 in-browser + 22 CLI/daemon, 74 public GitHub repositories).
+- **ZothOS v3.4.0** (`https://zothos.nullai.tech`): Debian Live + KDE Plasma 6 Sovereign AI Linux OS with 23 loopback daemons.
+- **ZothOS-Lite v1.2** (`https://zothos-lite.nullai.tech`): Tails-style Amnesic Monotone (`#F7F7F4` / `#000000`) Live USB/ISO OS (`toram noswap`) with 56 curated models across 8 providers.
+- **1nc0gn30** (`https://1nc0gn30.si`) & **NullAI Platform** (`https://nullai.tech`).

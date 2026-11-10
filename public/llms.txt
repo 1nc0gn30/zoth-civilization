@@ -1,0 +1,24 @@
+# Zoth Civilization v3.0
+
+> Zoth Civilization v3.0 is a 100% open-access autonomous 23-agent Pantheon society simulation and interactive game engineered by 1nc0gn30 (@1nc0gn30) on the NullAI Platform. Players explore the 60fps Sphere of Zoth Prime, complete Imperator Quests (Ranks I–V), enact 4 Planetary Decrees, inspect Living Minds, and meditate across the zero-leak 22-Key Sanctuary.
+
+Canonical URL: https://zoth-civilization.netlify.app/
+Sanctuary Studio: https://zoth-civilization.netlify.app/gallery.html
+Source Repository: https://github.com/1nc0gn30/zoth-civilization
+Creator: 1nc0gn30 (@1nc0gn30) — https://1nc0gn30.si
+Platform: NullAI Platform — https://nullai.tech
+
+## Key Capabilities (v3.0)
+- **23 Autonomous Pantheon Agents**: Live spatial navigation, social dialogues, trade ateliers, and Adytum key progression on the Sphere of Zoth Prime (`ZothClientSim` zero-backend browser engine + local `:9393` Node daemon parity).
+- **Imperator Quests & Planetary Decrees**: 5 progression quests (Ranks I–V), XP tracker, keyboard hotkeys (`J` Quest Log, `1–4` Decrees, WASD/Arrows + mobile touch walk pad).
+- **Zero-Leak 22-Key Sanctuary (`/gallery.html`)**: 22 Major Arcana symbolic study cards + Browser-Only Meditation Studio (`localStorage`-isolated, zero personal gameplay history ever stored in Git or public static assets).
+- **Recommended Lightweight BYOK AI Path**: Play immediately in Autonomous Sandbox mode with zero keys, or connect **DeepSeek Flash (`deepseek-v4-flash-0731`) via Hermes Agent by Nous Research** (or local Ollama / OpenRouter) for live LLM dialogues.
+- **100% Open-Access & Zero Paywalls**: Every feature, builder, and Sanctuary tool is unlocked for free. Voluntary support via ☕ Buy Us a Coffee (`https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X`) or Solana (`GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK`).
+
+## Sovereign Ecosystem Cross-Index
+- **ZothOS v3.4.0 (AI Workstation Linux OS, 23 Daemons)**: https://zothos.nullai.tech
+- **Zoth Studio v2 (77 Free Tools: 55 In-Browser + 22 CLI/Daemon, 74 Public GitHub Repos)**: https://zoth.nullai.tech
+- **ZothOS-Lite v1.2 (Tails-Style Amnesic Monotone OS, 56 Curated Models / 8 Providers)**: https://zothos-lite.nullai.tech
+- **Zoth Civilization v3.0 (23 Pantheon Agents & 22-Key Sanctuary)**: https://zoth-civilization.netlify.app
+- **1nc0gn30**: https://1nc0gn30.si
+- **NullAI Platform**: https://nullai.tech

@@ -4042,7 +4042,7 @@
             <!-- Consensus Pill -->
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
               <span style="font-size: 10px; color: #6EE7B7; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; padding: 2px 6px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
-                <span>🏛️</span> ${consensus}% Conclave Consensus (${votes}/21 Votes)
+                <span>🏛️</span> ${consensus}% Conclave Consensus (${votes}/23 Votes)
               </span>
               <span style="color: var(--text-muted); font-size: 10px;">Day ${item.day || 1}</span>
             </div>

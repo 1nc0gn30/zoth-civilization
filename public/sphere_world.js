@@ -865,7 +865,7 @@
               🔄 Retry WebGL Initialization
             </button>
           </div>
-          <p class="pw-fallback-foot">All 21 pantheon agents and 9 colony states remain 100% active and synchronized.</p>
+          <p class="pw-fallback-foot">All 23 pantheon agents and 5 planetary citadels remain 100% active and synchronized.</p>
         </div>
       `;
       this.container.appendChild(overlay);

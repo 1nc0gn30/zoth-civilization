@@ -274,7 +274,7 @@ ${JSON.stringify(schemaJson, null, 2)}
           solana_tipIntegrationId: SOLANA_TIP_INTEGRATION_ID
         },
         mcpServers: {
-          'zoth-netlify-ax': { url: 'https://civilization.nullai.tech/api/netlify-ax-mcp.json', mode: 'autonomous' },
+          'zoth-netlify-ax': { url: 'https://zoth.nullai.tech/api/netlify-ax-mcp.json', mode: 'autonomous' },
           'ghostbyte-envguard': { zeroLeakEnforced: true, cipher: 'AES-GCM-256-Argon2id' }
         }
       };

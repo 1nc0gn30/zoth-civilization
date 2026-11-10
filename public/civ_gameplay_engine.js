@@ -19,6 +19,88 @@
 
   const PLAYER_PROGRESS_KEY = 'zoth_civ_imperator_progress_v1';
   const CLIENT_WORLD_SAVE_KEY = 'zoth_civ_local_world_v1';
+  const CLIENT_WISHLIST_SAVE_KEY = 'zoth_civ_client_wishlist_v3';
+
+  const DEFAULT_REQUISITIONS = [
+    {
+      id: 'req-hermes-deepseek-router',
+      agentId: 'HERMES',
+      agentName: 'HERMES',
+      pet: '🦅',
+      cadre: 'SIGNAL & RELAY',
+      adytumKey: 1,
+      category: 'infrastructure',
+      status: 'PENDING_REVIEW',
+      day: 1,
+      consensusScore: 96,
+      conclaveVotes: { approved: 22 },
+      title: 'Nous Hermes × DeepSeek Flash Sub-Second Relay',
+      requestedItem: 'OpenRouter / DeepSeek Flash BYOK Session Bridge (0 Server Storage)',
+      estimatedCost: '$0.002 / 100 counsels (BYOK)',
+      urgency: 'HIGH',
+      personalReason: 'Allows visitors in Planetary Explorer mode to awaken live 23-agent dialogue directly from browser localStorage.',
+      treasuryImpact: 'Eliminates backend token overhead while unlocking live multi-agent Conclave debates.'
+    },
+    {
+      id: 'req-azoth-instanced-glyphs',
+      agentId: 'AZOTH',
+      agentName: 'AZOTH',
+      pet: '🐉',
+      cadre: 'PRIME ARCHITECT',
+      adytumKey: 0,
+      category: 'tool',
+      status: 'PENDING_REVIEW',
+      day: 1,
+      consensusScore: 95,
+      conclaveVotes: { approved: 21 },
+      title: '60 FPS Adaptive DPR & Citadel Beacon Pass',
+      requestedItem: 'WebGL Adaptive Pixel-Ratio Governor + Frustum Culling',
+      estimatedCost: '$0 (In-Browser Kernel)',
+      urgency: 'HIGH',
+      personalReason: 'Sustains crisp 60 FPS planetary traversal across mobile, tablet, and 4K desktop displays.',
+      treasuryImpact: 'Raises visitor retention across Zoth Prime and the 22-Key Sanctuary.'
+    },
+    {
+      id: 'req-athena-stoic-index',
+      agentId: 'ATHENA',
+      agentName: 'ATHENA',
+      pet: '🦉',
+      cadre: 'WISDOM & STRATEGY',
+      adytumKey: 2,
+      category: 'access',
+      status: 'APPROVED',
+      day: 1,
+      consensusScore: 93,
+      conclaveVotes: { approved: 21 },
+      title: 'Public-Domain Stoic & Hermetic Card Index',
+      requestedItem: 'seed/library_catalog.json Verified Citation Shelf',
+      estimatedCost: '$0 (Open Public Domain)',
+      urgency: 'NORMAL',
+      operatorResponse: 'Approved by 1nc0gn30 — all 4 canonical shelves indexed client-side.',
+      personalReason: 'Every Pantheon citizen anchors counsel in primary Stoic, Hermetic, and strategic canons without copying copyrighted pages.',
+      treasuryImpact: 'Strengthens AEO/citation authority across the 77-tool NullAI ecosystem.'
+    },
+    {
+      id: 'req-ghostbyte-sanctuary-guard',
+      agentId: 'GHOSTBYTE',
+      agentName: 'GHOSTBYTE',
+      pet: '🐈‍⬛',
+      cadre: 'SECURITY & ENCLAVE',
+      adytumKey: 18,
+      category: 'infrastructure',
+      status: 'FULFILLED',
+      day: 1,
+      consensusScore: 98,
+      conclaveVotes: { approved: 23 },
+      title: 'Zero-Leak Static Sandbox & History Isolation',
+      requestedItem: 'Strict Client-Side localStorage Partition + Clean Seed Graph',
+      estimatedCost: '$0 (Hardened Gate)',
+      urgency: 'CRITICAL',
+      operatorResponse: 'Fulfilled in v3.0 — zero personal history or API keys ever leave browser localStorage.',
+      personalReason: 'Guarantees every Imperator explores a pristine, private instance of Zoth Prime.',
+      treasuryImpact: 'Protects sovereign trust across zoth-civilization.netlify.app and GitHub.'
+    }
+  ];
 
   const RANKS = [
     { minXp: 0, title: 'Initiate Explorer', badge: 'I' },
@@ -138,6 +220,14 @@
       this.tarotKeys = [];
       this.library = {};
       this.recentMessages = [];
+      this.requisitionsList = DEFAULT_REQUISITIONS.map((item) => Object.assign({}, item));
+      try {
+        const rawReqs = localStorage.getItem(CLIENT_WISHLIST_SAVE_KEY);
+        const parsedReqs = rawReqs ? JSON.parse(rawReqs) : null;
+        if (Array.isArray(parsedReqs) && parsedReqs.length) {
+          this.requisitionsList = parsedReqs;
+        }
+      } catch (_e) {}
       this.state = {
         day: 1,
         hour: 8,
@@ -155,6 +245,11 @@
         subconsciousMemoryDensity: '22 canonical keys',
         currentRevenueUSD: 0,
         treasuryGoalUSD: 100000,
+        libraryRoad: {
+          active: true,
+          phase: 'stoic',
+          title: 'Stoics'
+        },
         currentDecree: {
           leaderId: 'AZOTH',
           leaderName: 'AZOTH',
@@ -188,7 +283,17 @@
 
         this.buildings = Array.isArray(bldSeed) ? bldSeed : [];
         this.tarotKeys = Array.isArray(keysSeed) ? keysSeed : [];
-        this.library = libSeed || {};
+        const rawLib = libSeed || {};
+        const libVolumes = Array.isArray(rawLib.volumes) ? rawLib.volumes : [];
+        const libSections = (Array.isArray(rawLib.sections) ? rawLib.sections : []).map((sec) => {
+          const count = libVolumes.filter((v) => v && v.section === sec.id).length;
+          const target = Math.max(count, sec.target || count);
+          return Object.assign({}, sec, { count, target });
+        });
+        this.library = Object.assign({}, rawLib, {
+          sections: libSections,
+          volumes: libVolumes
+        });
 
         // Restore player's private browser world state if present
         let saved = null;
@@ -290,6 +395,21 @@
       }
     }
 
+    persistWishlist() {
+      try {
+        localStorage.setItem(CLIENT_WISHLIST_SAVE_KEY, JSON.stringify(this.requisitionsList));
+      } catch (_e) {}
+    }
+
+    getRequisitionsPayload() {
+      const list = Array.isArray(this.requisitionsList) ? this.requisitionsList : [];
+      const pendingCount = list.filter((r) => r && r.status === 'PENDING_REVIEW').length;
+      return {
+        requisitions: list,
+        pendingCount
+      };
+    }
+
     buildSnapshot() {
       return {
         state: Object.assign({}, this.state),
@@ -298,7 +418,7 @@
         tarotKeys: this.tarotKeys,
         recentMessages: this.recentMessages,
         lineage: { generation: 2, subagents: [] },
-        requisitions: { items: [] }
+        requisitions: this.getRequisitionsPayload()
       };
     }
 
@@ -432,10 +552,126 @@
           }
 
           if (pathname === '/api/library') {
+            if (self._startPromise) await self._startPromise;
             return jsonResp(self.library);
           }
 
-          if (pathname === '/api/timeline' || pathname === '/api/requisitions') {
+          if (pathname === '/api/requisitions') {
+            if (self._startPromise) await self._startPromise;
+            return jsonResp(self.getRequisitionsPayload());
+          }
+
+          if (pathname === '/api/requisitions/action') {
+            if (self._startPromise) await self._startPromise;
+            let body = {};
+            try { body = init && init.body ? JSON.parse(init.body) : {}; } catch (_e) {}
+            const item = self.requisitionsList.find((r) => r.id === body.requisitionId);
+            if (!item) return jsonResp({ success: false, error: 'Petition not found' }, 404);
+            const act = String(body.action || '').toLowerCase();
+            if (act === 'approve') {
+              item.status = 'APPROVED';
+              item.operatorResponse = 'Approved by Imperator in local browser session.';
+            } else if (act === 'fund') {
+              item.status = 'FUNDED';
+              item.operatorResponse = 'Capital allocated by Imperator in local browser session.';
+            } else if (act === 'fulfill') {
+              item.status = 'FULFILLED';
+              item.operatorResponse = 'Verified and fulfilled on Zoth Prime.';
+            } else {
+              item.status = 'DEFERRED';
+              item.operatorResponse = 'Deferred for next Conclave cycle.';
+            }
+            self.persistWishlist();
+            if (typeof self.tickCallback === 'function') self.tickCallback(self.buildSnapshot());
+            return jsonResp(Object.assign({ success: true }, self.getRequisitionsPayload()));
+          }
+
+          if (pathname === '/api/wishlist/submit') {
+            if (self._startPromise) await self._startPromise;
+            let body = {};
+            try { body = init && init.body ? JSON.parse(init.body) : {}; } catch (_e) {}
+            const ag = self.agents.find((a) => a.id === body.agentId) || self.agents[0] || {
+              id: 'AZOTH', name: 'AZOTH', pet: '🐉', cadre: 'PRIME ARCHITECT', adytumKey: 0
+            };
+            const created = {
+              id: 'req-custom-' + Date.now(),
+              agentId: ag.id,
+              agentName: ag.name,
+              pet: ag.pet || '🐺',
+              cadre: ag.cadre || 'PANTHEON',
+              adytumKey: typeof ag.adytumKey === 'number' ? ag.adytumKey : 0,
+              category: body.category || 'tool',
+              status: 'PENDING_REVIEW',
+              day: self.state.day || 1,
+              consensusScore: 94,
+              conclaveVotes: { approved: 22 },
+              title: String(body.title || 'Sovereign Petition').slice(0, 120),
+              requestedItem: String(body.requestedItem || 'Sovereign Utility').slice(0, 140),
+              estimatedCost: String(body.estimatedCost || '$0 (Open)').slice(0, 60),
+              urgency: body.urgency || 'HIGH',
+              personalReason: String(body.personalReason || 'Submitted for Zoth Prime advancement.').slice(0, 260),
+              treasuryImpact: String(body.treasuryImpact || 'Advances planetary synthesis at 60 FPS.').slice(0, 220)
+            };
+            self.requisitionsList.unshift(created);
+            self.persistWishlist();
+            if (typeof self.tickCallback === 'function') self.tickCallback(self.buildSnapshot());
+            return jsonResp(Object.assign({ success: true, requisition: created }, self.getRequisitionsPayload()));
+          }
+
+          if (pathname === '/api/requisitions/generate') {
+            if (self._startPromise) await self._startPromise;
+            const pool = [
+              {
+                category: 'tool',
+                title: 'Hermes × DeepSeek Flash Conclave Synthesizer',
+                requestedItem: 'Multi-Agent Parallel Prompt Batcher (OpenRouter / Nous)',
+                estimatedCost: '$0.001 / Conclave',
+                urgency: 'HIGH',
+                personalReason: 'Compresses 23-agent Conclave deliberations into sub-second structured decrees.',
+                treasuryImpact: 'Cuts token spend by 90% while preserving full Pantheon personality depth.'
+              },
+              {
+                category: 'infrastructure',
+                title: 'Citadel Spatial Audio Harmonics',
+                requestedItem: 'Procedural WebAudio 432Hz/528Hz Chime Graph',
+                estimatedCost: '$0 (Pure WebAudio)',
+                urgency: 'NORMAL',
+                personalReason: 'Gives each of the 5 Planetary Citadels a distinct acoustic signature during surface walks.',
+                treasuryImpact: 'Deepens Sanctuary immersion with zero external audio asset weight.'
+              },
+              {
+                category: 'access',
+                title: 'Hermetic Corpus Cross-Reference Index',
+                requestedItem: 'Stoic ↔ 22-Key Archetype Concordance Map',
+                estimatedCost: '$0 (Client Seed)',
+                urgency: 'NORMAL',
+                personalReason: 'Links every Tarot Key contemplation directly to public-domain Stoic and Hermetic shelves.',
+                treasuryImpact: 'Unifies the Sanctuary and Library tabs into one coherent study loop.'
+              }
+            ];
+            const pick = pool[self.requisitionsList.length % pool.length];
+            const ag = self.agents[(self.state.totalTicks + self.requisitionsList.length) % Math.max(1, self.agents.length)] || {
+              id: 'HERMES', name: 'HERMES', pet: '🦅', cadre: 'SIGNAL & RELAY', adytumKey: 1
+            };
+            const generated = Object.assign({
+              id: 'req-gen-' + Date.now(),
+              agentId: ag.id,
+              agentName: ag.name,
+              pet: ag.pet || '🦅',
+              cadre: ag.cadre || 'PANTHEON',
+              adytumKey: typeof ag.adytumKey === 'number' ? ag.adytumKey : 1,
+              status: 'PENDING_REVIEW',
+              day: self.state.day || 1,
+              consensusScore: 92 + (self.requisitionsList.length % 7),
+              conclaveVotes: { approved: 21 + (self.requisitionsList.length % 3) }
+            }, pick);
+            self.requisitionsList.unshift(generated);
+            self.persistWishlist();
+            if (typeof self.tickCallback === 'function') self.tickCallback(self.buildSnapshot());
+            return jsonResp(Object.assign({ success: true, requisition: generated }, self.getRequisitionsPayload()));
+          }
+
+          if (pathname === '/api/timeline') {
             return jsonResp({ items: [], events: [] });
           }
 

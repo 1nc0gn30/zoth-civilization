@@ -16,4 +16,4 @@ Allow: /
 User-agent: Applebot
 Allow: /
 
-Sitemap: https://civilization.nullai.tech/sitemap.xml
+Sitemap: https://zoth-civilization.netlify.app/sitemap.xml
