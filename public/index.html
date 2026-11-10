@@ -96,7 +96,7 @@
   <link rel="stylesheet" href="hud_controller.css">
   <link rel="stylesheet" href="zoth_game_intro.css">
   <link rel="icon" href="tarot/fool.jpg" type="image/jpeg">
-  <script>window.__initialStatusPromise = fetch('/api/status').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });</script>
+  <script>window.__initialStatusPromise = fetch('/api/status').then(function(r){ return (r.ok && (r.headers.get('content-type') || '').indexOf('application/json') !== -1) ? r.json() : null; }).catch(function(){ return null; });</script>
   <script src="zoth_game_intro.js" defer></script>
   </head>
 <body>
@@ -254,7 +254,7 @@
     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
       <span style="background: rgba(16, 185, 129, 0.18); border: 1px solid #10B981; color: #6EE7B7; font-size: 10px; font-weight: 900; padding: 3px 9px; border-radius: 999px; letter-spacing: 0.08em;">✦ 100% FREE & OPEN ACCESS</span>
       <span style="font-size: 12px; color: #F8FAFC; font-weight: 700;">
-        All <strong>Zoth Civilization, City Desk & 77 Sovereign Tools</strong> are 100% unlocked with zero paywalls. If our tools help you build, buy us a coffee!
+        All <strong>Zoth Civilization &amp; 77 Sovereign Tools</strong> are 100% unlocked with zero paywalls. If our tools help you build, buy us a coffee!
       </span>
     </div>
     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
@@ -1155,9 +1155,6 @@
               </div>
             </div>
             <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
-              <a href="/HANDOFF-BOISE.md" target="_blank" rel="noopener" class="btn-ctrl" style="text-decoration: none; border-color: #A78BFA; color: #A78BFA; font-size: 11px; padding: 5px 12px;">
-                Handoff sheet
-              </a>
               <button id="btnScoutRevampTarget" type="button" class="btn-ctrl" style="border-color: #38BDF8; color: #38BDF8; font-size: 11px; padding: 5px 12px;">
                 Pull the next page
               </button>
@@ -2276,6 +2273,7 @@
   <script src="hermetic_audio.js"></script>
   <script src="huddle.js"></script>
   <script src="civ_hud.js"></script>
+  <script src="civ_gameplay_engine.js"></script>
   <script src="app.js"></script>
   <script src="stream_pilot.js"></script>
   <script src="civ_pass2.js"></script>

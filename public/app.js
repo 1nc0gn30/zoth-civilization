@@ -52,9 +52,40 @@
   });
 
   // =========================================================================
-  // SSE REALTIME STREAM CONNECTION
+  // SSE REALTIME STREAM CONNECTION (WITH CLEAN STATIC-HOST FALLBACK)
   // =========================================================================
-  function initSSE() {
+  let staticModeActive = false;
+
+  async function bootStaticFallbackIfNeeded() {
+    if (staticModeActive) return;
+    staticModeActive = true;
+    if (window.ZothClientSim && typeof window.ZothClientSim.start === 'function') {
+      const snap = await window.ZothClientSim.start((tickSnap) => applySnapshot(tickSnap));
+      if (snap) applySnapshot(snap);
+    }
+  }
+
+  async function initSSE() {
+    if (staticModeActive) return;
+    if (window.ZothClientSim && window.ZothClientSim.active) {
+      staticModeActive = true;
+      applySnapshot(window.ZothClientSim.buildSnapshot());
+      return;
+    }
+    try {
+      const probe = await fetch('/api/status', { method: 'GET', cache: 'no-store' });
+      const ct = (probe.headers.get('content-type') || '').toLowerCase();
+      if (!probe.ok || !ct.includes('application/json')) {
+        await bootStaticFallbackIfNeeded();
+        return;
+      }
+      const initialData = await probe.json();
+      applySnapshot(initialData);
+    } catch (_probeErr) {
+      await bootStaticFallbackIfNeeded();
+      return;
+    }
+
     console.log('[Civilization] Initializing SSE /api/stream...');
     const eventSource = new EventSource('/api/stream');
 
@@ -66,7 +97,6 @@
     eventSource.addEventListener('init', e => {
       try {
         const data = JSON.parse(e.data);
-        console.log('[Civilization] Received init event. Agents:', data.agents ? data.agents.length : 0);
         applySnapshot(data);
       } catch (err) {
         console.error('[Civilization] Failed parsing init event:', err);
@@ -102,14 +132,15 @@
       }
     });
 
-    eventSource.onerror = (err) => {
-      console.warn('[Civilization] SSE disconnected or errored. Retrying fetchStatus in 2s...', err);
+    eventSource.onerror = () => {
+      eventSource.close();
       window.dispatchEvent(new CustomEvent('civ:sse', { detail: { up: false } }));
-      setTimeout(fetchStatus, 2000);
+      setTimeout(fetchStatus, 4000);
     };
   }
 
   async function fetchStatus() {
+    if (staticModeActive) return;
     try {
       let data = null;
       if (window.__initialStatusPromise) {
@@ -118,14 +149,17 @@
         data = await p;
       }
       if (!data) {
-        const res = await fetch('/api/status');
+        const res = await fetch('/api/status', { cache: 'no-store' });
+        const ct = (res.headers.get('content-type') || '').toLowerCase();
+        if (!res.ok || !ct.includes('application/json')) {
+          await bootStaticFallbackIfNeeded();
+          return;
+        }
         data = await res.json();
       }
       applySnapshot(data);
-    } catch (e) {
-      if (window.location.protocol !== 'file:') {
-        console.warn('Status fetch error:', e);
-      }
+    } catch (_e) {
+      await bootStaticFallbackIfNeeded();
     }
   }
 
@@ -4946,22 +4980,17 @@
     });
   }
 
-  // Initial fetch for Timeline and Requisitions
-  fetch('/api/timeline').then(r => r.json()).then(t => updateTimelineUI(t)).catch(() => {});
-  fetch('/api/requisitions').then(r => r.json()).then(w => updateWishlistUI(w)).catch(() => {});
+  // Initial fetch for Timeline and Requisitions (JSON-guarded for static hosts)
+  fetch('/api/timeline').then(r => (r.headers.get('content-type') || '').includes('application/json') ? r.json() : null).then(t => { if (t) updateTimelineUI(t); }).catch(() => {});
+  fetch('/api/requisitions').then(r => (r.headers.get('content-type') || '').includes('application/json') ? r.json() : null).then(w => { if (w) updateWishlistUI(w); }).catch(() => {});
 
   // =========================================================================
   // VIEW: LIVING MINDS — rebuilt as the Mind Atlas in living_minds.js.
-  // The old Deep Net canvas pulled /api/mind/graph (27 MB, ~45 s) before the
-  // dossier could render; the atlas uses /api/mind/roster + /api/mind/:id.
   // =========================================================================
   function resizeDeepNetCanvas() {}
   function loadLivingMinds() { if (window.LivingMinds) window.LivingMinds.open(); }
 
-
-  // Fetch initial snapshot immediately and start SSE on page load
-  console.log('[Civilization] Booting: fetching initial status and starting SSE...');
-  fetchStatus();
+  // Boot simulation connection (or seamless client-side fallback on static hosts)
   initSSE();
 
 })();

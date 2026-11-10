@@ -566,12 +566,13 @@
         this.renderFallback2D(width, height);
         return;
       }
-      this.renderer.setClearColor(0x070b14, 1);
-      this.renderer.shadowMap.enabled = true;
-      this.renderer.shadowMap.type = THREE.PCFShadowMap;
+      this.renderer.setClearColor(0x060a14, 1);
+      const startFast = (localStorage.getItem('zoth_perf_level') || 'fast') === 'fast';
+      this.renderer.shadowMap.enabled = !startFast;
+      this.renderer.shadowMap.type = THREE.PCFSoftShadowMap || THREE.PCFShadowMap;
       this.fitRenderer();
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      this.renderer.toneMappingExposure = 1.12;
+      this.renderer.toneMappingExposure = 1.16;
       if (THREE.sRGBEncoding) this.renderer.outputEncoding = THREE.sRGBEncoding;
       this.renderer.domElement.tabIndex = 0;
       this.renderer.domElement.setAttribute('role', 'img');
@@ -7489,6 +7490,8 @@
         this.avatar.keys.sprint = false;
       }
       if (typeof HermeticAudio !== 'undefined' && HermeticAudio.playCardFlip) HermeticAudio.playCardFlip();
+      if (window.ZothGameIntro && typeof window.ZothGameIntro.syncAuthUI === 'function') window.ZothGameIntro.syncAuthUI();
+      window.dispatchEvent(new CustomEvent('zoth:dialogueOpened', { detail: { agentId: ag.id, agent: ag } }));
       if (prompt) prompt.focus();
     }
 
@@ -7582,6 +7585,7 @@
         say(kind === 'assignment'
           ? 'Assignment is on their conscious task. It stays in the loop after you leave.'
           : 'That line is in their subconscious. It stays on the walk after you leave.');
+        window.dispatchEvent(new CustomEvent('zoth:dialogueSent', { detail: { agentId: data.agent.id, kind, text, agent: data.agent } }));
         if (this.liveConversation && this.isAvatarMode) {
           const reply = this.clipSpoken(data.agent.speech || data.agent.voiceLine || '');
           this.speakExchange(text, data.agent, reply);
@@ -9433,13 +9437,26 @@
       }
       if (this.animTick % 8 === 0) this.updateAltitudeHUD();
 
-      // 4.1 Animate Grounded Agents & Realistic Waypoint Walking
-      const allEntities = [...Object.values(this.agentEntities), ...Object.values(this.subagentEntities)];
+      // 4.1 Animate Grounded Agents & Realistic Waypoint Walking (Zero-GC + Back-Hemisphere Culling)
+      if (!this._entityScratch) this._entityScratch = [];
+      const allEntities = this._entityScratch;
+      allEntities.length = 0;
+      for (const k in this.agentEntities) allEntities.push(this.agentEntities[k]);
+      for (const k in this.subagentEntities) allEntities.push(this.subagentEntities[k]);
+      const camPos = this.camera ? this.camera.position : null;
+      const camLen = camPos ? Math.max(1, camPos.length()) : 230;
+      const decreeSpeedMult = (window.__zothDecreeState && window.__zothDecreeState.goldenAgeUntil > performance.now()) ? 1.85 : 1.0;
+
       for (let i = 0; i < allEntities.length; i++) {
         const ent = allEntities[i];
         if (!ent || !ent.userData) continue;
 
-        if (ent.userData.bodyMesh && ent.userData.billboard) {
+        // Back-hemisphere culling: skip limb/billboard transforms for occluded far-side entities on 3 of 4 frames
+        const dotCam = camPos ? (ent.position.x * camPos.x + ent.position.y * camPos.y + ent.position.z * camPos.z) / (PLANET_RADIUS * camLen) : 1;
+        const onBackSide = dotCam < -0.18 && ent !== this.selectedEntity;
+        if (onBackSide && (this.animTick + i) % 4 !== 0) continue;
+
+        if (!onBackSide && ent.userData.bodyMesh && ent.userData.billboard) {
           this._v1.copy(this.camera.position);
           ent.worldToLocal(this._v1);
           ent.userData.bodyMesh.rotation.y = Math.atan2(this._v1.x, this._v1.z);
@@ -9755,9 +9772,13 @@
           return false;
         }
 
-        // Float slightly upwards along sphere surface normal
+        // Float slightly upwards along sphere surface normal (zero per-frame Vector3 allocation)
         const floatDist = (elapsed / b.duration) * 1.5;
-        b.sprite.position.copy(b.basePos).add(b.normal.clone().multiplyScalar(floatDist));
+        b.sprite.position.set(
+          b.basePos.x + b.normal.x * floatDist,
+          b.basePos.y + b.normal.y * floatDist,
+          b.basePos.z + b.normal.z * floatDist
+        );
 
         // Fade in last 1.2 seconds
         if (elapsed > b.duration - 1200) {
@@ -9796,12 +9817,12 @@
       }
       this.syncViewDetail();
 
-      // 5. Animate Trade Highway Energy Couriers
-      this.courierParticles.forEach(c => {
-        c.progress = (c.progress + c.speed * delta) % 1.0;
-        const pt = c.curve.getPoint(c.progress);
-        c.mesh.position.copy(pt);
-      });
+      // 5. Animate Trade Highway Energy Couriers (in-place Vector3 target -> zero GC churn)
+      for (let ci = 0; ci < this.courierParticles.length; ci++) {
+        const c = this.courierParticles[ci];
+        c.progress = (c.progress + c.speed * decreeSpeedMult * delta) % 1.0;
+        c.curve.getPoint(c.progress, c.mesh.position);
+      }
 
       // 6. Orbital Moon, Nebulae & Ring Rotations
       if (this.orbitalMoon) {

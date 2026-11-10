@@ -101,7 +101,21 @@ build/live_workspace/
 build/release-*/
 
 data/meditations/
-data/minds/spool.jsonl
+data/minds/
+data/trajectories/
 data/hermetic_observer_state.json
+data/outreach_dispatches.json
 data/research_digest.json
 data/treasury_config.json
+data/stripe_links.json
+data/gsc_indexation_report.json
+data/local_revamp_pipeline.json
+data/distribution.json
+motion-edit/gameplay_frames/
+motion-edit/audio_master.wav
+motion-edit/*.mp4
+test_shots/
+test_*_shot*.js
+test_check_*.js
+HANDOFF-*.md
+public/HANDOFF-*.md

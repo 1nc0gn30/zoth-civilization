@@ -29,8 +29,12 @@
   let parts = [];
   function sizeFx() { const r = devicePixelRatio || 1; fx.width = innerWidth * r; fx.height = innerHeight * r; fctx.setTransform(r, 0, 0, r, 0, 0); }
   addEventListener('resize', sizeFx); sizeFx();
+  let fxDirty = false;
+  fx.style.display = 'none';
   function burst(kind, x, y, n) {
     if (reduceMotion) return;
+    fx.style.display = 'block';
+    fxDirty = true;
     x = x == null ? innerWidth / 2 : x; y = y == null ? innerHeight * 0.38 : y;
     const col = kind === 'coin' ? ['#FFD97A', '#F5B83D', '#FFF3C4'] : kind === 'election' ? ['#C084FC', '#FFD97A', '#F0ABFC'] : ['#7DD3FC', '#A78BFA', '#FFD97A'];
     for (let i = 0; i < (n || 60); i++) {
@@ -39,6 +43,14 @@
     }
   }
   function stepFx() {
+    if (!parts.length) {
+      if (fxDirty) {
+        fctx.clearRect(0, 0, innerWidth, innerHeight);
+        fx.style.display = 'none';
+        fxDirty = false;
+      }
+      return;
+    }
     fctx.clearRect(0, 0, innerWidth, innerHeight);
     parts = parts.filter((p) => p.life > 0);
     for (const p of parts) {
@@ -126,7 +138,7 @@
   });
 
   function drawMap(t) {
-    if (map.classList.contains('z-collapsed') || !mc.clientWidth) return;
+    if (map.classList.contains('hud-hidden') || map.classList.contains('z-collapsed') || !mc.clientWidth) return;
     const w = mc.clientWidth, h = mc.clientHeight;
     const g = mctx.createRadialGradient(w * 0.5, h * 0.45, 10, w * 0.5, h * 0.5, Math.max(w, h) * 0.75);
     g.addColorStop(0, '#1a1435'); g.addColorStop(0.6, '#0d0b1f'); g.addColorStop(1, '#05050c');
