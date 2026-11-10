@@ -1,0 +1,512 @@
+/* 🎮 ZOTH CIVILIZATION — SEAMLESS VIDEO GAME INTRO & ONBOARDING SYSTEM */
+:root {
+  --zg-gold: #F59E0B;
+  --zg-gold-glow: rgba(245, 158, 11, 0.45);
+  --zg-cyan: #00F0FF;
+  --zg-cyan-glow: rgba(0, 240, 255, 0.35);
+  --zg-emerald: #10B981;
+  --zg-purple: #A855F7;
+  --zg-bg-dark: #060812;
+  --zg-card-bg: rgba(13, 17, 30, 0.94);
+  --zg-border: rgba(245, 158, 11, 0.28);
+}
+
+#zothGameIntroOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000005 !important;
+  background: radial-gradient(circle at 50% 30%, rgba(18, 24, 48, 0.94) 0%, rgba(4, 6, 12, 0.98) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'JetBrains Mono', monospace;
+}
+
+#zothGameIntroOverlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.zg-intro-container {
+  max-width: 860px;
+  width: 100%;
+  max-height: 92vh;
+  background: var(--zg-card-bg);
+  border: 1.5px solid var(--zg-border);
+  border-radius: 24px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 45px var(--zg-gold-glow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  animation: zgCardEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes zgCardEntrance {
+  0% { transform: scale(0.92) translateY(24px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Header & Progress Deck */
+.zg-intro-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.zg-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid var(--zg-gold);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #FDE68A;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.zg-steps-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zg-step-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.zg-step-pill.is-active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0%, rgba(217, 119, 6, 0.20) 100%) !important;
+  border-color: var(--zg-gold) !important;
+  color: #FFF !important;
+  box-shadow: 0 0 16px var(--zg-gold-glow) !important;
+}
+
+.zg-step-pill.is-done {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: var(--zg-emerald);
+  color: #6EE7B7;
+}
+
+.zg-close-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #F8FAFC;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.zg-close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: rotate(90deg);
+}
+
+/* Modal Body */
+.zg-intro-body {
+  padding: 26px 28px;
+  overflow-y: auto;
+  flex: 1;
+  color: #E2E8F0;
+}
+
+.zg-view-pane {
+  display: none;
+  animation: zgPaneFade 0.3s ease;
+}
+
+.zg-view-pane.is-active {
+  display: block;
+}
+
+@keyframes zgPaneFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Step 1: Prologue & Lore */
+.zg-hero-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #FFFFFF 20%, #F59E0B 80%, #FBBF24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.zg-hero-desc {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #CBD5E1;
+}
+
+.zg-lore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.zg-lore-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.zg-lore-card:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.zg-lore-card h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FDE68A;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zg-lore-card p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #94A3B8;
+}
+
+/* Step 2: Provider & API Key Deck */
+.zg-provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 16px 0 20px;
+}
+
+.zg-provider-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-align: left;
+}
+
+.zg-provider-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.zg-provider-card.is-selected {
+  border-color: var(--zg-gold);
+  background: rgba(245, 158, 11, 0.12);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.3);
+}
+
+.zg-provider-card.is-selected::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: var(--zg-gold);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.zg-provider-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #F8FAFC;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.zg-provider-subtitle {
+  font-size: 10.5px;
+  color: #94A3B8;
+  line-height: 1.35;
+}
+
+.zg-input-group {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 18px;
+  margin: 18px 0;
+}
+
+.zg-input-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #CBD5E1;
+  margin-bottom: 8px;
+}
+
+.zg-input-row {
+  display: flex;
+  gap: 8px;
+  position: relative;
+}
+
+.zg-text-input {
+  flex: 1;
+  background: rgba(4, 6, 12, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #F8FAFC;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.zg-text-input:focus {
+  border-color: var(--zg-gold);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+}
+
+.zg-eye-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #CBD5E1;
+  border-radius: 10px;
+  padding: 0 12px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+
+.zg-eye-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.zg-chips-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.zg-model-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #94A3B8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.zg-model-chip:hover, .zg-model-chip.is-active {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38BDF8;
+  color: #E0F2FE;
+}
+
+/* Step 3: Controls & Objectives Gameplan */
+.zg-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 12px 0 10px;
+}
+
+.zg-key-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.zg-key-badge {
+  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #F8FAFC;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  min-width: 28px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.zg-key-desc {
+  font-size: 11px;
+  color: #CBD5E1;
+  line-height: 1.25;
+}
+
+.zg-key-desc strong {
+  display: block;
+  font-size: 11.5px;
+  color: #FDE68A;
+}
+
+.zg-objectives-box {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(6, 78, 59, 0.08) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0;
+}
+
+.zg-perf-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.zg-perf-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.zg-perf-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.zg-perf-btn.is-active {
+  background: var(--zg-emerald);
+  border-color: var(--zg-emerald);
+  color: #000;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+/* Footer & Navigation Buttons */
+.zg-intro-footer {
+  padding: 18px 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 8, 18, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.zg-support-note {
+  font-size: 11px;
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zg-support-note a {
+  color: var(--zg-gold);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.zg-support-note a:hover {
+  text-decoration: underline;
+}
+
+.zg-action-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.zg-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #CBD5E1;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.zg-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #FFF;
+}
+
+.zg-btn-primary {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  border: none;
+  color: #000;
+  padding: 9px 24px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.zg-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(245, 158, 11, 0.5);
+}

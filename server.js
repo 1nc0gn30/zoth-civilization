@@ -1681,12 +1681,20 @@ const server = http.createServer((req, res) => {
         const worker = engine.workflowEngine.influenceFromOperator(data.agentId, { text, kind });
         if (!worker) throw new Error(`Agent not found: ${data.agentId}`);
         if (kind === 'conversation') {
-          const reply = await speakAs(worker, text);
-          if (reply) {
-            worker.speech = reply;
-            worker.voiceLine = reply;
+          if (data.customSpeech && typeof data.customSpeech === 'string' && data.customSpeech.trim().length > 0) {
+            const cleanSpeech = data.customSpeech.trim().slice(0, 300);
+            worker.speech = cleanSpeech;
+            worker.voiceLine = cleanSpeech;
             worker.voiceAt = Date.now();
-            worker.speechExpires = Date.now() + 14000;
+            worker.speechExpires = Date.now() + 18000;
+          } else {
+            const reply = await speakAs(worker, text);
+            if (reply) {
+              worker.speech = reply;
+              worker.voiceLine = reply;
+              worker.voiceAt = Date.now();
+              worker.speechExpires = Date.now() + 14000;
+            }
           }
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });

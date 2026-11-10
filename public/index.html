@@ -94,6 +94,7 @@
   <link rel="stylesheet" href="civ_pass2.css">
   <link rel="stylesheet" href="living_minds.css">
   <link rel="stylesheet" href="hud_controller.css">
+  <link rel="stylesheet" href="zoth_game_intro.css">
   <link rel="icon" href="tarot/fool.jpg" type="image/jpeg">
   <script>window.__initialStatusPromise = fetch('/api/status').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });</script>
   <script src="vendor/three.min.js"></script>
@@ -103,6 +104,7 @@
   <script src="pantheon_character_engine.js"></script>
   <script src="adytum_tarot_game.js"></script>
   <script src="hermetic_audio.js"></script>
+  <script src="zoth_game_intro.js" defer></script>
   </head>
 <body>
 
@@ -308,6 +310,12 @@
             </button>
             <button id="btnToggleAudio" class="globe-btn active" title="Toggle 8-bit Procedural Chiptune Audio">
               <span id="audioIcon">🔊</span> <span id="audioText">SFX: ON</span>
+            </button>
+            <button id="btnOpenGameIntro" class="globe-btn" style="border-color: #D4AF37; color: #FDFBF7; font-weight: 800; background: rgba(212, 175, 55, 0.15);" title="Open Game Briefing, Provider API Hub & Controls (Key: I)">
+              <span>🎮</span> Game Guide & AI Keys
+            </button>
+            <button id="btnToggleTurbo60" class="globe-btn active" style="border-color: #10B981; color: #6EE7B7; font-weight: 800; background: rgba(16, 185, 129, 0.15);" title="Toggle 60 FPS Turbo Engine (Key: Q)">
+              <span>⚡</span> <span id="turboBadge">60 FPS TURBO</span>
             </button>
           </div>
 
@@ -2277,19 +2285,7 @@
   
 
   <script src="/sovereign_tutorial.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", function() {
-      if (window.createSovereignTutorial) {
-        window.createSovereignTutorial({
-          toolId: "zoth-civilization",
-          toolName: "Zoth Civilization Hub",
-          tagline: "Dynamic multi-agent economy and simulated autonomous civilization engine!",
-          accentColor: "#D4AF37",
-          steps: [{"icon": "\ud83c\udfdb\ufe0f", "title": "Simulate an AI Society", "desc": "Watch autonomous AI agents trade resources, cast votes, build alliances, and solve problems together."}, {"icon": "\ud83e\uddec", "title": "Genetic Memory Evolution", "desc": "Agents remember their history and adapt their strategies over generations using STDP neuro-memory."}, {"icon": "\ud83c\udfae", "title": "You are the Architect", "desc": "Introduce new laws, resources, or challenges and watch how the agent civilization reacts in real time."}]
-        });
-      }
-    });
-  </script>
+  <!-- Zoth Civilization uses the full AAA Game Intro & Multi-Model Intelligence Setup (zoth_game_intro.js) -->
 
 </body>
 </html>

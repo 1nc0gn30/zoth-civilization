@@ -291,9 +291,11 @@
       this.agents = [];
       this.lineage = null;
 
-      // Settings
+      // Settings & 60FPS Performance Engine
       this.autoSpin = true;
       this.dayNightSun = true;
+      this.performanceLevel = localStorage.getItem('zoth_perf_level') || 'fast';
+      this.shadowQuality = this.performanceLevel === 'fast' ? 'off' : (this.performanceLevel === 'ultra' ? 'high' : 'low');
 
       // Enhancements: Beacons, Clouds, Auroras & 3D Speech
       this.beaconSprites = {};
@@ -785,11 +787,11 @@
     }
 
     openRenderer() {
-      // A failed attempt locks that canvas. Each try gets a new one, already in the page,
-      // because Chrome can refuse a context on a canvas that is not in the document.
+      // High-performance hardware WebGL flags with graceful fallbacks
       const attempts = [
-        { antialias: true, alpha: false, stencil: true },
-        { antialias: true, alpha: true, stencil: true },
+        { antialias: false, alpha: false, stencil: false, powerPreference: 'high-performance', precision: 'mediump' },
+        { antialias: true, alpha: false, stencil: true, powerPreference: 'high-performance', precision: 'mediump' },
+        { antialias: true, alpha: true, stencil: true, powerPreference: 'high-performance' },
         { antialias: false, alpha: true, stencil: true }
       ];
       for (let i = 0; i < attempts.length; i++) {
@@ -5598,12 +5600,34 @@
       this.compactTree(this.scene);
     }
 
+    setPerformanceMode(level) {
+      this.performanceLevel = level; // 'fast' | 'balanced' | 'ultra'
+      localStorage.setItem('zoth_perf_level', level);
+      this.shadowQuality = level === 'fast' ? 'off' : (level === 'ultra' ? 'high' : 'low');
+      if (this.renderer) {
+        if (level === 'fast') {
+          this.renderer.shadowMap.enabled = false;
+          if (this.sunLight) this.sunLight.castShadow = false;
+        } else {
+          this.renderer.shadowMap.enabled = true;
+          if (this.sunLight) {
+            this.sunLight.castShadow = true;
+            if (this.sunLight.shadow) this.sunLight.shadow.needsUpdate = true;
+          }
+        }
+        this.fitRenderer();
+      }
+      console.log(`[SphereWorld] ⚡ Performance Mode switched to: ${level}`);
+      window.dispatchEvent(new CustomEvent('zoth:perfmode', { detail: { level } }));
+    }
+
     fitRenderer() {
       if (!this.container || !this.renderer || !this.camera) return;
       const width = Math.max(1, this.container.clientWidth || window.innerWidth);
       const height = Math.max(1, this.container.clientHeight || window.innerHeight);
-      let ratio = Math.min(window.devicePixelRatio || 1, 1.5);
-      const budget = 1920 * 1080 * 1.25;
+      const maxRatio = this.performanceLevel === 'fast' ? 1.0 : (this.performanceLevel === 'ultra' ? 1.5 : 1.25);
+      let ratio = Math.min(window.devicePixelRatio || 1, maxRatio);
+      const budget = (this.performanceLevel === 'fast' ? 1280 * 720 : 1920 * 1080) * 1.25;
       if (width * height * ratio * ratio > budget) {
         ratio = Math.max(1, Math.sqrt(budget / (width * height)));
       }
@@ -7496,10 +7520,22 @@
       if (micBtn) micBtn.disabled = true;
       say(kind === 'assignment' ? 'Giving them the work…' : 'Leaving the thought with them…');
       try {
+        let customSpeech = null;
+        if (kind === 'conversation' && window.ZothGameIntro && typeof window.ZothGameIntro.hasActiveKey === 'function' && window.ZothGameIntro.hasActiveKey()) {
+          try {
+            const ag = this.entityById(this.dialogueAgentId)?.userData?.agent || { name: 'Pantheon Agent' };
+            const provName = window.ZothGameIntro.getActiveConfig()?.provider?.name || 'Swarm AI';
+            say(`Querying ${provName}...`);
+            customSpeech = await window.ZothGameIntro.askCitizen(ag, text);
+          } catch (aiErr) {
+            console.warn('[SphereWorld] Custom provider query notice (falling back to server loop):', aiErr);
+          }
+        }
+
         const res = await fetch('/api/subconscious/influence', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ agentId: this.dialogueAgentId, text, kind })
+          body: JSON.stringify({ agentId: this.dialogueAgentId, text, kind, customSpeech })
         });
         const data = await res.json();
         if (!res.ok || !data.success || !data.agent) throw new Error((data && data.error) || 'The thought did not land.');
@@ -9387,13 +9423,13 @@
           spirit.group.position.y = spirit.baseY + Math.sin(this.animTick * 0.045 + spirit.phase) * 0.28;
           if (spirit.core) spirit.core.rotation.y += delta * 0.7;
         }
-        if (this.animTick % 2 === 0) {
+        if (this.animTick % 6 === 0) {
           const spirit = spirits[this.animTick % spirits.length];
           spirit.tick += 1;
           this.paintDatamosh(spirit);
         }
       }
-      this.updateAltitudeHUD();
+      if (this.animTick % 8 === 0) this.updateAltitudeHUD();
 
       // 4.1 Animate Grounded Agents & Realistic Waypoint Walking
       const allEntities = [...Object.values(this.agentEntities), ...Object.values(this.subagentEntities)];
@@ -9575,7 +9611,7 @@
           }
         }
       }
-      this.separateBodies();
+      if (this.animTick % 4 === 0) this.separateBodies();
       this.holdWalkerClear();
 
       // 4. Animate City Features
@@ -9681,20 +9717,10 @@
         this.southAurora.scale.set(scaleS, scaleS, scaleS);
       }
 
-      // 4.5 Animate Ambient Surface Weather & Prana Motes with Atmospheric Drift
+      // 4.5 Animate Ambient Surface Weather & Prana Motes (GPU zero-bandwidth rotation)
       if (this.ambientMotes) {
-        const pos = this.ambientMotes.geometry.attributes.position.array;
-        const time = this.animTick * 0.015;
-        for (let i = 0; i < 160; i++) {
-          const idx = i * 3;
-          const x = pos[idx];
-          const z = pos[idx + 2];
-          const ang = 0.0008 + (i % 5) * 0.0003;
-          pos[idx] = x * Math.cos(ang) - z * Math.sin(ang);
-          pos[idx + 2] = x * Math.sin(ang) + z * Math.cos(ang);
-          pos[idx + 1] += Math.sin(time + i * 0.35) * 0.02;
-        }
-        this.ambientMotes.geometry.attributes.position.needsUpdate = true;
+        this.ambientMotes.rotation.y += 0.0006;
+        this.ambientMotes.position.y = Math.sin(this.animTick * 0.02) * 0.2;
       }
 
       // 4.6 Animate Surface Footstep Particles
@@ -9759,8 +9785,12 @@
         }
       }
       if (this.sunLight && this.sunLight.castShadow && this.sunLight.shadow) {
-        const stride = this.isAvatarMode ? 4 : 10;
-        if (this.animTick % stride === 0) this.sunLight.shadow.needsUpdate = true;
+        if (this.shadowQuality === 'off') {
+          this.sunLight.castShadow = false;
+        } else {
+          const stride = this.shadowQuality === 'high' ? (this.isAvatarMode ? 15 : 25) : (this.isAvatarMode ? 30 : 60);
+          if (this.animTick % stride === 0) this.sunLight.shadow.needsUpdate = true;
+        }
       }
       this.syncViewDetail();
 
