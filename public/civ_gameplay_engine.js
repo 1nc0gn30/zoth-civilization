@@ -173,59 +173,63 @@
     }
 
     async start(onTick) {
-      if (this.active) return this.buildSnapshot();
+      if (onTick) this.tickCallback = onTick;
+      if (this._startPromise) return this._startPromise;
       this.active = true;
-      this.tickCallback = onTick;
       this.installStaticApiShim();
 
-      const [agentsSeed, bldSeed, keysSeed, libSeed] = await Promise.all([
-        this.loadSeedJson('pantheon_agents.json', []),
-        this.loadSeedJson('civilization_buildings.json', []),
-        this.loadSeedJson('adytum_keys.json', []),
-        this.loadSeedJson('library_catalog.json', { shelves: [] })
-      ]);
+      this._startPromise = (async () => {
+        const [agentsSeed, bldSeed, keysSeed, libSeed] = await Promise.all([
+          this.loadSeedJson('pantheon_agents.json', []),
+          this.loadSeedJson('civilization_buildings.json', []),
+          this.loadSeedJson('adytum_keys.json', []),
+          this.loadSeedJson('library_catalog.json', { shelves: [] })
+        ]);
 
-      this.buildings = Array.isArray(bldSeed) ? bldSeed : [];
-      this.tarotKeys = Array.isArray(keysSeed) ? keysSeed : [];
-      this.library = libSeed || {};
+        this.buildings = Array.isArray(bldSeed) ? bldSeed : [];
+        this.tarotKeys = Array.isArray(keysSeed) ? keysSeed : [];
+        this.library = libSeed || {};
 
-      // Restore player's private browser world state if present
-      let saved = null;
-      try {
-        const raw = localStorage.getItem(CLIENT_WORLD_SAVE_KEY);
-        saved = raw ? JSON.parse(raw) : null;
-      } catch (_e) {}
+        // Restore player's private browser world state if present
+        let saved = null;
+        try {
+          const raw = localStorage.getItem(CLIENT_WORLD_SAVE_KEY);
+          saved = raw ? JSON.parse(raw) : null;
+        } catch (_e) {}
 
-      if (saved && saved.state) {
-        Object.assign(this.state, saved.state);
-      }
+        if (saved && saved.state) {
+          Object.assign(this.state, saved.state);
+        }
 
-      this.agents = (Array.isArray(agentsSeed) ? agentsSeed : []).map((a, idx) => {
-        const savedAgent = saved && saved.agentOverrides && saved.agentOverrides[a.id];
-        return Object.assign({}, a, {
-          state: a.state && /BUILD|CRAFT|OPTIMIZ|CODING|WORK/.test(String(a.state)) ? a.state : 'CRAFTING',
-          colonyId: a.colonyId || COLONIES[idx % COLONIES.length],
-          adytumKey: typeof a.adytumKey === 'number' ? a.adytumKey : (idx % 22),
-          ledger: {
-            manner: 'focused and sovereign',
-            focus: a.role || 'Planetary synthesis',
-            stoic: 'Verify rendered reality before declaring completion.'
-          }
-        }, savedAgent || {});
-      });
+        this.agents = (Array.isArray(agentsSeed) ? agentsSeed : []).map((a, idx) => {
+          const savedAgent = saved && saved.agentOverrides && saved.agentOverrides[a.id];
+          return Object.assign({}, a, {
+            state: a.state && /BUILD|CRAFT|OPTIMIZ|CODING|WORK/.test(String(a.state)) ? a.state : 'CRAFTING',
+            colonyId: a.colonyId || COLONIES[idx % COLONIES.length],
+            adytumKey: typeof a.adytumKey === 'number' ? a.adytumKey : (idx % 22),
+            ledger: {
+              manner: 'focused and sovereign',
+              focus: a.role || 'Planetary synthesis',
+              stoic: 'Verify rendered reality before declaring completion.'
+            }
+          }, savedAgent || {});
+        });
 
-      this.recentMessages = this.agents.slice(0, 6).map((a, i) => ({
-        id: 'init-' + i,
-        sender: a.name,
-        agentId: a.id,
-        color: a.color || '#D4AF37',
-        text: a.speech || ARCHETYPE_LINES[i % ARCHETYPE_LINES.length],
-        timestamp: new Date(Date.now() - (6 - i) * 18000).toISOString()
-      }));
+        this.recentMessages = this.agents.slice(0, 6).map((a, i) => ({
+          id: 'init-' + i,
+          sender: a.name,
+          agentId: a.id,
+          color: a.color || '#D4AF37',
+          text: a.speech || ARCHETYPE_LINES[i % ARCHETYPE_LINES.length],
+          timestamp: new Date(Date.now() - (6 - i) * 18000).toISOString()
+        }));
 
-      this.timer = setInterval(() => this.stepSimulation(), 4500);
-      window.dispatchEvent(new CustomEvent('civ:sse', { detail: { up: true } }));
-      return this.buildSnapshot();
+        this.timer = setInterval(() => this.stepSimulation(), 4500);
+        window.dispatchEvent(new CustomEvent('civ:sse', { detail: { up: true } }));
+        return this.buildSnapshot();
+      })();
+
+      return this._startPromise;
     }
 
     persistLocalWorld() {
@@ -478,7 +482,9 @@
       this.currentFps = 60;
       this.lowFpsStreak = 0;
 
-      if (document.readyState === 'loading') {
+      if (document.body && document.querySelector('.globe-toolbar')) {
+        this.init();
+      } else if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => this.init());
       } else {
         this.init();

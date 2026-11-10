@@ -990,7 +990,9 @@
     }
   }
 
-  if (document.readyState === 'loading') {
+  if (document.getElementById('btnOpenGameIntro') || document.getElementById('btnToggleTurbo60')) {
+    hookToolbar();
+  } else if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', hookToolbar);
   } else {
     hookToolbar();
