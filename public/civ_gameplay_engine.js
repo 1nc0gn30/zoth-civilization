@@ -411,13 +411,44 @@
     }
 
     buildSnapshot() {
+      const colonies = [
+        { id: 'colony_capital', name: 'Capital Sanctum', banner: '🏛️', founded: false },
+        { id: 'colony_forge', name: 'Forge Bastion', banner: '⚒️', founded: false },
+        { id: 'colony_adytum_grove', name: 'Adytum Grove', banner: '🕯️', founded: false },
+        { id: 'colony_signal', name: 'Signal Spire', banner: '📡', founded: true },
+        { id: 'colony_aegis', name: 'Aegis Harbor', banner: '🛡️', founded: true }
+      ];
+      const keepers = [
+        { id: 'keeper_capital', name: 'ARCHIVIST LYRA', pet: '📜', post: 'station', cadre: 'Civic', colonyId: 'colony_capital', stationId: 'colony_capital:research', hallName: 'Sanctum Study Hall', role: 'Station Keeper', adytumKey: 2, speech: 'Keeping the Stoic & Hermetic citation index open for all 23 Pantheon minds.' },
+        { id: 'keeper_forge', name: 'WARDEN TALOS', pet: '⚒️', post: 'station', cadre: 'Civic', colonyId: 'colony_forge', stationId: 'colony_forge:forge', hallName: 'Foundry Anvil Stall', role: 'Station Keeper', adytumKey: 1, speech: 'Forging client-side WebGL & zero-egress utilities at 60 FPS.' },
+        { id: 'keeper_grove', name: 'HIEROPHANT VERA', pet: '🕯️', post: 'station', cadre: 'Civic', colonyId: 'colony_adytum_grove', stationId: 'colony_adytum_grove:research', hallName: '22-Key Sanctuary Stall', role: 'Station Keeper', adytumKey: 9, speech: 'Tending the 22 canonical keys and private browser meditation ledger.' },
+        { id: 'keeper_signal', name: 'RELAY ORION', pet: '📡', post: 'station', cadre: 'Civic', colonyId: 'colony_signal', stationId: 'colony_signal:install', hallName: 'Hermes Relay Registry', role: 'Station Keeper', adytumKey: 17, speech: 'Routing Nous Hermes × DeepSeek Flash prompts with zero server key storage.' },
+        { id: 'keeper_aegis', name: 'SENTINEL NYX', pet: '🛡️', post: 'station', cadre: 'Civic', colonyId: 'colony_aegis', stationId: 'colony_aegis:install', hallName: 'Ghostbyte Audit Gate', role: 'Station Keeper', adytumKey: 11, speech: 'Verifying zero-leak sandbox isolation across every planetary citadel.' }
+      ];
+      const stationSkills = [
+        { id: 'sk_stoic_cards', name: 'Stoic Canon Concordance', stationId: 'colony_capital:research', source: 'gazette', blurb: 'Cross-indexes public-domain Roman Stoic texts to daily Pantheon deliberations.' },
+        { id: 'sk_aeo_graph', name: 'AEO Schema.org & llms.txt Synthesizer', stationId: 'colony_capital:research', source: 'request', blurb: 'Maintains verified WebApplication & FAQ graphs across NullAI.' },
+        { id: 'sk_webgl_dpr', name: 'Adaptive 60 FPS Sphere Governor', stationId: 'colony_forge:forge', source: 'gazette', blurb: 'Balances pixel ratio and frustum culling across mobile and 4K displays.' },
+        { id: 'sk_ast_audit', name: 'Client-Side AST & Entropy Scanner', stationId: 'colony_forge:forge', source: 'gazette', blurb: 'Executes deterministic static analysis in-browser with zero backend roundtrips.' },
+        { id: 'sk_tarot_path', name: '22-Key Hermetic Pathworking', stationId: 'colony_adytum_grove:research', source: 'gazette', blurb: 'Cycles superconscious archetypes across all 23 sovereign citizens.' },
+        { id: 'sk_chime_synth', name: 'WebAudio 432Hz Sanctuary Synth', stationId: 'colony_adytum_grove:research', source: 'request', blurb: 'Procedural harmonic chimes with zero external audio assets.' },
+        { id: 'sk_hermes_flash', name: 'Hermes × DeepSeek Flash Bridge', stationId: 'colony_signal:install', source: 'gazette', blurb: 'Lightweight BYOK inference path via Nous Research & OpenRouter.' },
+        { id: 'sk_swarm_mux', name: 'Conclave Consensus Multiplexer', stationId: 'colony_signal:install', source: 'request', blurb: 'Aggregates 23-agent Conclave votes and Imperator decrees.' },
+        { id: 'sk_zero_leak', name: 'Zero-Leak localStorage Vault', stationId: 'colony_aegis:install', source: 'gazette', blurb: 'Isolates player quests, saves, and API keys strictly in the browser.' },
+        { id: 'sk_ci_fortress', name: 'Pre-Push CI & Secret Gate', stationId: 'colony_aegis:install', source: 'gazette', blurb: 'Blocks unverified commits and enforces 100% green repository checks.' }
+      ];
       return {
         state: Object.assign({}, this.state),
         agents: this.agents,
         buildings: this.buildings,
         tarotKeys: this.tarotKeys,
         recentMessages: this.recentMessages,
-        lineage: { generation: 2, subagents: [] },
+        lineage: {
+          generation: 2,
+          colonies,
+          subagents: keepers,
+          stationSkills
+        },
         requisitions: this.getRequisitionsPayload()
       };
     }
@@ -444,6 +475,7 @@
 
         if (self.active && pathname.startsWith('/api/')) {
           if (pathname === '/api/status') {
+            if (self._startPromise) await self._startPromise;
             return jsonResp(self.buildSnapshot());
           }
           if (pathname === '/api/subconscious/influence') {

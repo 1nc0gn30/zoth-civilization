@@ -69,7 +69,8 @@
     if (staticModeActive) return;
     if (window.ZothClientSim && window.ZothClientSim.active) {
       staticModeActive = true;
-      applySnapshot(window.ZothClientSim.buildSnapshot());
+      const snap = await window.ZothClientSim.start((tickSnap) => applySnapshot(tickSnap));
+      if (snap) applySnapshot(snap);
       return;
     }
     try {
