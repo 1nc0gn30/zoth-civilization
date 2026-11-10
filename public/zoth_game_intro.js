@@ -6,7 +6,7 @@
  * Phase 2: Multi-Model Intelligence & Hermes Swarm Provider Setup
  * Phase 3: Tactical "Get Ready" Gameplan, 3D Controls & 60FPS Performance Engine
  *
- * Author: Neal Frazier Tech (@1nc0gn30) • NullAI Platform
+ * Author: 1nc0gn30 (@1nc0gn30) • NullAI Platform
  */
 
 (function () {
@@ -29,9 +29,9 @@
       models: [
         'anthropic/claude-3.5-sonnet',
         'nousresearch/hermes-3-llama-3.1-405b',
-        'deepseek/deepseek-chat',
+        'deepseek/deepseek-chat-v3-0324',
         'meta-llama/llama-3.3-70b-instruct',
-        'google/gemini-2.0-flash-exp:free'
+        'google/gemini-2.5-flash'
       ],
       description: 'Unified gateway providing instant access to Claude 3.5, Nous Hermes 3, DeepSeek-V3, and Llama 3.3.'
     },
@@ -72,7 +72,7 @@
       models: [
         'gpt-4o',
         'gpt-4o-mini',
-        'o1-preview'
+        'o3-mini'
       ],
       description: 'Reliable multi-modal intelligence for civilizational laws, trades, and economics.'
     },
@@ -98,8 +98,8 @@
       placeholder: 'AIzaSy...',
       endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
       models: [
-        'gemini-2.0-flash-exp',
-        'gemini-1.5-pro'
+        'gemini-2.5-flash',
+        'gemini-2.5-pro'
       ],
       description: 'Massive context window reasoning and multimodal vision support for 3D world analysis.'
     },
@@ -275,7 +275,7 @@
               <div class="zg-input-group">
                 <div class="zg-input-label">
                   <span id="zgInputLabelText">OpenRouter API Key</span>
-                  <span id="zgStorageBadge" style="font-size:10px; color:#10B981; font-weight:700;">🔒 ENCRYPTED LOCAL STORAGE</span>
+                  <span id="zgStorageBadge" style="font-size:10px; color:#10B981; font-weight:700;">🔒 BROWSER-LOCAL STORAGE · ZERO SERVER TELEMETRY</span>
                 </div>
 
                 <div class="zg-input-row">
@@ -386,7 +386,7 @@
               <span>· Solana Tip: <code style="color:#6EE7B7; font-size:10.5px;">GG2e...xdXoK</code></span>
             </div>
             <div style="font-size:11px; color:#64748B;">
-              Engineered by Neal Frazier Tech (@1nc0gn30) • NullAI
+              Engineered by 1nc0gn30 (@1nc0gn30) • NullAI Platform
             </div>
           </div>
 
@@ -576,11 +576,17 @@
         return;
       }
 
-      // Basic structure validation
-      setTimeout(() => {
+      const t0 = performance.now();
+      try {
+        this.keysStore[this.selectedProvider] = { apiKey: key, model: this.selectedModel };
+        const reply = await this.queryModel('Reply with the single word READY.', 'Reply only with READY.');
+        const ms = Math.round(performance.now() - t0);
         statusEl.style.color = '#10B981';
-        statusEl.textContent = '✅ Key format verified for ' + p.name + ' (' + this.selectedModel + '). Ready for deployment!';
-      }, 500);
+        statusEl.textContent = `✅ Live connection verified (${ms}ms) → ${p.name} [${this.selectedModel}]: "${String(reply).slice(0, 32)}"`;
+      } catch (err) {
+        statusEl.style.color = '#EF4444';
+        statusEl.textContent = `❌ Live check failed: ${err && err.message ? err.message : 'Check API key or provider CORS'}`;
+      }
     }
 
     getActiveConfig() {
@@ -600,6 +606,27 @@
       return !!(cfg.apiKey && cfg.apiKey.trim().length > 3);
     }
 
+    async _postProviderRequest(endpoint, headers, payload) {
+      try {
+        const proxyRes = await fetch('/api/llm/proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint, headers, payload })
+        });
+        if (proxyRes.status !== 404) {
+          return await proxyRes.json();
+        }
+      } catch (_e) {
+        // Fall through to direct browser fetch when hosted statically
+      }
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+        body: JSON.stringify(payload)
+      });
+      return await res.json();
+    }
+
     async queryModel(prompt, systemPrompt) {
       const active = this.getActiveConfig();
       const p = active.provider;
@@ -608,22 +635,20 @@
       const sys = systemPrompt || 'You are an autonomous Pantheon citizen on Zoth Prime. Speak 1-2 sharp, technical, sovereign sentences.';
 
       if (active.providerId === 'anthropic') {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const data = await this._postProviderRequest(
+          'https://api.anthropic.com/v1/messages',
+          {
             'x-api-key': key,
             'anthropic-version': '2023-06-01',
             'dangerously-allow-browser': 'true'
           },
-          body: JSON.stringify({
+          {
             model: model,
             max_tokens: 150,
             system: sys,
             messages: [{ role: 'user', content: prompt }]
-          })
-        });
-        const data = await res.json();
+          }
+        );
         if (data && data.content && data.content[0] && data.content[0].text) {
           return data.content[0].text.trim();
         }
@@ -632,7 +657,7 @@
 
       // Standard OpenAI-compatible format (OpenRouter, Nous Hermes, OpenAI, Groq, Gemini, DeepSeek, Ollama)
       let endpoint = p.endpoint;
-      const headers = { 'Content-Type': 'application/json' };
+      const headers = {};
       if (key && active.providerId !== 'ollama_local') {
         headers['Authorization'] = `Bearer ${key}`;
       }
@@ -641,10 +666,10 @@
         headers['X-Title'] = 'Zoth Civilization';
       }
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
+      const data = await this._postProviderRequest(
+        endpoint,
         headers,
-        body: JSON.stringify({
+        {
           model: model,
           messages: [
             { role: 'system', content: sys },
@@ -652,10 +677,9 @@
           ],
           max_tokens: 120,
           temperature: 0.65
-        })
-      });
+        }
+      );
 
-      const data = await res.json();
       if (data && data.choices && data.choices[0] && data.choices[0].message) {
         return data.choices[0].message.content.trim();
       }

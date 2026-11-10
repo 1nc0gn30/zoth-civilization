@@ -9343,7 +9343,9 @@
     animate() {
       this.animFrameId = requestAnimationFrame(this._onFrame || (() => this.animate()));
       const panel = document.getElementById('view-pixel-world');
-      if (document.hidden || !panel || !panel.classList.contains('active')) {
+      const introModal = document.getElementById('zothGameIntroOverlay');
+      const introCovering = introModal && introModal.classList.contains('is-active');
+      if (document.hidden || introCovering || !panel || !panel.classList.contains('active')) {
         this.clock.getDelta();
         return;
       }

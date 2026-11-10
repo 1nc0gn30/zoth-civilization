@@ -12,6 +12,8 @@
  */
 
 const http = require('http');
+const https = require('https');
+const zlib = require('zlib');
 const fs = require('fs');
 const path = require('path');
 const { safeStringify } = require('./engine/redact');
@@ -1932,7 +1934,64 @@ const server = http.createServer((req, res) => {
   if (serveCityDesk(req, res, pathname)) return;
 
   // -------------------------------------------------------------
-  // STATIC FILE SERVING
+  // STATELESS ZERO-TELEMETRY LLM PROXY & KEY VERIFIER (avoids browser CORS blocks for OpenAI/DeepSeek)
+  // -------------------------------------------------------------
+  if (pathname === '/api/llm/proxy' && req.method === 'POST') {
+    let rawBody = '';
+    req.on('data', (chunk) => {
+      if (rawBody.length < 65536) rawBody += chunk;
+    });
+    req.on('end', () => {
+      try {
+        const body = JSON.parse(rawBody || '{}');
+        const allowedHosts = new Set([
+          'openrouter.ai',
+          'api.nousresearch.com',
+          'api.anthropic.com',
+          'api.openai.com',
+          'api.groq.com',
+          'generativelanguage.googleapis.com',
+          'api.deepseek.com',
+          '127.0.0.1',
+          'localhost'
+        ]);
+        const target = new URL(String(body.endpoint || ''));
+        if (!allowedHosts.has(target.hostname)) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'Unsupported provider host' }));
+          return;
+        }
+        const payload = JSON.stringify(body.payload || {});
+        const headers = Object.assign({ 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }, body.headers || {});
+        const transport = target.protocol === 'https:' ? https : http;
+        const upstream = transport.request(target, { method: 'POST', headers, timeout: 15000 }, (upRes) => {
+          let respText = '';
+          upRes.on('data', (c) => { if (respText.length < 262144) respText += c; });
+          upRes.on('end', () => {
+            res.writeHead(upRes.statusCode || 200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+            res.end(respText);
+          });
+        });
+        upstream.on('error', (err) => {
+          res.writeHead(502, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: { message: err.message } }));
+        });
+        upstream.on('timeout', () => {
+          upstream.destroy();
+          res.writeHead(504, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: { message: 'Provider request timed out' } }));
+        });
+        upstream.write(payload);
+        upstream.end();
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: { message: e.message } }));
+      }
+    });
+    return;
+  }
+
+  // STATIC FILE SERVING (WITH GZIP COMPRESSION & SMART CACHING)
   // -------------------------------------------------------------
   let filePath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
 
@@ -1952,15 +2011,31 @@ const server = http.createServer((req, res) => {
 
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-    res.writeHead(200, {
-      'Content-Type': contentType,
-      'Content-Length': stats.size,
-      'Cache-Control': ext === '.jpg' || ext === '.png' ? 'public, max-age=86400' : 'no-cache'
-    });
+    const acceptEncoding = String(req.headers['accept-encoding'] || '');
+    const compressible = new Set(['.js', '.css', '.html', '.json', '.svg', '.txt', '.xml']);
+    const cacheControl = (ext === '.jpg' || ext === '.png' || ext === '.webp' || ext === '.woff2')
+      ? 'public, max-age=86400'
+      : (ext === '.js' || ext === '.css')
+        ? 'public, max-age=3600'
+        : 'no-cache';
 
     const stream = fs.createReadStream(filePath);
-    stream.pipe(res);
+    if (compressible.has(ext) && stats.size > 1024 && /\bgzip\b/.test(acceptEncoding)) {
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Content-Encoding': 'gzip',
+        'Vary': 'Accept-Encoding',
+        'Cache-Control': cacheControl
+      });
+      stream.pipe(zlib.createGzip({ level: 6 })).pipe(res);
+    } else {
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Content-Length': stats.size,
+        'Cache-Control': cacheControl
+      });
+      stream.pipe(res);
+    }
   });
 });
 
