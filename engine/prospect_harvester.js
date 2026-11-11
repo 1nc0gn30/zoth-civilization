@@ -1,10 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { VERIFIED_PROSPECTS, dispatchBatch } = require('./prospect_outreach');
+const { VERIFIED_PROSPECTS, dispatchBatch, saveLocalProspects } = require('./prospect_outreach');
 const { AGENCY_PROSPECTS, dispatchAgencyBatch } = require('./agency_outreach');
 
-const PROSPECT_FILE = path.join(__dirname, 'prospect_outreach.js');
-const AGENCY_FILE = path.join(__dirname, 'agency_outreach.js');
 
 const BLOCKED_DOMAINS = new Set([
   'yelp.com', 'angi.com', 'angieslist.com', 'bbb.org', 'yellowpages.com',
@@ -544,15 +542,9 @@ async function harvestAndAppendWave(targets, waveLabel = 'Wave Auto') {
   }
 
   if (harvested.length > 0) {
-    let src = fs.readFileSync(PROSPECT_FILE, 'utf8');
-    const marker = '];\n\nfunction loadResendCredentials()';
-    if (src.includes(marker)) {
-      const lines = harvested.map(h => '  ' + JSON.stringify(h)).join(',\n');
-      const insertion = `,\n  // ${waveLabel} (${new Date().toISOString()})\n${lines}\n];\n\nfunction loadResendCredentials()`;
-      src = src.replace(marker, insertion);
-      fs.writeFileSync(PROSPECT_FILE, src);
-      for (const h of harvested) VERIFIED_PROSPECTS.push(h);
-    }
+    for (const item of harvested) VERIFIED_PROSPECTS.push(item);
+    saveLocalProspects(VERIFIED_PROSPECTS);
+    console.log(`  Saved ${harvested.length} prospects (${waveLabel}) to data/prospects.local.json`);
   }
 
   return harvested;

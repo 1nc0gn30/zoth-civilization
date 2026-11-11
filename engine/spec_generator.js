@@ -21,7 +21,7 @@
 
 function generateSpecHtml(record) {
   const businessName = (record.businessName || 'Elite Services').trim();
-  const city = (record.city || 'Virginia Beach').trim();
+  const city = (record.city || 'Austin').trim();
   const state = (record.state || 'VA').trim();
   const metro = (record.metro || city).trim();
   const niche = (record.niche || 'Professional Services').trim();

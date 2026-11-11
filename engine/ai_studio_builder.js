@@ -219,14 +219,14 @@ async function buildWebsiteForBusiness(business) {
 
 // CLI Execution Support
 if (require.main === module) {
-  const businessArg = process.argv[2] || 'Crown Valet of Virginia Beach';
+  const businessArg = process.argv[2] || 'Crown Valet of Austin';
   const sampleBusiness = {
     name: businessArg,
     niche: 'Valet & Luxury Transport',
-    city: 'Virginia Beach',
-    state: 'VA',
+    city: 'Austin',
+    state: 'TX',
     metro: 'Coastal Virginia',
-    hook: 'Curbside luxury vehicle dispatch and VIP private event valet management across Virginia Beach.'
+    hook: 'Curbside luxury vehicle dispatch and VIP private event valet management across Austin.'
   };
 
   buildWebsiteForBusiness(sampleBusiness)

@@ -187,7 +187,7 @@ def build_app(prompt: str, slug: str = "vb-motion-food-delivery", timeout_sec: i
 
 if __name__ == "__main__":
     test_prompt = (
-        "Make me a motion edit styled website hyped to serve the city of virginia beach town center "
+        "Make me a motion edit styled website hyped to serve the city of austin downtown "
         "with premium food delivery services. Include avant-garde typography, 60fps hero motion canvas, "
         "interactive ordering menu, and deep obsidian gold styling."
     )

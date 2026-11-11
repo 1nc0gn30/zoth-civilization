@@ -131,7 +131,7 @@ const APP_PROFILES = {
     price: '$0 / $149 DFY',
     solanaSupported: true,
     techStack: 'Deterministic Node Static Builder, Schema.org LocalBusiness Graph, Zero-Dependency HTML',
-    coreHook: '1,000 finished local trade service pages across 50 US cities (including Virginia Beach, Norfolk, Chesapeake & Boise) with zero monthly retainers and instant HTML handoff.',
+    coreHook: '1,000 finished local trade service pages across 50 US cities (including Boise, Raleigh, Norfolk & Chesapeake) with zero monthly retainers and instant HTML handoff.',
     keyFeatures: [
       '20 high-margin local trades × 50 US cities (1,000 standalone pages)',
       'Automated Schema.org LocalBusiness JSON-LD for Google & Perplexity citation',
