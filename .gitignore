@@ -92,6 +92,8 @@ shots-*/
 .venv*/
 venv/
 __pycache__/
+.pytest_cache/
+LICENSE.bak
 *.pth
 *.onnx
 data/minds/spool.jsonl

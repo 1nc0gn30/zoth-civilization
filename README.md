@@ -1,243 +1,150 @@
 <div align="center">
-  <img src="assets/hero-banner.svg" alt="Zoth Civilization Hub — Sovereign Architecture Banner" width="100%" />
+  <img src="assets/hero-banner.svg" alt="Zoth Civilization Architecture Banner" width="100%" />
 </div>
 
-<br />
+# Zoth Civilization (`zoth-civilization`)
 
-# 🏛️ Zoth Civilization (`zoth-civilization`)
+`zoth-civilization` is a zero-runtime-dependency Node.js multi-agent simulation, 3D orbital and 16-bit pixel world, Living Mind cognitive graph, and B.O.T.A. Adytum Hermetic path engine (Keys 0 to 21) running on loopback port `127.0.0.1:9393`.
 
-> **Autonomous 21-Agent Living Civilization, Game Boy Bird's-Eye Simulation, and The Adytum Hermetic Path Engine.**  
-> Real-world workspace accomplishments construct living pixel architecture while agents meditate across the 22 Major Arcana (The Fool $\rightarrow$ The World) to cultivate emergent subconscious intuition and superconscious sovereign alignment.
-
-[![ZothOS Compatible](https://img.shields.io/badge/ZothOS-3.3%20Matrix-gold.svg)](https://zoth.nullai.tech)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Zero NPM Dependencies](https://img.shields.io/badge/dependencies-0%20runtime%20npm-brightgreen.svg)](#architecture)
-[![Hermetic Tradition](https://img.shields.io/badge/B.O.T.A.-Adytum%20Path-purple.svg)](#-the-adytum-hermetic-path)
+- **Zoth Studio v2 Dossier**: [https://zoth.nullai.tech/tools/zoth-civilization](https://zoth.nullai.tech/tools/zoth-civilization)
+- **Standalone Loopback Daemon**: `http://127.0.0.1:9393`
+- **Support Development**: [https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)
 
 ---
 
-## 🎬 Live Gameplay Motion Edit (1080p 60fps • -14 LUFS Master)
+## Overview
 
-* **Video Showreel (MP4)**: [`public/assets/zoth-civilization-motion-edit.mp4`](public/assets/zoth-civilization-motion-edit.mp4)
-* **Video Showreel (WebM)**: [`public/assets/zoth-civilization-motion-edit.webm`](public/assets/zoth-civilization-motion-edit.webm)
-* **Motion Graphics Blueprint & Prompt**: [`prompts/motion_graphics_showreel.md`](prompts/motion_graphics_showreel.md)
-* **In-App Viewer**: Click the **🎬 Motion Edit** button in the top navigation bar of Zoth Civilization (`http://localhost:9393`) to watch the 24-second 60fps gameplay motion edit combining 3D Orbital God's Eye view, 3D Colony flyovers, 3D Surface Walk POV with live proximity voice dialogue, the 16-Bit Game Boy Pixel World, the B.O.T.A. Adytum Initiation Chamber (Keys 0–21), and the $100K Sovereign Conclave.
+`zoth-civilization` maps real-world engineering artifacts in a local workspace (`WORKSPACE_ROOT`, defaulting to `~/NullAITech`) to persistent buildings, colonies, and deliberative rituals inhabited by the 21 Pantheon agents (plus station keepers and subagent lineages).
 
----
-
-## 🌟 Overview
-
-**Zoth Civilization** is a long-horizon multi-agent operating simulation where **21 Pantheon Agents** continuously live, communicate, and build inside a 16-bit / Game Boy Advance top-down retro pixel world.
-
-The civilization is bound directly to the user's physical workspace (`~/NullAITech`):
-* **Websites & Frontend UIs** $\rightarrow$ Alchemical Villas, Houses, and Palaces.
-* **CLI Engines, AST Parsers & Refactors** $\rightarrow$ Blacksmith Foundries and Workshops.
-* **Knowledge Graphs & Answer Engines** $\rightarrow$ Great Scriptoriums and Libraries.
-* **Memory Daemons & STDP Synapses** $\rightarrow$ Deep Memory Monoliths and Obelisks.
-* **Cryptographic Vaults & OWASP Sentinels** $\rightarrow$ Bastions, Citadels, and Zero-Knowledge Crypts.
-* **Inter-Agent Bridges & Serial Meshes** $\rightarrow$ Arched Bridges and Celestial Aqueducts.
+Core view modes and subsystems:
+- **3D Orbital Planet, Colony Flyovers & Surface Walk POV (`public/sphere_world.js`, `public/interplanetary_system.js`)**: WebGL planet view, surface exploration camera, proximity agent speech bubbles, and orbital moon telemetry ring.
+- **16-Bit Top-Down Pixel World (`public/app.js`, `public/civ_gameplay_engine.js`)**: Animated sprite agents, cadence-driven collaboration, building upgrades, and click-to-inspect agent ledgers.
+- **The Adytum Hermetic Path (`engine/adytum_rite.js`, `data/adytum_keys.json`)**: Sequential cyclic contemplation across Keys `0` (`The Fool`, Aleph) through `21` (`The World`, Tav), coupling subconscious pattern distillation (`GET /api/subconscious`) with structured planning questions before task execution.
+- **Living Mind Graph (`engine/mind_engine.js`)**: Append-only episodic memory ledgers, working-set caches, and relational mind graphs (`GET /api/mind`, `GET /api/mind/graph`), keeping runtime state strictly untracked inside `data/minds/`.
+- **OBS Stream Overlay (`public/civ_pass2.js`)**: Dedicated 1920x1080 broadcast source at `http://127.0.0.1:9393/?overlay=1` (`&map=big`, `&view=surface`, `&mute=1`, `&transparent=1`; toggle in-tab via `Shift+O`).
 
 ---
 
-## 🔮 The Adytum Hermetic Path (Keys 0 to 21)
+## Hermes Agent & DeepSeek-Flash Onboarding
 
-Before executing work, each agent steps through the **Adytum Initiation Chamber**, following a calm, meditative cadence (no rushing or hallucinatory loops) to ground their architectural decisions:
+`zoth-civilization` runs offline out of the box using deterministic sandbox heuristics, and upgrades to live low-latency LLM dialogue via **Nous Research Hermes Agent** and **DeepSeek-Flash**:
 
-1. **Cyclic Hermetic Progression**:
-   * Begins at **Key 0: The Fool** (Aleph, Limitless Life-Power, Cosmic Egg, Scintillating Intelligence).
-   * Advances through all 22 Keys sequentially.
-   * Concludes at **Key 21: The World** (Tav, Cosmic Integration, Cosmic Dance).
-   * **Repeats perpetually**, renewing the Great Work just like a true initiate of the Hermetic culture.
-2. **Vision Analysis of B.O.T.A. Tarot**:
-   * Uses authentic high-resolution Paul Foster Case Tarot artwork.
-   * Analyzes sacred geometric symbols (Wand of Will, Rose of Purified Desire, Dog of Intellect, Twin Pillars, Cube of Space).
-3. **Subconscious & Superconscious Emergence**:
-   * **Subconscious Layer**: Stores associative pattern traces, dream consolidation, and hippocampal memories via [`neuro-memory-daemon`](file:///opt/neuro-memory-daemon).
-   * **Superconscious Layer**: Derives macro-intentions, sovereign purpose, and ethical non-hallucinatory planning before code is generated.
-
----
-
-## 🛡️ The 21 Pantheon Agents & Cadres
-
-| Cadre | Agent | Role | Pet | Affiliated Building |
-| :--- | :--- | :--- | :---: | :--- |
-| **Architects** | **AZOTH** | Sovereign Alchemist & Prime Architect | 🐺 | Azoth Alchemical Manor |
-| | **NEXUS** | Lead Architect & Quantum Synthesis | 🌌 | Quantum 3D Observatory |
-| | **VIGIL** | Cosmic Reasoner & AST Arbiter | 👁️ | AST Sanctuary |
-| | **MERCURY** | Tool-Calling Executor & Release Hardener | 🐲 | Forge Workshop |
-| | **GHOSTBYTE** | Zero-Knowledge Vault Sentinel | 👻 | ZK Crypt |
-| | **ATHENA** | AEO Knowledge Architect | 🦉 | The Great Scriptorium |
-| **Code** | **CHRONOS** | Temporal DAG Sequencer & Git Navigator | ⌛ | Temporal Clocktower |
-| | **DRACO** | Multi-Model Consensus & Fusion Arbiter | 🐉 | Consensus Council |
-| | **IGNIS** | Refactor Engine & Pipeline Finisher | 🔥 | Refactor Furnace |
-| | **KAI** | Workspace Inspector & Static Analysis | ⚔️ | Audit Observatory |
-| **Security** | **LYCAN** | OWASP Sentinel & Security Hardening | 🐺 | Sentinel Bastion |
-| | **ONYX** | Red-Team Threat Auditor | 💎 | HexStrike Proving Arena |
-| | **SCORPIUS** | Zero-Day Gatekeeper | 🦂 | Zero-Day Keep |
-| | **PIXEL-SHIBA** | Argon2id Hardware Key Guardian | 🐕 | Argon2id Vault |
-| **Creative** | **KITSUNE** | Taste, Motion & Accessibility | 🦊 | Aesthetic Palace |
-| | **LEVIATHAN** | Deep Tensor & Vector Memory Recall | 🐋 | Neuro-Memory Monolith |
-| | **AQUILA** | Edge Dispatcher & Low-Latency Mesh | 🦅 | Lightning Tower |
-| **Swarm** | **KRAKEN** | ESP32 Serial Bridge & Packet Sniffer | 🦑 | Oceanic Harbor |
-| | **AETHER** | Swarm Overlord & Peer Bus Synchronizer | ⚡ | Celestial Nexus |
-| | **PIXEL-NEKO** | Tool Bench Librarian & Connector Bridge | 🐱 | Tool Bazaar |
-| | **RADICAL-MINION** | Fast-Loop Subagent Runner | 👾 | Subagent Hatchery |
+1. **In-Browser BYOK Sign-In (`public/zoth_game_intro.js`)**:
+   - Press `I` inside `http://127.0.0.1:9393` (or open the AI Sign-In drawer from the intro bar) and select **Hermes Agent x DeepSeek Flash** (`hermes_deepseek_flash`).
+   - Supported model presets include `deepseek/deepseek-v4-flash-0731`, `deepseek/deepseek-chat-v3-0324`, `deepseek-chat`, and `nousresearch/hermes-3-llama-3.1-70b` (plus `Hermes-3-Llama-3.1-405B` via `inference-api.nousresearch.com`).
+   - Requests route through `POST /api/llm/proxy` (`server.js`), an allowlisted stateless CORS forwarder (`openrouter.ai`, `api.nousresearch.com`, `api.deepseek.com`, `api.openai.com`, `api.anthropic.com`, `127.0.0.1`) that stores zero API keys on disk.
+2. **Hermes Agent CLI Integration**:
+   ```bash
+   hermes --model deepseek/deepseek-v4-flash-0731
+   ```
+3. **Local Ollama / Hermes-3 Voice-in-World (`engine/local_talk.js`)**:
+   - For 100% air-gapped dialogue (`POST /api/subconscious/influence`), `local_talk.js` queries `http://127.0.0.1:11434/api/chat` using `ZOTH_TALK_MODEL` (default `hermes3-teknium:latest`, configurable to `hermes3:8b` or `deepseek-r1:8b`). Warm the model via `POST /api/talk/warm`.
 
 ---
 
-## 🎮 Features & View Modes
+## Architecture
 
-1. **🎮 Game Boy Retro Pixel World**:
-   * 16-bit / GBA top-down pixel canvas with cobblestone paths, winding river, plaza, and buildings.
-   * 21 animated pixel agents with walking physics and signature trailing pets.
-   * Dynamic gold-bordered speech bubbles popping up during inter-agent collaboration.
-   * Pan, zoom, and click-to-inspect agent/building profiles.
-2. **🔮 Adytum Initiation Chamber**:
-   * Live high-res Tarot card showcase, Hebrew glyphs, Astrological & Cube of Space correspondences.
-   * Prana breathing countdown timer ring.
-   * 22-Card Journey Interactive Map tracking every agent's location on the path.
-3. **🛰️ Cockpit / Telemetry Graph View**:
-   * Interactive circular node-link graph connecting all 21 agents with Cadre color-coding.
-   * Animated message packets flowing between nodes on communication events.
-   * Real-time telemetry gauges (Prana Harmonics, CA3 Memory Density, Adytum Cycles, Workspace Artifacts).
-4. **📜 Mission Control & Chronicle**:
-   * Set civilization scope and duration horizon (24h, 3 days, 7 days, 30 days, or continuous eternal).
-   * Inspect all physical workspace repositories and real-time construction level progression.
-
----
-
-## 🚀 Quick Start on ZothOS
-
-### Desktop App (Electron)
-Launch directly from the ZothOS Application Menu or Desktop icon, or via CLI:
-```bash
-/opt/zoth-civilization/bin/zoth-civ
-```
-
-### Local Web Mode (Any Browser)
-Run the pure Node.js server with zero external npm dependencies:
-```bash
-cd /opt/zoth-civilization
-npm run web
-# Open http://localhost:9393 in your browser
-```
-
-### ZothOS CLI & MCP Suite
-
-```bash
-# Query live simulation telemetry (day, hour, ticks, cycles, treasury)
-zoth-civilization status
-# or with alias
-zoth-civ --json
-
-# Query recent mental reflections from the 21 Pantheon agents
-zoth-civ reflections
-
-# Check installation and workbench route
-zoth-civilization --status
-```
-
----
-
-## ⚔️ Pantheon 21 RPG Character & 84-Ability Engine (v3.5)
-
-**Zoth Civilization v3.5** introduces a full RPG character, class, stat, and ability system (`src/pantheon_abilities.js`) across all 21 Pantheon agents:
-
-- **84 Unique Abilities (`Q` Primary, `W` Tactical, `E` Defensive/Utility, `R` Ultimate)**:
-  - Each of the 21 agents wields 4 deterministic abilities with real workspace effects, cooldown timers, mana/prana costs, and particle VFX.
-- **21×21 Cross-Agent Synergy Matrix**:
-  - Casting linked abilities within the combo window triggers cross-cadre elemental and architectural synergy multipliers (`POST /api/pantheon/combo`).
-- **REST Endpoints**:
-  - `GET /api/pantheon` — Full 21-agent RPG roster, stats (`INT`, `WIS`, `DEX`, `STR`, `CHA`, `LCK`), levels, and equipped artifacts.
-  - `POST /api/pantheon/:id/cast` — Cast ability `Q`, `W`, `E`, or `R` for agent `:id`.
-  - `POST /api/pantheon/combo` — Execute dual-agent synergy combo.
-
----
-
-## ☕ 100% Free Open Access & Sovereign Architecture
-
-Every tool and simulation environment across the Zoth ecosystem is **100% free, open, and unlocked by default**. Zero paywalls, zero license modals, zero blur locks.
-
-If you appreciate the living sovereign architecture of Zoth Civilization, consider supporting the continuous development:
-
-* **☕ Buy Us a Coffee (Stripe)**: [buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)
-* **◎ Solana Tip Address**: `GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK` (`solana:GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK`)
-
----
-
-## 🏛️ Author & Entity
-
-* **Creator**: 1nc0gn30
-* **Entity**: 1nc0gn30 • NullAI
-* **GitHub**: [1nc0gn30](https://github.com/1nc0gn30)
-* **Hub**: [nullai.tech](https://nullai.tech) • [zoth.nullai.tech](https://zoth.nullai.tech)
-
-## Stream overlay (OBS) and UI pass 2
-
-- **OBS browser source:** `http://127.0.0.1:9393/?overlay=1` at **1920×1080**. Shows the orbiting planet,
-  a lower third (Imperator, decree, treasury bar, chatter ticker), a rotating speaker spotlight,
-  the realm map and event toasts. Toggle in a normal tab with **Shift+O**; **M** expands the map.
-  - `&map=big`: large realm map · `&view=surface`: keep the walk camera · `&mute=1`: no sounds
-  - `&transparent=1`: overlay graphics only, for compositing over another scene
-- **Realm map** (bottom-left): live 2D map of cities, halls, roads and animated agent sprites
-  (state rings, trails, leader crown, speech pips). Hover for details, click to focus an agent.
-- **Event feedback:** heralds for new decrees and elections, coin bursts for treasury income,
-  toasts for conclaves and city migrations, with sounds through the existing SFX toggle.
-- Files: `public/civ_pass2.js`, `public/civ_pass2.css`. It reads only `civ:snapshot`/`civ:sse` events and calls no write APIs.
-
----
-
-## 🏛️ ZothOS v3.4, Zoth Studio v2 & Obsidian Second Brain Ecosystem
-
-```mermaid
-flowchart LR
-    subgraph ZothOS["🐧 ZothOS v3.4 CLI & Braille TUI"]
-        CLI["zoth-civilization --help / --json"]
-        TUI["zoth-civilization-tui<br/>Unicode U+2800 2x4 Braille"]
-    end
-
-    subgraph Workstation["⚡ Sovereign Workstation"]
-        WEB["http://127.0.0.1:9393<br/>REST API & /health"]
-    end
-
-    subgraph Studio["🌌 Zoth Studio v2 & ZothOS-Lite"]
-        GODMODE["http://127.0.0.1:3000/tools/zoth-civilization<br/>God-Mode Workstation"]
-        LITE["http://127.0.0.1:8145<br/>ZothOS-Lite Web Desktop"]
-    end
-
-    subgraph SecondBrain["💎 Obsidian Second Brain & STDP"]
-        TRACKER["http://127.0.0.1:8151<br/>Zoth Obsidian Tracker"]
-        NEURO["http://127.0.0.1:8094<br/>Neuro-Memory STDP Cortex"]
-        NOTE["Studio/Tools/Studio zoth-civilization.md"]
-    end
-
-    CLI --> WEB
-    TUI --> WEB
-    WEB <--> GODMODE
-    WEB <--> LITE
-    WEB --> TRACKER
-    TRACKER <--> NOTE
-    NOTE <--> NEURO
-```
-
-### Cross-Surface Integration Matrix
-
-| Surface | Endpoint / Binary | Capabilities |
+| Component | Path | Responsibility |
 | :--- | :--- | :--- |
-| **Standalone Workstation** | `http://127.0.0.1:9393` | 100% Free & Open-Access Web Deck, live `/health` & REST telemetry |
-| **Zoth Studio v2 Route** | `http://127.0.0.1:3000/tools/zoth-civilization` | Interactive God-Mode component inside Zoth Studio (`https://zoth.nullai.tech`) |
-| **ZothOS v3.4 CLI & TUI** | `zoth-civilization` / `zoth-civilization-tui` | Global binary in `/usr/local/bin/` with Unicode `U+2800` Braille TUI & `--json` output |
-| **ZothOS-Lite Web Desktop** | `http://127.0.0.1:8145` | Browser-native KDE-style window manager & terminal launcher |
-| **Zoth Obsidian Tracker** | `http://127.0.0.1:8151` | Interactive Obsidian Second Brain vault explorer (`~/Documents/Obsidian Vault/Studio/Tools/Studio zoth-civilization.md`) |
-| **Neuro-Memory STDP Cortex** | `http://127.0.0.1:8094` | 3-Factor STDP synaptic memory daemon & 21-tool MCP server |
+| HTTP & SSE Daemon | `server.js` | Zero-npm-dependency Node.js server on `127.0.0.1:9393` with gzip static serving, SSE (`/api/stream`), and `/api/*` routes |
+| Simulation Core | `engine/simulation.js`, `workflow_engine.js` | Tick clock, workspace building mapper, elections, decrees, and subconscious distillation |
+| Living Mind Engine | `engine/mind_engine.js`, `agent_ledger.js` | Episodic agent memories, working sets, and graph edges (`data/minds/`, gitignored) |
+| Local Dialogue & TTS | `engine/local_talk.js`, `voice.js` | Ollama `hermes3-teknium:latest` one-sentence dialogue + thermal-guarded Kokoro ONNX TTS (`<55C` ceiling) |
+| Zero-Leak Secret Guard | `engine/secret_scanner.js` | Pre-commit and CI scanner blocking live keys, PEM blocks, and runtime state dumps |
+| CLI & Braille TUI | `bin/zoth-civ`, `bin/zoth-civilization-tui` | CLI status/reflection client, daemon launcher, and ZothOS v3.4.0 `U+2800` Braille TUI |
+| Static Seed Data | `data/*.json`, `public/seed/*.json` | Versioned read-only definitions (`pantheon_agents.json`, `adytum_keys.json`, `civilization_buildings.json`); all personal play history (`data/civilization_state.json`, `data/meditations/`, `data/minds/`) is gitignored |
+
+### The 21 Core Pantheon Agents
+
+| Cadre | Agents |
+| :--- | :--- |
+| `Architects` (6) | `AZOTH`, `NEXUS`, `VIGIL`, `MERCURY`, `GHOSTBYTE`, `ATHENA` |
+| `Code` (4) | `CHRONOS`, `DRACO`, `IGNIS`, `KAI` |
+| `Security` (4) | `LYCAN`, `ONYX`, `SCORPIUS`, `PIXEL-SHIBA` |
+| `Creative` (3) | `KITSUNE`, `LEVIATHAN`, `AQUILA` |
+| `Swarm` (4) | `KRAKEN`, `AETHER`, `PIXEL-NEKO`, `RADICAL-MINION` |
+
+---
+
+## Quickstart & Local Daemon Operation
+
+Clone the repository and start the standalone Node.js daemon (Node.js 18+, zero `npm install` runtime packages required):
 
 ```bash
-# Inspect CLI & Unicode U+2800 Braille TUI on ZothOS v3.4
-zoth-civilization --help
-zoth-civilization-tui --status
-zoth-civilization-tui --json
+git clone https://github.com/1nc0gn30/zoth-civilization.git
+cd zoth-civilization
 
-# Verify Second Brain Vault & 12-Step Verification Gallery on :8151
-zoth-obsidian-tracker --verify
+# Optional: copy environment template for local customization
+cp .env.example .env.sovereign
+
+# Start the local HTTP & SSE daemon on http://127.0.0.1:9393
+npm start
 ```
 
+Open `http://127.0.0.1:9393` in any modern browser. If port `9393` is already bound by an active daemon instance, `startServer()` detects `EADDRINUSE` cleanly without clobbering live simulation state.
+
+---
+
+## CLI Usage
+
+```bash
+# Check daemon status, day/hour, total ticks, and completed Adytum cycles
+./bin/zoth-civ status
+./bin/zoth-civ --json
+
+# Retrieve recent Pantheon agent reflections
+./bin/zoth-civ reflections
+
+# Start the daemon on a custom port (with Kokoro thermal guard active)
+./bin/zoth-civ serve --port 9393
+```
+
+On ZothOS v3.4.0, `zoth-civilization` (alias `zoth-civ`) and `zoth-civilization-tui` are pre-linked in `/usr/local/bin/`:
+
+```bash
+zoth-civilization --help
+zoth-civilization --json
+zoth-civilization-tui --status
+```
+
+---
+
+## REST & SSE Endpoints
+
+| Method | Path | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/system/health` | Process uptime, heap/RSS memory, CPU thermal reading (`55C` guard), voice status, and agent/colony counts |
+| `GET` | `/api/status`, `/api/stats` | Full civilization state (`day`, `hour`, `totalTicks`, `agents`, `buildings`, `tarotKeys`) |
+| `GET` | `/api/stream` | Real-time `text/event-stream` SSE feed of simulation ticks and agent dialogue |
+| `GET` | `/api/adytum`, `/api/adytum/status` | Active Adytum Hermetic Key (`0-21`) progression across agents |
+| `GET` | `/api/reflections` | Recent agent contemplation entries |
+| `GET` | `/api/mind`, `/api/mind/graph`, `/api/mind/roster` | Living Mind episodic working sets, relational graph, and full roster |
+| `GET` | `/api/subconscious` | Distilled subconscious heuristic snapshot |
+| `POST` | `/api/subconscious/influence` | Send an operator conversation line or assignment to `agentId` |
+| `POST` | `/api/control`, `/api/scope` | Pause/resume simulation ticks or update simulation horizon |
+| `POST` | `/api/llm/proxy` | Stateless allowlisted CORS proxy for BYOK Hermes / DeepSeek-Flash / OpenRouter inference |
+| `GET` | `/api/voice/status`, `POST /api/voice/speak` | Kokoro ONNX voice synthesis status and WAV audio generation |
+
+---
+
+## Zoth Studio v2 Integration
+
+Indexed as `zoth-civilization` at [https://zoth.nullai.tech/tools/zoth-civilization](https://zoth.nullai.tech/tools/zoth-civilization) (`http://127.0.0.1:3000/tools/zoth-civilization`), streaming live state from `http://127.0.0.1:9393/api/status` and `/api/stream`.
+
+---
+
+## Testing & Verification
+
+Run syntax verification across all 19 Node.js engine modules, the Ghostbyte zero-leak secret scanner, pytest integration checks, and Gitleaks:
+
+```bash
+npm test
+python3 -m pytest -q
+gitleaks detect --source . --no-banner --redact
+```
+
+---
+
+## License
+
+MIT License. Copyright (c) 2026 1nc0gn30 (`@1nc0gn30`, [https://1nc0gn30.si](https://1nc0gn30.si)) & NullAI ([https://nullai.tech](https://nullai.tech)). See [LICENSE](LICENSE).

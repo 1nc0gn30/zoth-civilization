@@ -113,8 +113,7 @@ def main():
         },
         "license": "100% Free & Open Access (Zero Paywalls)",
         "support": {
-            "stripe_buy_coffee": "https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X",
-            "solana_wallet": "GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK"
+            "stripe_buy_coffee": "https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X"
         },
         "status": "READY"
     }
@@ -130,7 +129,7 @@ def main():
     print(f"  Daemon     : {'ONLINE (Live)' if is_online else 'OFFLINE'}")
     if is_online:
         print(f"  Simulation : Day {st.get('day')} (Hour {st.get('hour')}) | Ticks: {st.get('totalTicks'):,} | Cycles: {st.get('completedAdytumCycles')}")
-    print(f"  Access     : 100% Free & Open Access (☕ https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X | ◎ GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK)")
+    print(f"  Access     : 100% Free & Open Access (https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)")
 
 if __name__ == '__main__':
     main()
