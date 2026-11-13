@@ -181,10 +181,7 @@
           return;
         }
 
-        const isAutomation = !!(navigator.webdriver || qs.get('intro') === '0');
-        if (!isAutomation && !localStorage.getItem(SEEN_KEY)) {
-          setTimeout(() => this.open(1), 320);
-        }
+        // Do not auto-open blocking intro modal; open directly into Zoth Civilization 3D world
       };
 
       if (document.body) {
