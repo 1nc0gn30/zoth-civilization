@@ -254,7 +254,7 @@
           leaderId: 'AZOTH',
           leaderName: 'AZOTH',
           title: 'Sovereign Open-Access Mandate',
-          mandate: 'All 23 Pantheon Minds & 77 Sovereign Tools unlocked at 60 FPS.'
+          mandate: 'All 23 Pantheon Minds & 80 Sovereign Tools unlocked at 60 FPS.'
         }
       };
     }
