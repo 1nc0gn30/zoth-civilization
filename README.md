@@ -145,6 +145,14 @@ gitleaks detect --source . --no-banner --redact
 
 ---
 
+## Support
+
+Zoth Civilization v3.0 is 100% free and open-access with zero paywalls. Optional support:
+- [Buy Us a Coffee (Stripe)](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)
+- **Solana Tip Address**: `GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK`
+
+---
+
 ## License
 
-MIT License. Copyright (c) 2026 1nc0gn30 (`@1nc0gn30`, [https://1nc0gn30.si](https://1nc0gn30.si)) & NullAI ([https://nullai.tech](https://nullai.tech)). See [LICENSE](LICENSE).
+MIT License. Copyright (c) 2026 **Neal Frazier Tech (@1nc0gn30) • NullAI Platform** · [GitHub (zoth-civilization)](https://github.com/1nc0gn30/zoth-civilization) · [NullAI Platform](https://nullai.tech). See [LICENSE](LICENSE).
