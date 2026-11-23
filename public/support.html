@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support & FAQ — Zoth Civilization</title>
-  <meta name="description" content="Direct customer support desk, 30-day refund assistance, and comprehensive FAQ for Zoth Civilization by 1nc0gn30 • NullAI.">
+  <title>Support &amp; FAQ — Zoth Civilization</title>
+  <meta name="description" content="Direct developer support desk, open-access FAQ, and voluntary community support for Zoth Civilization by Neal Frazier Tech (@1nc0gn30) • NullAI Platform.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://zoth_civ.netlify.app/support.html">
 
-  <meta property="og:title" content="Support & FAQ — Zoth Civilization">
-  <meta property="og:description" content="Get direct support, instant license recovery, 30-day refunds, and answers to common questions about Zoth Civilization.">
+  <meta property="og:title" content="Support &amp; FAQ — Zoth Civilization">
+  <meta property="og:description" content="Direct developer support and answers to common questions about Zoth Civilization (100% free &amp; open-access).">
   <meta property="og:url" content="https://zoth_civ.netlify.app/support.html">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -203,18 +203,18 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "How does the $0 founding member lifetime license work?",
+            "name": "Is Zoth Civilization 100% free and open-access?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Founding members receive lifetime access to all Pro features with no recurring subscriptions. 1-click activation unlocks all export rails and features permanently in your browser."
+              "text": "Yes. Zoth Civilization is 100% free, open-access, and unlocked by default with zero subscriptions or feature locks."
             }
           },
           {
             "@type": "Question",
-            "name": "How do I request a refund?",
+            "name": "How can I support ongoing development?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Email 1nc0gn30@nullai.tech with your receipt or checkout email for an unconditional 100% refund within 30 days of purchase."
+              "text": "Voluntary community tips are welcomed via Stripe Buy Us a Coffee (https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X) or Solana tip (GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK)."
             }
           },
           {
@@ -247,31 +247,34 @@
         <a href="/" class="nav-link">← Workspace</a>
         <a href="/terms.html" class="nav-link">Terms</a>
         <a href="/privacy.html" class="nav-link">Privacy</a>
-        <a href="/support.html" class="nav-link active">Support & FAQ</a>
+        <a href="/support.html" class="nav-link active">Support &amp; FAQ</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <h1 class="page-title">Support & Knowledge Center</h1>
-    <p class="page-meta">24/7 Sovereign Customer Support, Instant Key Recovery, and FAQ</p>
+    <h1 class="page-title">Support &amp; Knowledge Center</h1>
+    <p class="page-meta">100% Free &amp; Open-Access Utility • Direct Developer Support &amp; FAQ</p>
 
     <div class="support-grid">
       <div class="support-card">
-        <h3>🔑 Instant Key Recovery</h3>
-        <p>Purchased Pro but cleared your browser cache? Enter your checkout email to restore access.</p>
-        <form onsubmit="handleRestore(event)">
-          <input type="email" id="restoreEmail" placeholder="your-checkout-email@example.com" required>
-          <button type="submit" class="btn btn-primary" style="width: 100%;">Recover Pro License</button>
-        </form>
-        <div id="restoreMsg" style="font-size: 0.82rem; margin-top: 0.5rem; display: none;"></div>
+        <h3>☕ Support Open-Access Tools</h3>
+        <p>Zoth Civilization is 100% free with zero paywalls. If it helps your workflow, consider leaving an optional tip.</p>
+        <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+          <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; background: #D4AF37; color: #08080B;">
+            ☕ Buy Us a Coffee (Stripe)
+          </a>
+          <button type="button" onclick="copySolanaWallet(this)" class="btn btn-secondary" style="width: 100%; color: #14F195; border-color: rgba(20, 241, 149, 0.45);">
+            ◎ Copy Solana Tip (GG2eQb…dXoK)
+          </button>
+        </div>
       </div>
 
       <div class="support-card">
         <h3>💬 Direct Developer Support</h3>
-        <p>Need custom integrations, volume licensing, or have a technical question?</p>
+        <p>Have a technical question, bug report, or feature request?</p>
         <p style="color: #CBD5E1; font-size: 0.85rem; margin-bottom: 1.25rem;">
-          Direct communication with lead engineer <strong>1nc0gn30</strong> (@1nc0gn30).
+          Direct communication with <strong>Neal Frazier Tech</strong> (@1nc0gn30).
         </p>
         <a href="mailto:1nc0gn30@nullai.tech?subject=Zoth%20Civilization%20Support%20Request" class="btn btn-secondary" style="width: 100%;">
           Email 1nc0gn30@nullai.tech
@@ -283,21 +286,11 @@
       <h2>Frequently Asked Questions</h2>
       <div class="faq-item open">
         <div class="faq-question" onclick="toggleFaq(this)">
-          How does the $0 Lifetime Pro license work?
+          Is Zoth Civilization 100% free and unlocked?
           <span class="faq-toggle">▼</span>
         </div>
         <div class="faq-answer">
-          The $0 Pro license gives you lifetime access without recurring monthly subscriptions. It unlocks all advanced exports, AST transformations, and commercial project rights permanently in your browser.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          What is the refund policy?
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-answer">
-          We offer an unconditional 30-day money-back guarantee. If you are not satisfied for any reason, email <code>1nc0gn30@nullai.tech</code> with your receipt for a 100% full refund within 24 to 48 hours.
+          Yes. Every tool, export, and workstation feature is 100% free and unlocked by default with zero subscriptions, accounts, or activation keys required.
         </div>
       </div>
 
@@ -313,11 +306,11 @@
 
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
-          What payment methods are supported?
+          How can I support ongoing open-source development?
           <span class="faq-toggle">▼</span>
         </div>
         <div class="faq-answer">
-          We accept Credit Cards, Apple Pay, Google Pay via Stripe, and peer-to-peer Web3 payments via Solana Tip on the Solana blockchain.
+          Voluntary tips are welcomed via <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">Stripe Buy Us a Coffee</a> or Solana Tip (<code>GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK</code>).
         </div>
       </div>
     </div>
@@ -325,13 +318,13 @@
 
   <footer>
     <div class="footer-inner">
-      <div>Engineered by 1nc0gn30 • NullAI (<a href="https://github.com/1nc0gn30" target="_blank" style="color: var(--primary); text-decoration: none;">@1nc0gn30</a>) • NullAI Platform</div>
+      <div>Engineered by Neal Frazier Tech (<a href="https://github.com/1nc0gn30" target="_blank" rel="noopener" style="color: var(--primary); text-decoration: none;">@1nc0gn30</a>) • NullAI Platform</div>
       <div class="footer-links">
         <a href="/">Workspace</a>
         <a href="/terms.html">Terms</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/support.html">Support</a>
-        <a href="https://github.com/1nc0gn30" target="_blank">GitHub</a>
+        <a href="https://github.com/1nc0gn30" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </footer>
@@ -340,17 +333,14 @@
     function toggleFaq(el) {
       el.parentElement.classList.toggle('open');
     }
-    function handleRestore(e) {
-      e.preventDefault();
-      const email = document.getElementById('restoreEmail').value.trim();
-      const msg = document.getElementById('restoreMsg');
-      if (email) {
-        localStorage.setItem('zoth_civ_pro_licensed', 'true');
-        localStorage.setItem('zoth_civ_license_email', email);
-        msg.style.display = 'block';
-        msg.style.color = '#10B981';
-        msg.innerHTML = '✓ Pro license recovered for ' + email + '! Redirecting to workspace...';
-        setTimeout(() => { window.location.href = '/?licensed=true'; }, 1200);
+    function copySolanaWallet(btn) {
+      const addr = 'GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(addr).then(() => {
+          const orig = btn.textContent;
+          btn.textContent = '✓ Copied GG2eQb…dXoK!';
+          setTimeout(() => { btn.textContent = orig; }, 2200);
+        }).catch(() => {});
       }
     }
   </script>
