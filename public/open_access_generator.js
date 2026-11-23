@@ -1,108 +1,52 @@
 /**
- * ⚡ ZOTH CIVILIZATION — SOVEREIGN MONETIZATION & CONVERSION ENGINE
+ * ⚡ ZOTH CIVILIZATION — OPEN-ACCESS SITE & 21-AGENT SWARM GENERATOR
  * =====================================================================
- * Implements the full Sovereign Micro-SaaS Conversion Architecture:
- * 1. Above-the-fold Sales Funnel Banner (#funnelHeroBanner) with $0 Open-Access Sovereign / $0 All-Access Bundle
- * 2. Header Dual Cash Registers (#headerProContainer + Solana Tip Solana Widget)
- * 3. Interactive Try-Before-You-Buy Revenue Tool:
- *    - Mode A: Instant Local Trade Website & Schema.org Generator (City Desk Engine)
- *    - Mode B: Autonomous 21-Agent Swarm & MCP Config Architect
- * 4. Frosted Glass Output Paywall Blur (#outputPreview + #outputPaywallOverlay)
- * 5. Copy / Download Action Interceptors -> High-Converting Pro Paywall Modal (#proPaywallModal)
- * 6. Instant Client-Side License Activation (?licensed=true or email/key input -> ⭐ PRO ACTIVE)
- * 7. 3D World Colony & Agent Encounter Cash Registers
+ * 100% free, open-access client-side generator & voluntary support links:
+ * 1. Instant Local Trade Website & Schema.org Generator (City Desk Engine)
+ * 2. Autonomous 21-Agent Swarm & MCP Config Architect
+ * 3. Direct Copy & Download (zero paywalls, zero gating)
+ * 4. Optional "Buy Us a Coffee" (Stripe) & Solana Tip support links
  *
- * Engineered by 1nc0gn30 (@1nc0gn30) • NullAI Platform
+ * Engineered by Neal Frazier Tech (@1nc0gn30) • NullAI Platform
  */
 
 (function () {
   'use strict';
 
   const COFFEE_LINK = 'https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X';
-  const STRIPE_LINKS = {
-    civPro: COFFEE_LINK,
-    allAccessBundle: COFFEE_LINK,
-    cityDeskPro: COFFEE_LINK,
-    cityDeskDfy: COFFEE_LINK,
-    aeoGraph: COFFEE_LINK,
-    envGuard: COFFEE_LINK,
-    promptMaster: COFFEE_LINK,
-    cwvSpeed: COFFEE_LINK,
-    badge3d: COFFEE_LINK,
-    robotsAuditor: COFFEE_LINK,
-    customDeposit99: COFFEE_LINK,
-    customSwarm997: COFFEE_LINK
-  };
-
   const SOL_WALLET = 'GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK';
 
-  const COLONY_OFFERS = {
+  const COLONY_INFO = {
     colony_capital: {
       title: 'Zoth Studio & Civilization (Open Access)',
-      price: '☕ Buy Us a Coffee',
-      bundlePrice: '◎ Solana Tip',
-      url: COFFEE_LINK,
-      bundleUrl: COFFEE_LINK,
       desc: 'Full 21-agent orchestration, unlimited City Desk exports, and Zoth Studio desktop binaries.'
     },
     colony_adytum_grove: {
       title: 'AEO Knowledge Graph Engine (Open Access)',
-      price: '☕ Buy Us a Coffee',
-      bundlePrice: '◎ Solana Tip',
-      url: COFFEE_LINK,
-      bundleUrl: COFFEE_LINK,
       desc: 'Answer Engine Optimization (Perplexity, ChatGPT, Google SGE) & JSON-LD Schema.org graph builder.'
     },
     colony_sol_crypta: {
       title: 'EnvGuard Zero-Knowledge Secrets Vault (Open Access)',
-      price: '☕ Buy Us a Coffee',
-      bundlePrice: '◎ Solana Tip',
-      url: COFFEE_LINK,
-      bundleUrl: COFFEE_LINK,
       desc: 'Client-side AES-GCM-256 & Argon2id .env encryption and leak scanner.'
     },
     colony_nova_zoth: {
       title: 'City Desk Local Trade Website Engine (Open Access)',
-      price: '☕ Buy Us a Coffee',
-      bundlePrice: '◎ Solana Tip',
-      url: COFFEE_LINK,
-      bundleUrl: COFFEE_LINK,
       desc: 'Production-ready local contractor websites with LocalBusiness schema and instant quote intake.'
     },
     colony_hex_bastion: {
       title: 'CWV Speed Engine & Robots.txt Auditor (Open Access)',
-      price: '☕ Buy Us a Coffee',
-      bundlePrice: '◎ Solana Tip',
-      url: COFFEE_LINK,
-      bundleUrl: COFFEE_LINK,
       desc: 'Core Web Vitals INP/LCP optimizer and AI crawler robots.txt validator.'
     }
   };
 
-  let isProLicensed = true;
   let currentMode = 'trade-site';
 
-  function checkProLicense() {
-    isProLicensed = true;
-    updateProUI();
-  }
-
-  function updateProUI() {
-    const overlay = document.getElementById('outputPaywallOverlay');
-    const preview = document.getElementById('outputPreview');
+  function updateHeaderSupportUI() {
     const headerPro = document.getElementById('headerProContainer');
-
-    if (overlay) overlay.style.display = 'none';
-    if (preview) preview.style.filter = 'none';
     if (headerPro) {
       headerPro.innerHTML =
         `<a href="${COFFEE_LINK}" target="_blank" rel="noopener noreferrer" style="color: #FFD97A; font-weight: 800; font-size: 11px; border: 1px solid rgba(233,196,106,0.5); background: rgba(233, 196, 106, 0.14); padding: 4px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">☕ Buy Us a Coffee</a>`;
     }
-  }
-
-  function activateProLicense() {
-    isProLicensed = true;
-    updateProUI();
   }
 
   function openSolanaTipCheckout() {
@@ -112,36 +56,14 @@
     window.open(COFFEE_LINK, '_blank', 'noopener');
   }
 
-  function openPaywallModal() {
-    const m = document.getElementById('proPaywallModal');
+  function openCoffeeSupportModal() {
+    const m = document.getElementById('coffeeSupportModal');
     if (m) m.style.display = 'flex';
   }
 
-  function closePaywallModal() {
-    const m = document.getElementById('proPaywallModal');
+  function closeCoffeeSupportModal() {
+    const m = document.getElementById('coffeeSupportModal');
     if (m) m.style.display = 'none';
-  }
-
-  function openLicenseActivationModal() {
-    closePaywallModal();
-    const m = document.getElementById('licenseModal');
-    if (m) m.style.display = 'flex';
-  }
-
-  function closeLicenseModal() {
-    const m = document.getElementById('licenseModal');
-    if (m) m.style.display = 'none';
-  }
-
-  function activateLicenseSubmit() {
-    const inp = document.getElementById('licenseKeyInput');
-    const val = inp ? inp.value.trim() : '';
-    if (val && val.length >= 3) {
-      activateProLicense(val);
-    } else if (inp) {
-      inp.style.borderColor = '#FB7185';
-      inp.focus();
-    }
   }
 
   function openSovereignGeneratorModal() {
@@ -267,11 +189,9 @@ ${JSON.stringify(schemaJson, null, 2)}
         securitySentinel: 'GHOSTBYTE (Key 4: The Emperor)',
         aeoArchitect: 'ATHENA (Key 2: The High Priestess)',
         commercialOutreach: 'MERCURY (Key 8: Strength)',
-        treasuryRails: {
-          stripeProLink: STRIPE_LINKS.civPro,
-          stripeBundleLink: STRIPE_LINKS.allAccessBundle,
-          solanaReceiver: SOL_WALLET,
-          solana_tipIntegrationId: SOLANA_TIP_INTEGRATION_ID
+        supportRails: {
+          buyUsACoffee: COFFEE_LINK,
+          solanaTipWallet: SOL_WALLET
         },
         mcpServers: {
           'zoth-netlify-ax': { url: 'https://zoth.nullai.tech/api/netlify-ax-mcp.json', mode: 'autonomous' },
@@ -284,14 +204,9 @@ ${JSON.stringify(schemaJson, null, 2)}
     if (outputEl) {
       outputEl.textContent = generatedCode;
     }
-    updateProUI();
   }
 
   function copyOutput() {
-    if (!isProLicensed) {
-      openPaywallModal();
-      return;
-    }
     const text = document.getElementById('outputPreview')?.innerText || '';
     if (navigator.clipboard && text) {
       navigator.clipboard.writeText(text);
@@ -305,10 +220,6 @@ ${JSON.stringify(schemaJson, null, 2)}
   }
 
   function downloadOutput() {
-    if (!isProLicensed) {
-      openPaywallModal();
-      return;
-    }
     const text = document.getElementById('outputPreview')?.innerText || '';
     const ext = currentMode === 'trade-site' ? 'html' : 'json';
     const blob = new Blob([text], { type: ext === 'html' ? 'text/html' : 'application/json' });
@@ -333,25 +244,23 @@ ${JSON.stringify(schemaJson, null, 2)}
     runSovereignGenerator();
   }
 
-  // Inject 1-Click Cash Registers into 3D Colony Settlement Card (#civicCard) & Agent Encounter (#globeEncounter)
-  function wire3DWorldCashRegisters() {
+  function wire3DWorldSupportCards() {
     const civicCard = document.getElementById('civicCard');
-    if (civicCard && !document.getElementById('civicCashRegister')) {
+    if (civicCard && !document.getElementById('civicSupportCard')) {
       const reg = document.createElement('div');
-      reg.id = 'civicCashRegister';
+      reg.id = 'civicSupportCard';
       reg.style.cssText = 'margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(233, 196, 106, 0.28);';
       reg.innerHTML = `
         <div style="font-size: 10px; font-weight: 800; color: #10B981; letter-spacing: 0.08em; margin-bottom: 6px;">✦ 100% FREE & OPEN ACCESS • COLONY SUPPORT</div>
         <div id="civicOfferTitle" style="font-size: 13px; font-weight: 800; color: #F8FAFC; margin-bottom: 4px;">Zoth Studio & Civilization (Open Access)</div>
         <div id="civicOfferDesc" style="font-size: 11px; color: #BDB6CF; margin-bottom: 10px; line-height: 1.4;">All 21 autonomous agents, City Desk HTML exports, and updates are 100% unlocked for free.</div>
         <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-          <a id="civicBtnStripe" href="${STRIPE_LINKS.civPro}" target="_blank" rel="noopener" style="flex: 1; text-align: center; padding: 8px 10px; border-radius: 8px; background: linear-gradient(135deg, #E9C46A, #F59E0B); color: #05050A; font-weight: 800; font-size: 11px; text-decoration: none;">☕ Buy Us a Coffee (Stripe)</a>
+          <a id="civicBtnStripe" href="${COFFEE_LINK}" target="_blank" rel="noopener" style="flex: 1; text-align: center; padding: 8px 10px; border-radius: 8px; background: linear-gradient(135deg, #E9C46A, #F59E0B); color: #05050A; font-weight: 800; font-size: 11px; text-decoration: none;">☕ Buy Us a Coffee (Stripe)</a>
           <button type="button" onclick="navigator.clipboard?.writeText('${SOL_WALLET}');this.textContent='✓ Copied SOL Wallet!';" style="flex: 1; padding: 7px 10px; border-radius: 8px; border: 1px solid #14F195; background: rgba(20, 241, 149, 0.12); color: #14F195; font-weight: 800; font-size: 11px; cursor: pointer;">◎ Solana Tip (GG2e...dXoK)</button>
         </div>
       `;
       civicCard.appendChild(reg);
 
-      // Observe colony changes to update the colony's specific SaaS offer
       const titleEl = document.getElementById('civicTitle');
       if (titleEl) {
         const obs = new MutationObserver(() => {
@@ -361,40 +270,32 @@ ${JSON.stringify(schemaJson, null, 2)}
           else if (t.includes('sol')) key = 'colony_sol_crypta';
           else if (t.includes('nova')) key = 'colony_nova_zoth';
           else if (t.includes('hex')) key = 'colony_hex_bastion';
-          const offer = COLONY_OFFERS[key] || COLONY_OFFERS.colony_capital;
+          const info = COLONY_INFO[key] || COLONY_INFO.colony_capital;
           const ot = document.getElementById('civicOfferTitle');
           const od = document.getElementById('civicOfferDesc');
-          const bs = document.getElementById('civicBtnStripe');
-          const bb = document.getElementById('civicBtnBundle');
-          if (ot) ot.textContent = `${offer.title}`;
-          if (od) od.textContent = offer.desc;
-          if (bs) { bs.href = offer.url; bs.textContent = `☕ Buy Us a Coffee (Stripe)`; }
-          if (bb) { bb.href = offer.bundleUrl; bb.textContent = `◎ ${offer.bundlePrice}`; }
+          if (ot) ot.textContent = info.title;
+          if (od) od.textContent = info.desc;
         });
         obs.observe(titleEl, { childList: true, characterData: true, subtree: true });
       }
     }
 
-    // Also add checkout strip into Agent Encounter Card (#globeEncounter)
     const encCard = document.getElementById('globeEncounter');
-    if (encCard && !document.getElementById('encounterCashRegister')) {
+    if (encCard && !document.getElementById('encounterSupportStrip')) {
       const reg = document.createElement('div');
-      reg.id = 'encounterCashRegister';
+      reg.id = 'encounterSupportStrip';
       reg.style.cssText = 'margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(233, 196, 106, 0.25); display: flex; gap: 6px; flex-wrap: wrap;';
       reg.innerHTML = `
         <button type="button" onclick="window.openSovereignGeneratorModal()" style="flex: 1; padding: 7px 10px; border-radius: 7px; background: rgba(233, 196, 106, 0.2); border: 1px solid #FFD97A; color: #FFD97A; font-weight: 800; font-size: 11px; cursor: pointer;">🛠️ Build Site / Swarm</button>
-        <a href="${STRIPE_LINKS.civPro}" target="_blank" rel="noopener" style="flex: 1; text-align: center; padding: 7px 10px; border-radius: 7px; background: #6366F1; color: #FFF; font-weight: 800; font-size: 11px; text-decoration: none;">☕ Buy Us a Coffee (Stripe)</a>
+        <a href="${COFFEE_LINK}" target="_blank" rel="noopener" style="flex: 1; text-align: center; padding: 7px 10px; border-radius: 7px; background: #6366F1; color: #FFF; font-weight: 800; font-size: 11px; text-decoration: none;">☕ Buy Us a Coffee (Stripe)</a>
         <button type="button" onclick="window.openSolanaTipCheckout()" style="padding: 7px 10px; border-radius: 7px; border: 1px solid #14F195; background: rgba(20, 241, 149, 0.14); color: #14F195; font-weight: 800; font-size: 11px; cursor: pointer;">⚡ SOL</button>
       `;
       encCard.appendChild(reg);
     }
   }
 
-  window.openPaywallModal = openPaywallModal;
-  window.closePaywallModal = closePaywallModal;
-  window.openLicenseActivationModal = openLicenseActivationModal;
-  window.closeLicenseModal = closeLicenseModal;
-  window.activateLicenseSubmit = activateLicenseSubmit;
+  window.openCoffeeSupportModal = openCoffeeSupportModal;
+  window.closeCoffeeSupportModal = closeCoffeeSupportModal;
   window.openSolanaTipCheckout = openSolanaTipCheckout;
   window.openSovereignGeneratorModal = openSovereignGeneratorModal;
   window.closeSovereignGeneratorModal = closeSovereignGeneratorModal;
@@ -404,8 +305,8 @@ ${JSON.stringify(schemaJson, null, 2)}
   window.switchGenMode = switchGenMode;
 
   window.addEventListener('DOMContentLoaded', () => {
-    checkProLicense();
-    wire3DWorldCashRegisters();
+    updateHeaderSupportUI();
+    wire3DWorldSupportCards();
     runSovereignGenerator();
   });
 })();

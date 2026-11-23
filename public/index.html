@@ -1978,14 +1978,14 @@
   </div>
 
   <!-- ======================================================================
-       SOVEREIGN TRY-BEFORE-YOU-BUY GENERATOR MODAL + FROSTED PAYWALL BLUR
+       SOVEREIGN OPEN-ACCESS SITE & 21-AGENT SWARM GENERATOR MODAL
        ====================================================================== -->
   <div id="sovereignGeneratorModal" role="dialog" aria-modal="true" aria-labelledby="sovereignGenTitle" style="display: none; position: fixed; inset: 0; z-index: 10010; background: rgba(5, 5, 10, 0.88); backdrop-filter: blur(14px); align-items: center; justify-content: center; padding: 16px; overflow-y: auto;">
     <div style="width: min(1040px, 96vw); background: #0C0A16; border: 1.5px solid rgba(233, 196, 106, 0.5); border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,0.9); overflow: hidden;">
       <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(18, 16, 29, 0.95); border-bottom: 1px solid rgba(233, 196, 106, 0.22); flex-wrap: wrap; gap: 10px;">
         <div>
           <div id="sovereignGenTitle" style="font-size: 15px; font-weight: 900; color: #FFD97A; letter-spacing: 0.04em;">🛠️ SOVEREIGN INSTANT SITE & 21-AGENT SWARM GENERATOR</div>
-          <div style="font-size: 11px; color: #BDB6CF;">Try-Before-You-Buy Client-Side Engine • Instant Schema.org AEO Graph & MCP Config Builder</div>
+          <div style="font-size: 11px; color: #BDB6CF;">100% Open-Access Client-Side Engine • Instant Schema.org AEO Graph & MCP Config Builder</div>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <button id="tabGenTradeSite" type="button" onclick="switchGenMode('trade-site')" style="padding: 6px 12px; border-radius: 8px; border: 1px solid #FFD97A; background: rgba(233, 196, 106, 0.22); color: #FFD97A; font-size: 11px; font-weight: 800; cursor: pointer;">🏠 Local Trade Website (City Desk)</button>
@@ -2054,7 +2054,6 @@
         <!-- Right Output Container (100% Unlocked Open Access) -->
         <div style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.14); background: #07060D; min-height: 320px;">
           <pre id="outputPreview" style="margin: 0; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #A7F3D0; overflow: auto; max-height: 360px; filter: none; user-select: text;"></pre>
-          <div id="outputPaywallOverlay" style="display: none;"></div>
         </div>
       </div>
     </div>
@@ -2063,14 +2062,14 @@
   <!-- ======================================================================
        BUY US A COFFEE SUPPORT MODAL
        ====================================================================== -->
-  <div id="proPaywallModal" role="dialog" aria-modal="true" aria-labelledby="proPaywallTitle" style="display: none; position: fixed; inset: 0; z-index: 10020; background: rgba(5, 5, 10, 0.88); backdrop-filter: blur(12px); align-items: center; justify-content: center; padding: 16px;">
+  <div id="coffeeSupportModal" role="dialog" aria-modal="true" aria-labelledby="coffeeSupportTitle" style="display: none; position: fixed; inset: 0; z-index: 10020; background: rgba(5, 5, 10, 0.88); backdrop-filter: blur(12px); align-items: center; justify-content: center; padding: 16px;">
     <div style="width: min(520px, 96vw); background: #0E0C1A; border: 1.5px solid rgba(233, 196, 106, 0.55); border-radius: 18px; padding: 24px; box-shadow: 0 24px 80px rgba(0,0,0,0.9);">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
         <div>
           <span style="background: rgba(16, 185, 129, 0.18); border: 1px solid #10B981; color: #6EE7B7; font-size: 10px; font-weight: 900; padding: 3px 9px; border-radius: 99px;">✦ 100% OPEN ACCESS</span>
-          <h3 id="proPaywallTitle" style="color: #F8FAFC; font-size: 20px; font-weight: 900; margin-top: 8px;">☕ Buy Us a Coffee</h3>
+          <h3 id="coffeeSupportTitle" style="color: #F8FAFC; font-size: 20px; font-weight: 900; margin-top: 8px;">☕ Buy Us a Coffee</h3>
         </div>
-        <button type="button" onclick="closePaywallModal()" style="background: transparent; border: none; color: #94A3B8; font-size: 18px; cursor: pointer;">✕</button>
+        <button type="button" onclick="closeCoffeeSupportModal()" style="background: transparent; border: none; color: #94A3B8; font-size: 18px; cursor: pointer;">✕</button>
       </div>
       <p style="color: #BDB6CF; font-size: 13px; margin-bottom: 16px;">
         All tools, exports, and 21-agent configurations are 100% free and open. If our work helps you, support us with a coffee via Stripe or Solana!
@@ -2081,8 +2080,6 @@
       </div>
     </div>
   </div>
-
-  <div id="licenseModal" style="display: none;"></div>
 
   <!-- ======================================================================
        SOVEREIGN ATTRIBUTION & LEGAL FOOTER
@@ -2289,7 +2286,7 @@
   <script src="civ_pass2.js"></script>
   <script src="living_minds.js"></script>
   <script src="hud_controller.js"></script>
-  <script src="monetization_funnel.js"></script>
+  <script src="open_access_generator.js"></script>
   
 
   <script src="/sovereign_tutorial.js"></script>
