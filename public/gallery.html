@@ -233,7 +233,21 @@
       align-items: stretch;
     }
     @media (max-width: 960px) {
-      .hero { grid-template-columns: 1fr; }
+      .hero { grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
+    }
+    @media (max-width: 640px) {
+      .wrapper { padding: 10px 12px 48px; }
+      .ai-notice-bar { padding: 10px 12px; gap: 8px; font-size: 12px; margin-bottom: 12px; }
+      .ai-cta-link { width: 100%; justify-content: center; min-height: 44px; }
+      header { padding: 12px 14px; gap: 12px; margin-bottom: 16px; border-radius: 16px; }
+      .brand-sigil { width: 36px; height: 36px; font-size: 15px; }
+      .brand-text h1 { font-size: 15px; }
+      .brand-text p { font-size: 10.5px; }
+      .nav-actions { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .nav-actions .btn-nav { justify-content: center; padding: 8px 10px; font-size: 12px; }
+      .nav-actions .btn-nav:last-child { grid-column: 1 / -1; }
+      .hero-card, .studio-card { padding: 18px 16px; border-radius: 16px; }
+      .hero-title { font-size: 24px !important; line-height: 1.18 !important; }
     }
     .hero-card, .studio-card {
       background: var(--bg-card);
