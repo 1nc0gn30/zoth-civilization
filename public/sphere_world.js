@@ -32,7 +32,7 @@
 
   const PLANET_RADIUS = 100;
   const MIN_CAMERA_DIST = 103.8; // strict clamp: 3.8 units above surface
-  const MAX_CAMERA_DIST = 450.0;
+  const MAX_CAMERA_DIST = 560.0;
 
   // Colony Spherical Coordinates (lat, lon in degrees)
   const COLONY_COORDS = {
@@ -553,9 +553,14 @@
       this.scene = new THREE.Scene();
       this.scene.fog = new THREE.FogExp2(0x070b14, 0.00048);
 
-      // 2. Camera
-      this.camera = new THREE.PerspectiveCamera(46, width / height, 0.5, 2500);
-      this.camera.position.set(0, 90, 230);
+      // 2. Camera (responsive portrait framing so full ringed planet fits on mobile phones)
+      const initAspect = width / Math.max(1, height);
+      const initFov = initAspect < 0.95
+        ? Math.min(62, Math.round(46 / Math.pow(Math.max(0.45, initAspect), 0.36)))
+        : 46;
+      this.camera = new THREE.PerspectiveCamera(initFov, initAspect, 0.5, 2800);
+      const portraitPull = initAspect < 0.95 ? Math.min(1.65, 0.95 / Math.max(0.48, initAspect)) : 1.0;
+      this.camera.position.set(0, Math.round(90 * portraitPull), Math.round(230 * portraitPull));
 
       // Chrome often still has WebGL2 when a WebGL1 probe returns null. One probe also
       // burns a context slot, and Chrome stops handing out contexts sooner than Firefox.
@@ -5626,14 +5631,21 @@
       if (!this.container || !this.renderer || !this.camera) return;
       const width = Math.max(1, this.container.clientWidth || window.innerWidth);
       const height = Math.max(1, this.container.clientHeight || window.innerHeight);
-      const maxRatio = this.performanceLevel === 'fast' ? 1.0 : (this.performanceLevel === 'ultra' ? 1.5 : 1.25);
+      const isCompactPortrait = width <= 900;
+      const maxRatio = isCompactPortrait
+        ? 2.0
+        : (this.performanceLevel === 'fast' ? 1.25 : (this.performanceLevel === 'ultra' ? 1.75 : 1.5));
       let ratio = Math.min(window.devicePixelRatio || 1, maxRatio);
-      const budget = (this.performanceLevel === 'fast' ? 1280 * 720 : 1920 * 1080) * 1.25;
+      const budget = (this.performanceLevel === 'fast' ? 1280 * 720 : 1920 * 1080) * 1.4;
       if (width * height * ratio * ratio > budget) {
         ratio = Math.max(1, Math.sqrt(budget / (width * height)));
       }
       this.renderer.setPixelRatio(ratio);
-      this.camera.aspect = width / height;
+      const aspect = width / height;
+      this.camera.aspect = aspect;
+      this.camera.fov = aspect < 0.95
+        ? Math.min(62, Math.round(46 / Math.pow(Math.max(0.45, aspect), 0.36)))
+        : 46;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(width, height);
       if (this.scene && this.planetMesh) {
