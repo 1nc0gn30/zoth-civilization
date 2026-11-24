@@ -177,10 +177,20 @@
   }
 
   async function refreshVoiceReady() {
+    if (window.ZothClientSim && window.ZothClientSim.active) {
+      state.voiceReady = false;
+      noteVoice('The lines are live. Voice stays as text in browser sandbox mode.');
+      return;
+    }
     try {
       const res = await fetch('/api/voice/status');
-      const data = await res.json();
-      state.voiceReady = !!(data && data.ready);
+      const ct = (res.headers.get('content-type') || '').toLowerCase();
+      if (!res.ok || !ct.includes('application/json')) {
+        state.voiceReady = false;
+      } else {
+        const data = await res.json();
+        state.voiceReady = !!(data && data.ready);
+      }
     } catch (err) {
       state.voiceReady = false;
     }
@@ -209,7 +219,6 @@
       state.playing = false;
       if (!state.openKey) return;
     }
-    if (state.voiceReady === false) await refreshVoiceReady();
     const member = state.queue.shift();
     appendLine(member);
     if (!state.voiceReady || !member.voiceLine) {

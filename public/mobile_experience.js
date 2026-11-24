@@ -1,8 +1,9 @@
 /* ==========================================================================
-   ZOTH CIVILIZATION v5.0 — MOBILE & DESKTOP COMMAND SHELL CONTROLLER
+   ZOTH CIVILIZATION v5.2 — MOBILE & DESKTOP COMMAND SHELL CONTROLLER
    - Unified Command Drawer (Desktop right slide-over / Mobile bottom sheet)
    - Desktop View Options Popover (reduces 18 top-bar buttons -> clean 8)
    - Native 5-tab Mobile Bottom Navigation Bar + Floating Mobile World Controls
+   - Clear 🌍 Orbit exit pill in mobile Walk mode + auto-scroll Living Minds dossier
    - Auto-hides #zothStarSystemBar whenever Walk mode or ANY world drawer opens
    - Auto-resizes Cockpit Graph & Three.js canvas on view switches
    - Collapses Wishlist Civic Skill Shelf on mobile for fast scanning
@@ -269,7 +270,7 @@
       toggleCommandSheet(false);
       switchView('pixel-world');
       setTimeout(() => {
-        const qBtn = document.getElementById('btnOpenQuestDrawer') || document.querySelector('[title*="Quest"]');
+        const qBtn = document.getElementById('btnOpenQuestsHud') || document.getElementById('btnOpenQuestDrawer') || document.querySelector('[title*="Quest"]');
         if (qBtn) qBtn.click();
       }, 80);
     });
@@ -415,7 +416,7 @@
       `;
       $('zmpQuestsBtn')?.addEventListener('click', () => {
         closeMobilePopover();
-        const qBtn = document.getElementById('btnOpenQuestDrawer') || document.querySelector('[title*="Quest"]');
+        const qBtn = document.getElementById('btnOpenQuestsHud') || document.getElementById('btnOpenQuestDrawer') || document.querySelector('[title*="Quest"]');
         if (qBtn) qBtn.click();
       });
     }
@@ -472,13 +473,20 @@
   }
 
   function setWalkUiState(isWalking) {
-    document.body.classList.toggle('z4-walk-mode', !!isWalking);
-    $('zmwWalkBtn')?.classList.toggle('is-active', !!isWalking);
-    $('zmwOrbitBtn')?.classList.toggle('is-active', !isWalking);
+    const walking = !!isWalking;
+    document.body.classList.toggle('z4-walk-mode', walking);
+    const walkBtn = $('zmwWalkBtn');
+    const orbitBtn = $('zmwOrbitBtn');
+    if (walkBtn) walkBtn.classList.toggle('is-active', walking);
+    if (orbitBtn) {
+      orbitBtn.classList.toggle('is-active', !walking);
+      orbitBtn.textContent = walking ? '🌍 Orbit' : '👑 Orbit';
+      orbitBtn.setAttribute('aria-label', walking ? 'Exit Walk Mode to Orbital View' : 'Orbital View');
+    }
     // Keep native civ_gameplay_engine #zothTouchWalkPad cleanly synced
     const pad = $('zothTouchWalkPad');
     if (pad) {
-      pad.style.display = (isWalking && window.innerWidth <= 900) ? 'flex' : 'none';
+      pad.style.display = (walking && window.innerWidth <= 900) ? 'flex' : 'none';
     }
   }
 
@@ -521,6 +529,20 @@
     $('btnSurfaceView')?.addEventListener('click', () => setWalkUiState(true));
     $('btnGodsView')?.addEventListener('click', () => setWalkUiState(false));
     $('btnExitAvatarMode')?.addEventListener('click', () => setWalkUiState(false));
+
+    // On mobile, tapping a Sovereign card in Living Minds scrolls their dossier cleanly into view
+    const lmList = $('lmRosterList');
+    if (lmList) {
+      lmList.addEventListener('click', (e) => {
+        if (window.innerWidth > 900) return;
+        const item = e.target && e.target.closest ? e.target.closest('.lm-item') : null;
+        if (!item) return;
+        setTimeout(() => {
+          const dossier = document.querySelector('#view-living-minds .lm-dossier');
+          if (dossier) dossier.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 90);
+      });
+    }
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {

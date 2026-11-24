@@ -2062,23 +2062,24 @@
 
     const centerX = graphCanvas.width / 2;
     const centerY = graphCanvas.height / 2;
-    const radius = Math.min(centerX, centerY) * 0.72;
+    const compact = Math.min(graphCanvas.width, graphCanvas.height) < 420;
+    const radius = Math.min(centerX, centerY) * (compact ? 0.78 : 0.72);
 
     // Draw Central Sovereign Node
     gctx.fillStyle = '#D4AF37';
     gctx.beginPath();
-    gctx.arc(centerX, centerY, 18, 0, Math.PI * 2);
+    gctx.arc(centerX, centerY, compact ? 15 : 18, 0, Math.PI * 2);
     gctx.fill();
-    gctx.font = 'bold 11px sans-serif';
+    gctx.font = compact ? 'bold 9.5px sans-serif' : 'bold 11px sans-serif';
     gctx.fillStyle = '#000';
     gctx.textAlign = 'center';
-    gctx.fillText('ZOTH', centerX, centerY + 4);
+    gctx.fillText('ZOTH', centerX, centerY + 3.5);
 
     const brief = worldBrief();
     const rings = [
-      { people: agents, scale: 0.62, nodeR: 14, label: true },
-      { people: brief.kin, scale: 0.8, nodeR: 8, label: brief.kin.length <= 18 },
-      { people: brief.keepers, scale: 0.96, nodeR: 11, label: true }
+      { people: agents, scale: compact ? 0.54 : 0.62, nodeR: compact ? 10 : 14, label: !compact },
+      { people: brief.kin, scale: compact ? 0.76 : 0.8, nodeR: compact ? 6 : 8, label: !compact && brief.kin.length <= 18 },
+      { people: brief.keepers, scale: compact ? 0.94 : 0.96, nodeR: compact ? 8 : 11, label: !compact }
     ];
     const nodeCoords = [];
     rings.forEach((ring) => {

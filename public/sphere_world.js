@@ -346,7 +346,10 @@
         byeId: null,
         cache: new Map(),
         inFlight: new Map(),
-        retryAt: 0
+        retryAt: 0,
+        ready: false,
+        isOffline: null,
+        statusPromise: null
       };
       this.pointer = null;
       this.playerRadius = 0.72;
@@ -6855,20 +6858,41 @@
     async checkVoiceStatus() {
       const wv = this.walkVoice;
       if (!wv) return;
-      try {
-        const res = await fetch('/api/voice/status');
-        const data = await res.json();
-        wv.ready = !!data.ready;
-        wv.isOffline = !data.ready;
-        wv.offlineReason = data.reason || 'Thermal Guard active (<55°C ceiling)';
-        wv.mode = data.mode || 'Live Neural Text Stream';
-        window.dispatchEvent(new CustomEvent('civ:voicestatus', { detail: data }));
-      } catch (_) {
+      if (wv.statusPromise) return wv.statusPromise;
+      if (window.ZothClientSim && window.ZothClientSim.active) {
         wv.ready = false;
         wv.isOffline = true;
-        wv.offlineReason = 'Audio endpoint offline';
+        wv.offlineReason = 'Static client sandbox — live text stream active';
         wv.mode = 'Live Neural Text Stream';
+        return;
       }
+      wv.statusPromise = (async () => {
+        try {
+          const res = await fetch('/api/voice/status');
+          const ct = (res.headers.get('content-type') || '').toLowerCase();
+          if (!res.ok || !ct.includes('application/json')) {
+            wv.ready = false;
+            wv.isOffline = true;
+            wv.offlineReason = 'Audio endpoint offline';
+            wv.mode = 'Live Neural Text Stream';
+            return;
+          }
+          const data = await res.json();
+          wv.ready = !!(data && data.ready);
+          wv.isOffline = !wv.ready;
+          wv.offlineReason = (data && data.reason) || 'Thermal Guard active (<55°C ceiling)';
+          wv.mode = (data && data.mode) || 'Live Neural Text Stream';
+          window.dispatchEvent(new CustomEvent('civ:voicestatus', { detail: data }));
+        } catch (_) {
+          wv.ready = false;
+          wv.isOffline = true;
+          wv.offlineReason = 'Audio endpoint offline';
+          wv.mode = 'Live Neural Text Stream';
+        } finally {
+          wv.statusPromise = null;
+        }
+      })();
+      return wv.statusPromise;
     }
 
     stopWalkSource() {
@@ -7180,7 +7204,7 @@
 
     prefetchNearbyVoices() {
       const wv = this.walkVoice;
-      if (!wv || wv.isOffline) return;
+      if (!wv || !wv.ready || wv.isOffline !== false) return;
       const speakers = this.speakersWithin(WALK_HEAR_START);
       for (let i = 0; i < Math.min(speakers.length, 3); i++) {
         const ag = speakers[i].agent;
@@ -7197,7 +7221,10 @@
     async fetchWalkBuffer(item, token) {
       const wv = this.walkVoice;
       if (!wv) return null;
-      if (wv.isOffline) {
+      if (wv.isOffline === null) {
+        await this.checkVoiceStatus();
+      }
+      if (!wv.ready || wv.isOffline) {
         return { drop: true, offline: true, retry: false, reason: wv.offlineReason || 'Thermal Guard active (<55°C ceiling)' };
       }
       const cacheKey = `${item.voiceId || 'af_heart'}\n${item.text}`;
@@ -7229,9 +7256,11 @@
         }
         if (res.status === 503) {
           wv.inFlight.delete(cacheKey);
+          wv.ready = false;
+          wv.isOffline = true;
           wv.offlineMs = Math.min(Math.max(2000, (wv.offlineMs || 0) * 2), 60000);
           wv.offlineUntil = performance.now() + wv.offlineMs;
-          return { retry: true, offline: true };
+          return { drop: true, offline: true, retry: false };
         }
         if (res.status === 429) {
           wv.inFlight.delete(cacheKey);

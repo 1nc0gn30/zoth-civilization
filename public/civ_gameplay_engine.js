@@ -714,6 +714,31 @@
           if (pathname === '/api/talk/warm') {
             return jsonResp({ ok: true, mode: 'browser-client' });
           }
+
+          if (pathname === '/api/voice/status') {
+            return jsonResp({
+              ready: false,
+              engine: 'kokoro',
+              fallback: 'neural_text',
+              thermalGuard: true,
+              mode: 'Live Neural Text Stream',
+              reason: 'Static client sandbox — live text stream active.'
+            });
+          }
+
+          if (pathname === '/api/voice/speak') {
+            return jsonResp({ ok: false, offline: true, fallback: 'neural_text' }, 200);
+          }
+
+          if (pathname === '/api/world/join') {
+            return jsonResp({ ok: true, welcomedBy: 'Azoth', mode: 'browser-client' });
+          }
+
+          if (pathname === '/api/control' || pathname === '/api/scope') {
+            return jsonResp({ ok: true, staticMode: true });
+          }
+
+          return jsonResp({ ok: true, staticMode: true });
         }
 
         return origFetch(input, init);
@@ -994,17 +1019,17 @@
       pad.id = 'zothTouchWalkPad';
       pad.style.cssText = 'position:fixed; left:14px; right:14px; bottom:74px; z-index:58; display:none; justify-content:space-between; align-items:flex-end; pointer-events:none;';
       pad.innerHTML = `
-        <div style="display:grid; grid-template-columns:repeat(3,44px); grid-template-rows:repeat(2,44px); gap:6px; pointer-events:auto;">
+        <div style="display:grid; grid-template-columns:repeat(3,46px); grid-template-rows:repeat(2,46px); gap:7px; pointer-events:auto;">
           <span></span>
-          <button type="button" data-walkkey="forward" aria-label="Walk Forward" style="width:44px;height:44px;border-radius:10px;background:rgba(15,23,42,0.85);border:1px solid rgba(56,189,248,0.45);color:#FFF;font-weight:800;">▲</button>
+          <button type="button" data-walkkey="forward" aria-label="Walk Forward" style="width:46px;height:46px;border-radius:12px;background:rgba(8,12,24,0.92);border:1.5px solid rgba(56,189,248,0.62);color:#FFF;font-weight:800;touch-action:manipulation;user-select:none;-webkit-user-select:none;">▲</button>
           <span></span>
-          <button type="button" data-walkkey="left" aria-label="Strafe Left" style="width:44px;height:44px;border-radius:10px;background:rgba(15,23,42,0.85);border:1px solid rgba(56,189,248,0.45);color:#FFF;font-weight:800;">◀</button>
-          <button type="button" data-walkkey="backward" aria-label="Walk Backward" style="width:44px;height:44px;border-radius:10px;background:rgba(15,23,42,0.85);border:1px solid rgba(56,189,248,0.45);color:#FFF;font-weight:800;">▼</button>
-          <button type="button" data-walkkey="right" aria-label="Strafe Right" style="width:44px;height:44px;border-radius:10px;background:rgba(15,23,42,0.85);border:1px solid rgba(56,189,248,0.45);color:#FFF;font-weight:800;">▶</button>
+          <button type="button" data-walkkey="left" aria-label="Strafe Left" style="width:46px;height:46px;border-radius:12px;background:rgba(8,12,24,0.92);border:1.5px solid rgba(56,189,248,0.62);color:#FFF;font-weight:800;touch-action:manipulation;user-select:none;-webkit-user-select:none;">◀</button>
+          <button type="button" data-walkkey="backward" aria-label="Walk Backward" style="width:46px;height:46px;border-radius:12px;background:rgba(8,12,24,0.92);border:1.5px solid rgba(56,189,248,0.62);color:#FFF;font-weight:800;touch-action:manipulation;user-select:none;-webkit-user-select:none;">▼</button>
+          <button type="button" data-walkkey="right" aria-label="Strafe Right" style="width:46px;height:46px;border-radius:12px;background:rgba(8,12,24,0.92);border:1.5px solid rgba(56,189,248,0.62);color:#FFF;font-weight:800;touch-action:manipulation;user-select:none;-webkit-user-select:none;">▶</button>
         </div>
         <div style="display:flex; gap:8px; pointer-events:auto;">
-          <button type="button" id="btnTouchInteract" style="min-height:44px;padding:0 14px;border-radius:10px;background:rgba(212,175,55,0.22);border:1px solid #D4AF37;color:#FDE68A;font-weight:800;">💬 Talk</button>
-          <button type="button" id="btnTouchJump" style="min-height:44px;padding:0 14px;border-radius:10px;background:rgba(16,185,129,0.22);border:1px solid #10B981;color:#6EE7B7;font-weight:800;">⤒ Jump</button>
+          <button type="button" id="btnTouchInteract" style="min-height:46px;padding:0 15px;border-radius:12px;background:rgba(8,12,24,0.92);border:1.5px solid #D4AF37;color:#FDE68A;font-weight:800;touch-action:manipulation;user-select:none;-webkit-user-select:none;">💬 Talk</button>
+          <button type="button" id="btnTouchJump" style="min-height:46px;padding:0 15px;border-radius:12px;background:rgba(8,12,24,0.92);border:1.5px solid #10B981;color:#6EE7B7;font-weight:800;touch-action:manipulation;user-select:none;-webkit-user-select:none;">⤒ Jump</button>
         </div>
       `;
       document.body.appendChild(pad);

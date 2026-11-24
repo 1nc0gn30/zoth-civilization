@@ -116,7 +116,9 @@
         if (this.enabled) this.releaseToPlayer();
         else this.takeWheel();
       });
-      fetch('/api/talk/warm', { method: 'POST' }).catch(() => {});
+      if (!(window.ZothClientSim && window.ZothClientSim.active)) {
+        fetch('/api/talk/warm', { method: 'POST' }).catch(() => {});
+      }
       const autoPilotParam = new URLSearchParams(window.location.search).get('pilot') === '1';
       if (autoPilotParam) {
         this.takeWheel();
