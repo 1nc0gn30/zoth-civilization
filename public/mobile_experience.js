@@ -1,10 +1,11 @@
 /* ==========================================================================
-   ZOTH CIVILIZATION v4 — MOBILE & DESKTOP COMMAND SHELL CONTROLLER
-   - Adds unified Command Drawer (Desktop right slide-over / Mobile bottom sheet)
-   - Adds native 5-tab Mobile Bottom Navigation Bar
-   - Adds floating Mobile 3D World Controls (Orbit/Walk, Colonies, Tools)
-   - Adds on-screen Virtual Walk D-Pad for mobile Surface POV
-   - Syncs active views, AI status, Imperator telemetry, and touch interactions
+   ZOTH CIVILIZATION v5.0 — MOBILE & DESKTOP COMMAND SHELL CONTROLLER
+   - Unified Command Drawer (Desktop right slide-over / Mobile bottom sheet)
+   - Desktop View Options Popover (reduces 18 top-bar buttons -> clean 8)
+   - Native 5-tab Mobile Bottom Navigation Bar + Floating Mobile World Controls
+   - Auto-hides #zothStarSystemBar whenever Walk mode or ANY world drawer opens
+   - Auto-resizes Cockpit Graph & Three.js canvas on view switches
+   - Collapses Wishlist Civic Skill Shelf on mobile for fast scanning
    ========================================================================== */
 (function () {
   'use strict';
@@ -18,10 +19,14 @@
 
   function switchView(viewId) {
     const tabBtn = document.querySelector(`.nav-tabs .tab-btn[data-view="${viewId}"]`);
-    if (tabBtn) {
-      tabBtn.click();
-    }
+    if (tabBtn) tabBtn.click();
     syncActiveViewState(viewId);
+
+    // Ensure canvas-backed views (Cockpit Graph, 3D World, Adytum) measure cleanly
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new Event('resize'));
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 120);
+    });
   }
 
   function getActiveView() {
@@ -34,15 +39,18 @@
     const view = forcedView || getActiveView();
     document.body.classList.toggle('z4-on-world', view === 'pixel-world');
 
+    // Reset scroll position to top when switching pages
+    const sec = document.getElementById(`view-${view}`);
+    if (sec && view !== 'pixel-world') sec.scrollTop = 0;
+
     document.querySelectorAll('#zothMobileBottomNav .zmb-tab[data-mview]').forEach((btn) => {
-      const target = btn.getAttribute('data-mview');
-      btn.classList.toggle('is-active', target === view);
+      btn.classList.toggle('is-active', btn.getAttribute('data-mview') === view);
     });
 
     const moreTab = $('zmbMoreBtn');
     if (moreTab) {
-      const primaryViews = new Set(['pixel-world', 'adytum-chamber', 'living-minds', 'conclave-treasury']);
-      moreTab.classList.toggle('is-active', !primaryViews.has(view));
+      const primary = new Set(['pixel-world', 'adytum-chamber', 'living-minds', 'conclave-treasury']);
+      moreTab.classList.toggle('is-active', !primary.has(view));
     }
 
     document.querySelectorAll('#zothCommandSheet .zcs-view-btn').forEach((btn) => {
@@ -50,7 +58,32 @@
     });
   }
 
-  /* ---------- 1. Header Command Drawer Button ---------- */
+  /* ---------- 1. Track Open World Drawers (prevent overlap with Planet Bar) ---------- */
+  function syncDrawerOpenState() {
+    const selectors = [
+      '.z-realm:not(.hud-hidden)',
+      '.floating-dialogue-feed:not(.hud-hidden)',
+      '.quick-dock:not(.hud-hidden)',
+      '#huddleDock:not(.is-collapsed)',
+      '#worldEncounter:not([hidden])',
+      '#civicPanel:not([hidden])',
+      '#zothQuestDrawer.is-open'
+    ];
+    let anyOpen = selectors.some((sel) => !!document.querySelector(sel));
+    const dlg = $('avatarDialogueBox');
+    if (dlg && getComputedStyle(dlg).display !== 'none') anyOpen = true;
+    document.body.classList.toggle('z4-drawer-open', anyOpen);
+  }
+
+  function watchWorldDrawers() {
+    const world = document.querySelector('#view-pixel-world .pixel-world-container');
+    if (!world || typeof MutationObserver === 'undefined') return;
+    const obs = new MutationObserver(() => syncDrawerOpenState());
+    obs.observe(world, { subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style'] });
+    setInterval(syncDrawerOpenState, 600);
+  }
+
+  /* ---------- 2. Header Command Drawer Button ---------- */
   function injectHeaderCommandButton() {
     const stats = document.querySelector('.header-stats');
     if (!stats || $('btnZothCommandDrawer')) return;
@@ -66,7 +99,56 @@
     stats.appendChild(btn);
   }
 
-  /* ---------- 2. Unified Command Drawer / Mobile Bottom Sheet ---------- */
+  /* ---------- 3. Desktop View Options Popover (declutters top world bar) ---------- */
+  function buildDesktopViewOptions() {
+    const toolbar = document.querySelector('.world-top .globe-toolbar');
+    const container = document.querySelector('#view-pixel-world .pixel-world-container');
+    if (!toolbar || !container || $('btnDesktopWorldSettings')) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'btnDesktopWorldSettings';
+    btn.className = 'globe-btn';
+    btn.title = 'World Display & Audio Settings';
+    btn.innerHTML = '<span>⚙️</span> View';
+    toolbar.appendChild(btn);
+
+    const pop = document.createElement('div');
+    pop.id = 'zothDesktopViewPopover';
+    pop.innerHTML = `
+      <div class="zmp-grid">
+        <button type="button" class="zmp-btn" data-proxy="btnToggle3DMode">🪐 3D / 2D</button>
+        <button type="button" class="zmp-btn" data-proxy="btnAutoSpin">🔄 Auto-Spin</button>
+        <button type="button" class="zmp-btn" data-proxy="btnDayNight">☀️ Day / Night</button>
+        <button type="button" class="zmp-btn" data-proxy="btnToggleAudio">🔊 Audio SFX</button>
+        <button type="button" class="zmp-btn" data-proxy="btnToggleTurbo60">⚡ 60 FPS</button>
+        <button type="button" class="zmp-btn" data-proxy="btnCamFollowImperator">👑 Imperator</button>
+        <button type="button" class="zmp-btn" data-proxy="btnOpenGameIntro">🎮 Guide & AI</button>
+        <button type="button" class="zmp-btn" data-proxy="btnResetGlobeCam">🌍 Reset Cam</button>
+      </div>
+    `;
+    container.appendChild(pop);
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      pop.classList.toggle('is-open');
+    });
+
+    pop.querySelectorAll('[data-proxy]').forEach((b) => {
+      b.addEventListener('click', () => {
+        triggerBtn(b.getAttribute('data-proxy'));
+        pop.classList.remove('is-open');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!pop.contains(e.target) && e.target !== btn) {
+        pop.classList.remove('is-open');
+      }
+    });
+  }
+
+  /* ---------- 4. Unified Command Drawer / Mobile Bottom Sheet ---------- */
   function buildCommandSheet() {
     if ($('zothCommandSheet')) return;
 
@@ -113,12 +195,12 @@
           <p class="zcs-section-label">All Civilization Views</p>
           <div class="zcs-grid">
             <button type="button" class="zcs-action-btn zcs-view-btn" data-view="pixel-world">🪐 3D Planet World</button>
-            <button type="button" class="zcs-action-btn zcs-view-btn" data-view="timeline-deck">⏱️ $100K Timeline</button>
             <button type="button" class="zcs-action-btn zcs-view-btn" data-view="adytum-chamber">🔮 Adytum Chamber</button>
-            <a href="/gallery.html" class="zcs-action-btn">🖼️ Meditation Gallery</a>
-            <button type="button" class="zcs-action-btn zcs-view-btn" data-view="cockpit-graph">🛰️ Cockpit Graph</button>
             <button type="button" class="zcs-action-btn zcs-view-btn" data-view="living-minds">🌌 Living Minds</button>
             <button type="button" class="zcs-action-btn zcs-view-btn" data-view="conclave-treasury">👑 Conclave & $100K</button>
+            <button type="button" class="zcs-action-btn zcs-view-btn" data-view="cockpit-graph">🛰️ Cockpit Graph</button>
+            <button type="button" class="zcs-action-btn zcs-view-btn" data-view="timeline-deck">⏱️ $100K Timeline</button>
+            <a href="/gallery.html" class="zcs-action-btn">🖼️ Meditation Gallery</a>
             <button type="button" class="zcs-action-btn zcs-view-btn" data-view="daily-wishlist">📜 Wishlist</button>
             <button type="button" class="zcs-action-btn zcs-view-btn" data-view="fractal-lineage">🌳 Lineage & 10 Sq</button>
             <button type="button" class="zcs-action-btn zcs-view-btn" data-view="mission-control">📡 Mission Control</button>
@@ -127,8 +209,9 @@
         </div>
 
         <div>
-          <p class="zcs-section-label">Sovereign Actions</p>
+          <p class="zcs-section-label">Gameplay & Sovereign Actions</p>
           <div class="zcs-grid">
+            <button type="button" class="zcs-action-btn is-gold" id="zcsQuestsBtn">🏆 Quests & Decrees</button>
             <button type="button" class="zcs-action-btn is-cyan" data-proxy="btnOpenGameIntro">🔑 AI Keys & Guide</button>
             <button type="button" class="zcs-action-btn is-emerald" data-proxy="btnDispatchAgy">⚡ Run AGY Turn</button>
             <button type="button" class="zcs-action-btn" data-proxy="btnTriggerElection">🗳️ Call Conclave</button>
@@ -136,6 +219,7 @@
             <button type="button" class="zcs-action-btn" data-proxy="btnWatchMotionEdit">🎬 Motion Edit</button>
             <button type="button" class="zcs-action-btn" data-proxy="btnOpenWorldPortalModal">🌌 Zoth Node Portal</button>
             <button type="button" class="zcs-action-btn" id="zcsBuildExportBtn">🛠️ Build & Export</button>
+            <button type="button" class="zcs-action-btn" data-proxy="btnPause">⏯️ Play / Pause</button>
             <button type="button" class="zcs-action-btn" data-proxy="btnSpeed">⏩ Sim Speed</button>
           </div>
         </div>
@@ -179,6 +263,15 @@
         toggleCommandSheet(false);
         triggerBtn(targetId);
       });
+    });
+
+    $('zcsQuestsBtn')?.addEventListener('click', () => {
+      toggleCommandSheet(false);
+      switchView('pixel-world');
+      setTimeout(() => {
+        const qBtn = document.getElementById('btnOpenQuestDrawer') || document.querySelector('[title*="Quest"]');
+        if (qBtn) qBtn.click();
+      }, 80);
     });
 
     $('zcsBuildExportBtn')?.addEventListener('click', () => {
@@ -226,7 +319,7 @@
     if (trigger) trigger.setAttribute('aria-expanded', String(next));
   }
 
-  /* ---------- 3. Native 5-Tab Mobile Bottom Navigation ---------- */
+  /* ---------- 5. Native 5-Tab Mobile Bottom Navigation ---------- */
   function buildMobileBottomNav() {
     if ($('zothMobileBottomNav')) return;
     const nav = document.createElement('nav');
@@ -269,7 +362,7 @@
     });
   }
 
-  /* ---------- 4. Floating Mobile 3D World Controls & Popovers ---------- */
+  /* ---------- 6. Floating Mobile 3D World Controls & Popovers ---------- */
   let activePopover = null;
 
   function closeMobilePopover() {
@@ -310,22 +403,28 @@
     } else {
       pop.innerHTML = `
         <div class="zmp-grid">
-          <button type="button" class="zmp-btn" data-proxy="btnToggle3DMode">🪐 Toggle 3D / 2D</button>
+          <button type="button" class="zmp-btn" id="zmpQuestsBtn">🏆 Quests & Decrees</button>
+          <button type="button" class="zmp-btn" data-proxy="hudToggleMap">🗺️ Realm Map</button>
+          <button type="button" class="zmp-btn" data-proxy="hudToggleDock">👥 Agent Roster</button>
+          <button type="button" class="zmp-btn" data-proxy="hudToggleChatter">💬 Live Chatter</button>
+          <button type="button" class="zmp-btn" data-proxy="btnToggle3DMode">🪐 3D / 2D</button>
           <button type="button" class="zmp-btn" data-proxy="btnAutoSpin">🔄 Auto-Spin</button>
           <button type="button" class="zmp-btn" data-proxy="btnDayNight">☀️ Day / Night</button>
           <button type="button" class="zmp-btn" data-proxy="btnToggleAudio">🔊 Audio SFX</button>
-          <button type="button" class="zmp-btn" data-proxy="hudToggleMap">🗺️ Realm Map</button>
-          <button type="button" class="zmp-btn" data-proxy="hudToggleChatter">💬 Live Chatter</button>
-          <button type="button" class="zmp-btn" data-proxy="hudToggleDock">👥 Agent Roster</button>
-          <button type="button" class="zmp-btn" id="zmpCloseBtn">✕ Close</button>
         </div>
       `;
+      $('zmpQuestsBtn')?.addEventListener('click', () => {
+        closeMobilePopover();
+        const qBtn = document.getElementById('btnOpenQuestDrawer') || document.querySelector('[title*="Quest"]');
+        if (qBtn) qBtn.click();
+      });
     }
 
     pop.querySelectorAll('[data-proxy]').forEach((b) => {
       b.addEventListener('click', () => {
         triggerBtn(b.getAttribute('data-proxy'));
         closeMobilePopover();
+        setTimeout(syncDrawerOpenState, 60);
       });
     });
     $('zmpCloseBtn')?.addEventListener('click', closeMobilePopover);
@@ -345,36 +444,15 @@
       </div>
       <div class="zmw-group">
         <button type="button" class="zmw-pill" id="zmwColoniesBtn">🏛️ Sights ▾</button>
-        <button type="button" class="zmw-pill" id="zmwToolsBtn">⚙️</button>
+        <button type="button" class="zmw-pill" id="zmwToolsBtn" aria-label="World Tools">⚙️</button>
       </div>
     `;
 
     const popover = document.createElement('div');
     popover.id = 'zothMobilePopover';
 
-    const walkPad = document.createElement('div');
-    walkPad.id = 'zothMobileWalkPad';
-    walkPad.innerHTML = `
-      <div class="zm-dpad" aria-label="Surface Walk Directional Pad">
-        <div></div>
-        <button type="button" class="zm-dpad-btn" data-key="KeyW" aria-label="Move Forward">▲</button>
-        <div></div>
-        <button type="button" class="zm-dpad-btn" data-key="KeyA" aria-label="Move Left">◀</button>
-        <button type="button" class="zm-dpad-btn" data-key="Space" aria-label="Jump">●</button>
-        <button type="button" class="zm-dpad-btn" data-key="KeyD" aria-label="Move Right">▶</button>
-        <div></div>
-        <button type="button" class="zm-dpad-btn" data-key="KeyS" aria-label="Move Backward">▼</button>
-        <div></div>
-      </div>
-      <div class="zm-walk-actions">
-        <button type="button" class="zm-walk-act" data-tap="KeyF">💬 Talk</button>
-        <button type="button" class="zm-walk-act" id="zmWalkExitBtn" style="background:rgba(233,196,106,0.22);border-color:rgba(233,196,106,0.6);color:#FFD97A;">🌍 Orbit</button>
-      </div>
-    `;
-
     container.appendChild(bar);
     container.appendChild(popover);
-    container.appendChild(walkPad);
 
     $('zmwOrbitBtn').addEventListener('click', () => {
       closeMobilePopover();
@@ -391,48 +469,52 @@
 
     $('zmwColoniesBtn').addEventListener('click', () => openMobilePopover('colonies'));
     $('zmwToolsBtn').addEventListener('click', () => openMobilePopover('tools'));
-    $('zmWalkExitBtn').addEventListener('click', () => {
-      triggerBtn('btnExitAvatarMode');
-      triggerBtn('btnGodsView');
-      setWalkUiState(false);
-    });
-
-    // Bind virtual hold keys to window keydown/keyup so sphere_world.js moves smoothly
-    walkPad.querySelectorAll('[data-key]').forEach((btn) => {
-      const code = btn.getAttribute('data-key');
-      const keyName = code === 'Space' ? ' ' : code.replace('Key', '').toLowerCase();
-      const fire = (type) => {
-        window.dispatchEvent(new KeyboardEvent(type, { code, key: keyName, bubbles: true }));
-      };
-      btn.addEventListener('pointerdown', (e) => { e.preventDefault(); fire('keydown'); });
-      btn.addEventListener('pointerup', () => fire('keyup'));
-      btn.addEventListener('pointerleave', () => fire('keyup'));
-      btn.addEventListener('pointercancel', () => fire('keyup'));
-    });
-
-    walkPad.querySelectorAll('[data-tap]').forEach((btn) => {
-      const code = btn.getAttribute('data-tap');
-      const keyName = code.replace('Key', '').toLowerCase();
-      btn.addEventListener('click', () => {
-        window.dispatchEvent(new KeyboardEvent('keydown', { code, key: keyName, bubbles: true }));
-        setTimeout(() => {
-          window.dispatchEvent(new KeyboardEvent('keyup', { code, key: keyName, bubbles: true }));
-        }, 90);
-      });
-    });
   }
 
   function setWalkUiState(isWalking) {
     document.body.classList.toggle('z4-walk-mode', !!isWalking);
     $('zmwWalkBtn')?.classList.toggle('is-active', !!isWalking);
     $('zmwOrbitBtn')?.classList.toggle('is-active', !isWalking);
+    // Keep native civ_gameplay_engine #zothTouchWalkPad cleanly synced
+    const pad = $('zothTouchWalkPad');
+    if (pad) {
+      pad.style.display = (isWalking && window.innerWidth <= 900) ? 'flex' : 'none';
+    }
   }
 
-  /* ---------- 5. Wire View Listeners & Escape Key ---------- */
+  /* ---------- 7. Collapsible Civic Skill Shelf on Mobile Wishlist ---------- */
+  function enhanceWishlistShelf() {
+    const shelfGrid = document.getElementById('civicShelfGrid') || document.querySelector('#view-daily-wishlist .shelf-grid');
+    if (!shelfGrid || $('btnToggleMobileShelf')) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'btnToggleMobileShelf';
+    btn.className = 'z5-shelf-toggle';
+    const collapsedByDefault = window.innerWidth <= 900;
+    if (collapsedByDefault) shelfGrid.classList.add('z5-collapsed-list');
+    btn.innerHTML = collapsedByDefault
+      ? '<span>🏪 Civic Skill Shelf</span><span>Show Skills ▾</span>'
+      : '<span>🏪 Civic Skill Shelf</span><span>Hide Skills ▴</span>';
+
+    btn.addEventListener('click', () => {
+      const hidden = shelfGrid.classList.toggle('z5-collapsed-list');
+      btn.innerHTML = hidden
+        ? '<span>🏪 Civic Skill Shelf</span><span>Show Skills ▾</span>'
+        : '<span>🏪 Civic Skill Shelf</span><span>Hide Skills ▴</span>';
+    });
+    shelfGrid.parentNode.insertBefore(btn, shelfGrid);
+  }
+
+  /* ---------- 8. Global Sync & Listeners ---------- */
   function bindGlobalSync() {
     document.querySelectorAll('.nav-tabs .tab-btn[data-view]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        setTimeout(() => syncActiveViewState(btn.getAttribute('data-view')), 20);
+        const viewId = btn.getAttribute('data-view');
+        setTimeout(() => {
+          syncActiveViewState(viewId);
+          window.dispatchEvent(new Event('resize'));
+        }, 40);
       });
     });
 
@@ -444,29 +526,26 @@
       if (e.key === 'Escape') {
         toggleCommandSheet(false);
         closeMobilePopover();
-      }
-    });
-
-    // Trigger canvas resize cleanly on mobile orientation / viewport changes
-    window.addEventListener('resize', () => {
-      if (window.SphereWorld && typeof window.SphereWorld.onResize === 'function') {
-        try { window.SphereWorld.onResize(); } catch (_) {}
+        $('zothDesktopViewPopover')?.classList.remove('is-open');
       }
     });
   }
 
   function init() {
     injectHeaderCommandButton();
+    buildDesktopViewOptions();
     buildCommandSheet();
     buildMobileBottomNav();
     buildMobileWorldControls();
+    enhanceWishlistShelf();
+    watchWorldDrawers();
     bindGlobalSync();
     syncActiveViewState();
 
-    // Ensure Three.js canvas measures the newly expanded 3D viewport height
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    }, 250);
+      syncDrawerOpenState();
+    }, 300);
   }
 
   if (document.readyState === 'loading') {

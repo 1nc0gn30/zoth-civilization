@@ -1,12 +1,12 @@
 /* ==========================================================================
-   ZOTH CIVILIZATION v4.1 — SOVEREIGN MOBILE & DESKTOP EXPERIENCE LAYER
-   Design Director Anchor: "Orbital Viewport First — Zero-Clutter Command Shell"
-   - Exact flex-column 100dvh shell: zero vertical clipping, zero h-overflow.
-   - Desktop (>= 901px): Crisp 2-tier header (~84px) + full 3D canvas +
-     unclipped bottom HUD & Helios-Zoth bar + slim footer.
-   - Mobile/Tablet (<= 900px): 52px single-row header + full-bleed 3D canvas +
-     floating Orbit/Walk/Sights/Tools bar + Helios-Zoth bar + flex-docked
-     64px 5-tab Native Bottom Navigation Bar + slide-up Command Sheet.
+   ZOTH CIVILIZATION v5.0 — SOVEREIGN MOBILE & DESKTOP ARCHITECTURE
+   - Unlocks vertical scrolling across ALL 10 views (fixes trapped height:100%
+     containers in Adytum, Cockpit Graph, Conclave, and Mission Control).
+   - Fixes Cockpit Graph canvas sizing on Desktop & stacked sidebar on Mobile.
+   - Eliminates gameplay overlay chaos: single native Walk D-Pad, auto-hiding
+     planet switcher when drawers/walk active, non-blocking top-slotted toasts.
+   - Reduces 38+ redundant world controls into a calm, zero-clipping HUD on
+     Desktop (1440px) and touch-grade 44px controls on Mobile/Tablet (<=900px).
    ========================================================================== */
 
 :root {
@@ -93,7 +93,166 @@ main.main-viewport {
 }
 
 /* ==========================================================================
-   2. DESKTOP HEADER & NAV (>= 901px)
+   2. UNIVERSAL SCROLLABILITY & LAYOUT FIX FOR ALL 9 CONTENT VIEWS
+   Unlocks Adytum, Cockpit Graph, Conclave, Mission Control on ALL screens!
+   ========================================================================== */
+
+.view-section:not(#view-pixel-world).active {
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-sizing: border-box !important;
+}
+
+/* Unlock trapped inner height:100% / overflow:auto containers */
+.adytum-container,
+.cockpit-container,
+.mission-container,
+.mission-container.conclave-layout,
+.library-wrap {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  max-width: 1480px !important;
+  margin: 0 auto !important;
+}
+
+/* Cockpit Graph: guaranteed non-zero canvas box on Desktop & clean stack on Mobile */
+.cockpit-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  gap: 18px !important;
+  padding: 18px !important;
+}
+
+.cockpit-container .graph-canvas-box {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  height: 540px !important;
+  min-height: 480px !important;
+  position: relative !important;
+}
+
+.cockpit-container .graph-canvas-box canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+.cockpit-container .cockpit-sidebar {
+  flex: 0 0 380px !important;
+  width: 380px !important;
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Adytum 3D Sanctum & Details Panel: keep 100% contained with 0px horizontal overflow */
+#adytum3DGameDeck,
+.adytum-game-deck,
+.adytum-details-panel {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+.adytum-details-panel .glass-card {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.adytum-key-carousel,
+.journey-strip,
+.adytum-journey-bar {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  scrollbar-width: thin !important;
+  padding-bottom: 6px !important;
+}
+
+.person-chip-row,
+.person-chip {
+  max-width: 100% !important;
+  flex-wrap: wrap !important;
+  box-sizing: border-box !important;
+}
+
+/* Living Minds: contain horizontal sovereign avatar strip cleanly */
+.lm-rail,
+.lm-list,
+.lm-roster,
+#lmRosterList {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+}
+
+@media (max-width: 980px) {
+  .cockpit-container {
+    flex-direction: column !important;
+    padding: 12px !important;
+    gap: 14px !important;
+  }
+  .cockpit-container .graph-canvas-box {
+    width: 100% !important;
+    flex: none !important;
+    height: 340px !important;
+    min-height: 320px !important;
+  }
+  .cockpit-container .cockpit-sidebar {
+    width: 100% !important;
+    flex: none !important;
+  }
+  .adytum-stage-grid,
+  .adytum-diorama-grid,
+  .adytum-main-grid {
+    grid-template-columns: 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .adytum-stage-canvas-wrap,
+  .adytum-viewport-box {
+    min-height: 280px !important;
+    height: 300px !important;
+  }
+}
+
+/* Collapsible Skill Shelf helper in Wishlist so mobile isn't a 44,000px wall */
+.z5-shelf-toggle {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(233, 196, 106, 0.12);
+  border: 1px solid rgba(233, 196, 106, 0.42);
+  color: var(--z4-gold-hot);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.z5-collapsed-list {
+  display: none !important;
+}
+
+/* ==========================================================================
+   3. DESKTOP HEADER & NAV (>= 901px)
    ========================================================================== */
 
 .header-row {
@@ -107,24 +266,9 @@ main.main-viewport {
   max-width: 100% !important;
 }
 
-.header-row .brand-section {
-  gap: 8px !important;
-  min-width: 0 !important;
-}
-
-.header-row .brand-icon {
-  font-size: 17px !important;
-  filter: drop-shadow(0 0 8px rgba(233, 196, 106, 0.55));
-}
-
-.header-row .brand-title {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
-  color: #FFF !important;
-}
-
+.header-row .brand-section { gap: 8px !important; min-width: 0 !important; }
+.header-row .brand-icon { font-size: 17px !important; filter: drop-shadow(0 0 8px rgba(233, 196, 106, 0.55)); }
+.header-row .brand-title { font-family: 'Plus Jakarta Sans', sans-serif !important; font-size: 14px !important; font-weight: 800 !important; letter-spacing: 0.08em !important; color: #FFF !important; }
 .header-row .brand-badge {
   background: rgba(233, 196, 106, 0.12) !important;
   border: 1px solid rgba(233, 196, 106, 0.42) !important;
@@ -147,13 +291,9 @@ main.main-viewport {
   color: #CBD5E1 !important;
   gap: 7px !important;
 }
+.header-row .sovereign-header-ticker .ticker-money { color: var(--z4-gold-hot) !important; font-weight: 700 !important; }
 
-.header-row .sovereign-header-ticker .ticker-money {
-  color: var(--z4-gold-hot) !important;
-  font-weight: 700 !important;
-}
-
-/* Move noisy secondary buttons into the 1-click Command Deck */
+/* Move noisy secondary header buttons into the 1-click Command Deck */
 .header-stats #headerLeaderBadge,
 .header-stats #headerAgyBadge,
 .header-stats #headerAdytumBadge,
@@ -189,7 +329,6 @@ main.main-viewport {
   gap: 5px !important;
   white-space: nowrap !important;
   cursor: pointer;
-  transition: transform 0.16s var(--z4-ease), border-color 0.2s ease, background 0.2s ease !important;
 }
 
 #btnZothCommandDrawer {
@@ -198,7 +337,6 @@ main.main-viewport {
   color: var(--z4-gold-hot) !important;
 }
 
-/* Desktop Nav Tabs — all 11 tabs fit cleanly across 1440px */
 .nav-tabs {
   padding: 4px 14px !important;
   gap: 3px !important;
@@ -228,25 +366,28 @@ main.main-viewport {
 }
 
 /* ==========================================================================
-   3. 3D WORLD TOP BAR, HELIOS-ZOTH BAR, BOTTOM DOCK & FOOTER (DESKTOP)
+   4. STREAMLINED DESKTOP 3D WORLD HUD (REDUCED FROM 38 TO 14 CONTROLS!)
+   Zero duplicate buttons, zero right-edge overflow at 1440px!
    ========================================================================== */
 
 .world-top {
-  padding: 5px 12px !important;
-  background: linear-gradient(180deg, rgba(7, 6, 14, 0.86) 0%, rgba(7, 6, 14, 0.58) 100%) !important;
-  border-bottom: 1px solid rgba(233, 196, 106, 0.2) !important;
+  padding: 5px 14px !important;
+  background: linear-gradient(180deg, rgba(7, 6, 14, 0.88) 0%, rgba(7, 6, 14, 0.56) 100%) !important;
+  border-bottom: 1px solid rgba(233, 196, 106, 0.18) !important;
 }
 
 .world-top .globe-toolbar {
-  gap: 6px !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
 }
 
 .world-top .globe-btn {
-  min-height: 27px !important;
-  padding: 3px 9px !important;
+  min-height: 28px !important;
+  padding: 3px 10px !important;
   font-size: 11px !important;
   border-radius: 7px !important;
-  background: rgba(15, 14, 28, 0.8) !important;
+  background: rgba(15, 14, 28, 0.82) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
@@ -254,6 +395,81 @@ main.main-viewport {
   background: rgba(233, 196, 106, 0.18) !important;
   border-color: rgba(233, 196, 106, 0.55) !important;
 }
+
+/* Move secondary world toggles out of desktop bar into our sleek View Settings
+   popover (#btnDesktopWorldSettings) so 100% of colonies + controls fit cleanly! */
+@media (min-width: 901px) {
+  .world-top #btnToggle3DMode,
+  .world-top #btnAutoSpin,
+  .world-top #btnDayNight,
+  .world-top #btnToggleAudio,
+  .world-top #btnOpenGameIntro,
+  .world-top #btnToggleTurbo60,
+  .world-top #btnCamFollowImperator,
+  .world-top #btnResetGlobeCam,
+  .world-top #altitudeTelemetry,
+  .world-top .walk-compass,
+  .world-top [id*="fps" i],
+  .world-top [class*="fps" i],
+  .world-top .globe-toolbar-label {
+    display: none !important;
+  }
+
+  .world-top .globe-btn {
+    padding: 3px 8px !important;
+    font-size: 11px !important;
+  }
+
+  #btnDesktopWorldSettings {
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+    border-color: rgba(233, 196, 106, 0.45) !important;
+    color: var(--z4-gold-hot) !important;
+  }
+
+  /* Streamline Bottom 3D Dock: remove exact duplicates of Top Bar / Command Deck */
+  #pixelHudDeck.zoth-bottom-hud-bar #hudWalkQuick,
+  #pixelHudDeck.zoth-bottom-hud-bar #hudToggleToolbar,
+  #pixelHudDeck.zoth-bottom-hud-bar #hudOpenWorldPortal,
+  #pixelHudDeck.zoth-bottom-hud-bar #hudShowDiagnostics,
+  #pixelHudDeck.zoth-bottom-hud-bar #hudShowCommands,
+  #pixelHudDeck.zoth-bottom-hud-bar .hud-pill-label {
+    display: none !important;
+  }
+
+  #pixelHudDeck.zoth-bottom-hud-bar {
+    gap: 8px !important;
+    padding: 4px 14px !important;
+  }
+
+  #pixelHudDeck.zoth-bottom-hud-bar .hud-pill-btn {
+    padding: 0 10px !important;
+    font-size: 11px !important;
+  }
+
+  /* Hide duplicate 21 Agents & Dossier buttons in Helios bar (live in Command Deck) */
+  #zothStarSystemBar #btnZothCharactersDeck,
+  #zothStarSystemBar .zss-dossier-btn {
+    display: none !important;
+  }
+}
+
+/* Desktop View Settings Popover */
+#zothDesktopViewPopover {
+  display: none;
+  position: absolute;
+  top: 46px;
+  right: 14px;
+  width: 280px;
+  z-index: 70;
+  background: rgba(10, 10, 22, 0.97);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--z4-gold-line);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.78);
+}
+#zothDesktopViewPopover.is-open { display: block; }
 
 /* Anchor Helios-Zoth 6-Worlds Bar cleanly above the unclipped Bottom HUD */
 #zothStarSystemBar {
@@ -285,25 +501,19 @@ main.main-viewport {
   z-index: 40 !important;
 }
 
-/* Keep all desktop 3D Dock pills cleanly unclipped at 1440px */
-@media (min-width: 901px) {
-  #pixelHudDeck.zoth-bottom-hud-bar {
-    gap: 6px !important;
-    padding: 4px 10px !important;
-  }
-  #pixelHudDeck.zoth-bottom-hud-bar .hud-pill-btn {
-    padding: 0 7px !important;
-    font-size: 10.5px !important;
-  }
-  .world-top .globe-toolbar {
-    mask-image: linear-gradient(to right, #000 95%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, #000 95%, transparent 100%);
-    padding-right: 18px !important;
-  }
+/* ==========================================================================
+   5. GAMEPLAY TOAST & HERALD HYGIENE (NEVER COVER CONTROLS OR DRAWERS!)
+   ========================================================================== */
+
+#hudToast {
+  top: 102px !important;
+  bottom: auto !important;
+  font-size: 11.5px !important;
+  padding: 6px 12px !important;
 }
 
 /* ==========================================================================
-   4. UNIFIED COMMAND DRAWER / MOBILE BOTTOM SHEET
+   6. UNIFIED COMMAND DRAWER / MOBILE BOTTOM SHEET
    ========================================================================== */
 
 #zothCommandBackdrop {
@@ -317,11 +527,7 @@ main.main-viewport {
   pointer-events: none;
   transition: opacity 0.24s var(--z4-ease);
 }
-
-#zothCommandBackdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
+#zothCommandBackdrop.is-open { opacity: 1; pointer-events: auto; }
 
 #zothCommandSheet {
   position: fixed;
@@ -340,174 +546,36 @@ main.main-viewport {
   color: var(--z4-text);
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
-
-#zothCommandSheet.is-open {
-  transform: translateX(0);
-}
+#zothCommandSheet.is-open { transform: translateX(0); }
 
 .zcs-handle { display: none; }
-
-.zcs-head {
-  padding: 15px 18px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.zcs-title {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--z4-gold-hot);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.zcs-close {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #E2E8F0;
-  font-size: 16px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.zcs-body {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  padding: 14px 16px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.zcs-section-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--z4-muted);
-  margin: 0 0 8px;
-}
-
-.zcs-status-strip,
-.zcs-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.zcs-stat {
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 10px 12px;
-}
-
-.zcs-stat-k {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--z4-muted);
-  margin-bottom: 3px;
-}
-
-.zcs-stat-v {
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--z4-gold-hot);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.zcs-action-btn {
-  min-height: 44px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #F4F1FA;
-  font-size: 12.5px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: left;
-}
-
-.zcs-action-btn:hover,
-.zcs-action-btn:active {
-  background: rgba(233, 196, 106, 0.14);
-  border-color: rgba(233, 196, 106, 0.48);
-}
-
-.zcs-action-btn.is-gold {
-  background: linear-gradient(135deg, #E9C46A, #D4AF37);
-  border-color: #FFD97A;
-  color: #07070D;
-  font-weight: 800;
-}
-
-.zcs-action-btn.is-emerald {
-  background: rgba(16, 185, 129, 0.16);
-  border-color: rgba(16, 185, 129, 0.45);
-  color: #6EE7B7;
-}
-
-.zcs-action-btn.is-cyan {
-  background: rgba(56, 189, 248, 0.14);
-  border-color: rgba(56, 189, 248, 0.42);
-  color: #7DD3FC;
-}
-
-.zcs-action-btn.is-active {
-  background: rgba(233, 196, 106, 0.18);
-  border-color: rgba(233, 196, 106, 0.58);
-  color: #FFF;
-}
-
-.zcs-elements-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.zcs-elem-chip {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #CBD5E1;
-}
+.zcs-head { padding: 15px 18px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.zcs-title { margin: 0; font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--z4-gold-hot); display: flex; align-items: center; gap: 8px; }
+.zcs-close { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); color: #E2E8F0; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.zcs-body { flex: 1 1 auto; overflow-y: auto; padding: 14px 16px 28px; display: flex; flex-direction: column; gap: 16px; }
+.zcs-section-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--z4-muted); margin: 0 0 8px; }
+.zcs-status-strip, .zcs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.zcs-stat { background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 10px 12px; }
+.zcs-stat-k { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--z4-muted); margin-bottom: 3px; }
+.zcs-stat-v { font-size: 12.5px; font-weight: 700; color: var(--z4-gold-hot); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zcs-action-btn { min-height: 44px; padding: 8px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.045); border: 1px solid rgba(255, 255, 255, 0.1); color: #F4F1FA; font-size: 12.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; text-align: left; }
+.zcs-action-btn:hover, .zcs-action-btn:active { background: rgba(233, 196, 106, 0.14); border-color: rgba(233, 196, 106, 0.48); }
+.zcs-action-btn.is-gold { background: linear-gradient(135deg, #E9C46A, #D4AF37); border-color: #FFD97A; color: #07070D; font-weight: 800; }
+.zcs-action-btn.is-emerald { background: rgba(16, 185, 129, 0.16); border-color: rgba(16, 185, 129, 0.45); color: #6EE7B7; }
+.zcs-action-btn.is-cyan { background: rgba(56, 189, 248, 0.14); border-color: rgba(56, 189, 248, 0.42); color: #7DD3FC; }
+.zcs-action-btn.is-active { background: rgba(233, 196, 106, 0.18); border-color: rgba(233, 196, 106, 0.58); color: #FFF; }
+.zcs-elements-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.zcs-elem-chip { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 4px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); color: #CBD5E1; }
 
 /* Hidden on Desktop */
 #zothMobileBottomNav,
 #zothMobileWorldBar,
-#zothMobilePopover,
-#zothMobileWalkPad {
+#zothMobilePopover {
   display: none;
 }
 
 /* ==========================================================================
-   5. MOBILE & TABLET NATIVE-APP EXPERIENCE (<= 900px)
-   Flex-column shell: [52px Header] + [flex:1 Main] + [64px Bottom Nav]
+   7. MOBILE & TABLET NATIVE-APP EXPERIENCE (<= 900px)
    ========================================================================== */
 
 @media (max-width: 900px) {
@@ -519,40 +587,32 @@ main.main-viewport {
     box-sizing: border-box !important;
   }
 
-  .header-row .brand-title {
-    font-size: 13.5px !important;
-    letter-spacing: 0.05em !important;
-  }
+  .header-row .brand-title { font-size: 13.5px !important; letter-spacing: 0.05em !important; }
+  .header-row .brand-badge { font-size: 9px !important; padding: 2px 6px !important; }
 
-  .header-row .brand-badge {
-    font-size: 9px !important;
-    padding: 2px 6px !important;
-  }
-
-  /* Keep mobile header crisp (3 items: Brand + AI Keys + Menu) -> 0px overflow! */
   .header-row .sovereign-header-ticker,
   .header-stats #btnPause,
   .header-stats #btnSpeed,
   .header-stats #headerProContainer,
   .header-stats button[onclick*="openSovereignGeneratorModal"],
-  .nav-tabs {
+  .nav-tabs,
+  #zothSiteFooter,
+  .world-top,
+  #pixelHudDeck.zoth-bottom-hud-bar,
+  #zothDesktopViewPopover,
+  #hudToast {
     display: none !important;
   }
 
-  .header-stats {
-    gap: 6px !important;
-  }
+  .header-stats { gap: 6px !important; }
 
-  /* Compact AI Keys Pill on Mobile so it never overflows 390px */
   #zothHeaderAiStatusBtn {
     min-height: 36px !important;
     padding: 0 10px !important;
     border-radius: 10px !important;
     font-size: 0 !important;
     gap: 0 !important;
-    max-width: none !important;
   }
-
   #zothHeaderAiStatusBtn::after {
     content: "🔑 AI";
     font-size: 11.5px;
@@ -568,42 +628,57 @@ main.main-viewport {
     border-radius: 10px !important;
   }
 
-  /* Hide desktop footer on Mobile/Tablet (links & support live in Bottom Nav -> More) */
-  #zothSiteFooter {
+  /* Tame Toasts & Herald Banners on Mobile so they NEVER block controls or drawers! */
+  .z-toasts {
+    top: 110px !important;
+    bottom: auto !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    z-index: 58 !important;
+  }
+  .z-toasts .z-toast {
+    padding: 7px 11px !important;
+    font-size: 11.5px !important;
+    border-radius: 10px !important;
+  }
+  /* Cap to 1 crisp toast at a time on mobile */
+  .z-toasts .z-toast:not(:first-child) {
     display: none !important;
   }
 
-  /* Replace desktop 3D bars with sleek Mobile Floating World Controls */
-  .world-top,
-  #pixelHudDeck.zoth-bottom-hud-bar {
-    display: none !important;
+  .z-herald {
+    top: 110px !important;
+    min-width: 0 !important;
+    width: calc(100vw - 28px) !important;
+    padding: 10px 14px !important;
+    border-radius: 12px !important;
+    z-index: 59 !important;
   }
+  .z-herald-title { font-size: 17px !important; margin-top: 4px !important; }
+  .z-herald-sub { font-size: 11.5px !important; margin-top: 3px !important; }
+  .z-herald-rule { margin-top: 8px !important; }
 
+  /* Floating Mobile World Controls Pill Bar */
   #zothMobileWorldBar {
     display: flex !important;
     position: absolute;
     top: 10px;
     left: 10px;
     right: 10px;
-    z-index: 60;
+    z-index: 62;
     align-items: center;
     justify-content: space-between;
     gap: 6px;
     pointer-events: none;
   }
 
-  .zmw-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    pointer-events: auto;
-  }
-
+  .zmw-group { display: inline-flex; align-items: center; gap: 6px; pointer-events: auto; }
   .zmw-pill {
     min-height: 40px;
     padding: 0 12px;
     border-radius: 999px;
-    background: rgba(8, 8, 18, 0.86);
+    background: rgba(8, 8, 18, 0.88);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(233, 196, 106, 0.34);
@@ -618,18 +693,8 @@ main.main-viewport {
     cursor: pointer;
     white-space: nowrap;
   }
-
-  .zmw-pill.is-active {
-    background: rgba(233, 196, 106, 0.24);
-    border-color: var(--z4-gold-hot);
-    color: #FFF;
-  }
-
-  .zmw-pill.is-emerald.is-active {
-    background: rgba(16, 185, 129, 0.24);
-    border-color: #34D399;
-    color: #A7F3D0;
-  }
+  .zmw-pill.is-active { background: rgba(233, 196, 106, 0.24); border-color: var(--z4-gold-hot); color: #FFF; }
+  .zmw-pill.is-emerald.is-active { background: rgba(16, 185, 129, 0.24); border-color: #34D399; color: #A7F3D0; }
 
   #zothMobilePopover {
     display: none;
@@ -637,26 +702,18 @@ main.main-viewport {
     top: 58px;
     left: 10px;
     right: 10px;
-    z-index: 65;
-    background: rgba(10, 10, 22, 0.96);
+    z-index: 70;
+    background: rgba(10, 10, 22, 0.97);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 1px solid var(--z4-gold-line);
     border-radius: 16px;
     padding: 12px;
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.78);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.82);
   }
+  #zothMobilePopover.is-open { display: block !important; }
 
-  #zothMobilePopover.is-open {
-    display: block !important;
-  }
-
-  .zmp-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
+  .zmp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .zmp-btn {
     min-height: 44px;
     padding: 8px 10px;
@@ -672,7 +729,7 @@ main.main-viewport {
     cursor: pointer;
   }
 
-  /* Helios-Zoth 6-Worlds Bar: cleanly docked at bottom of 3D canvas above Bottom Nav */
+  /* Helios-Zoth 6-Worlds Bar: auto-hides whenever Walk mode OR any drawer is open! */
   #zothStarSystemBar {
     position: absolute !important;
     bottom: 12px !important;
@@ -687,6 +744,11 @@ main.main-viewport {
     z-index: 56 !important;
   }
 
+  body.z4-walk-mode #zothStarSystemBar,
+  body.z4-drawer-open #zothStarSystemBar {
+    display: none !important;
+  }
+
   #zothStarSystemBar .zss-planet-pill,
   #zothStarSystemBar .zss-action-btn,
   #zothStarSystemBar .zss-brand-tag {
@@ -696,7 +758,27 @@ main.main-viewport {
     flex-shrink: 0 !important;
   }
 
-  /* In-World Popups on Mobile */
+  /* Single Native Touch Walk Pad (#zothTouchWalkPad from civ_gameplay_engine.js)
+     cleanly positioned above the 64px Bottom Nav — crisp dark glass contrast over bright floors! */
+  #zothTouchWalkPad {
+    bottom: 78px !important;
+    left: 12px !important;
+    right: 12px !important;
+    z-index: 64 !important;
+  }
+  #zothTouchWalkPad #btnTouchInteract,
+  #zothTouchWalkPad #btnTouchJump {
+    background: rgba(10, 12, 24, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55) !important;
+  }
+
+  /* Hide desktop keyboard "Press F" proximity banner on mobile (Talk button is on thumb pad!) */
+  #avatarProximityPrompt {
+    display: none !important;
+  }
+
+  /* Clean Bottom Seating for All World Drawers on Mobile (since planet bar auto-hides!) */
   .floating-dialogue-feed,
   .world-encounter,
   .civic-panel,
@@ -708,73 +790,24 @@ main.main-viewport {
     right: 10px !important;
     width: auto !important;
     max-width: none !important;
-    bottom: 66px !important;
-    max-height: 52vh !important;
+    top: auto !important;
+    bottom: 10px !important;
+    max-height: 54vh !important;
     border-radius: 16px !important;
-    z-index: 64 !important;
+    z-index: 66 !important;
   }
 
-  /* On-Screen Virtual Walk D-Pad */
-  body.z4-walk-mode #zothMobileWalkPad {
-    display: flex !important;
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: 68px;
-    z-index: 62;
-    align-items: flex-end;
-    justify-content: space-between;
-    pointer-events: none;
+  /* Imperator Quest & Decree Drawer on Mobile */
+  #zothQuestDrawer {
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    top: 62px !important;
+    max-height: calc(100dvh - 144px) !important;
+    z-index: 90 !important;
   }
 
-  .zm-dpad {
-    display: grid;
-    grid-template-columns: repeat(3, 46px);
-    grid-template-rows: repeat(3, 46px);
-    gap: 4px;
-    pointer-events: auto;
-  }
-
-  .zm-dpad-btn {
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-    background: rgba(10, 12, 24, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(233, 196, 106, 0.4);
-    color: #F4F1FA;
-    font-size: 16px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    touch-action: none;
-  }
-
-  .zm-walk-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    pointer-events: auto;
-  }
-
-  .zm-walk-act {
-    min-width: 78px;
-    min-height: 44px;
-    padding: 0 12px;
-    border-radius: 12px;
-    background: rgba(16, 185, 129, 0.24);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(52, 211, 153, 0.58);
-    color: #ECFDF5;
-    font-size: 12px;
-    font-weight: 800;
-    user-select: none;
-    touch-action: none;
-  }
-
-  /* FLEX-DOCKED Native 5-Tab Bottom Navigation Bar — ALWAYS VISIBLE, ZERO CLIPPING! */
+  /* FLEX-DOCKED Native 5-Tab Bottom Navigation Bar */
   #zothMobileBottomNav {
     display: grid !important;
     flex: 0 0 auto !important;
@@ -806,25 +839,10 @@ main.main-viewport {
     position: relative;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
-
   .zmb-tab .zmb-ico { font-size: 18px; line-height: 1; }
   .zmb-tab .zmb-lbl { font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; }
-
-  .zmb-tab.is-active {
-    color: var(--z4-gold-hot);
-    background: rgba(233, 196, 106, 0.12);
-  }
-
-  .zmb-tab.is-active::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 22%;
-    right: 22%;
-    height: 2px;
-    border-radius: 999px;
-    background: var(--z4-gold-hot);
-  }
+  .zmb-tab.is-active { color: var(--z4-gold-hot); background: rgba(233, 196, 106, 0.12); }
+  .zmb-tab.is-active::before { content: ""; position: absolute; top: 0; left: 22%; right: 22%; height: 2px; border-radius: 999px; background: var(--z4-gold-hot); }
 
   /* Mobile Bottom Sheet Command Deck */
   #zothCommandSheet {
@@ -839,62 +857,25 @@ main.main-viewport {
     border-radius: 22px 22px 0 0;
     transform: translateY(104%);
   }
+  #zothCommandSheet.is-open { transform: translateY(0); }
+  .zcs-handle { display: block; width: 40px; height: 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.24); margin: 10px auto 0; }
 
-  #zothCommandSheet.is-open {
-    transform: translateY(0);
-  }
-
-  .zcs-handle {
-    display: block;
-    width: 40px;
-    height: 4px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.24);
-    margin: 10px auto 0;
-  }
-
-  /* Secondary Views Responsive Polish on Mobile/Tablet */
+  /* Secondary Views Responsive Padding & Grids */
   .view-section:not(#view-pixel-world) {
     padding: 12px 12px 28px !important;
   }
-
   .adytum-container,
-  .cockpit-container,
   .mission-container,
   .library-wrap {
     flex-direction: column !important;
-    padding: 4px 0 !important;
+    padding: 4px 0 24px !important;
     gap: 14px !important;
   }
+  .card-showcase-panel { width: 100% !important; max-width: 100% !important; position: static !important; }
+  .view-section:not(#view-pixel-world) .glass-card { padding: 16px !important; border-radius: 14px !important; }
 
-  .card-showcase-panel,
-  .cockpit-sidebar,
-  .graph-canvas-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    position: static !important;
-  }
-
-  .graph-canvas-box {
-    min-height: 300px !important;
-  }
-
-  .view-section:not(#view-pixel-world) .glass-card {
-    padding: 16px !important;
-    border-radius: 14px !important;
-  }
-
-  .lm-layout,
-  .lm-grid,
-  .conclave-grid,
-  .treasury-grid,
-  .lineage-grid,
-  .wishlist-grid,
-  .shelf-grid,
-  .halls-grid,
-  .buildings-grid,
-  .colony-grid,
-  .pay-grid {
+  .lm-layout, .lm-grid, .conclave-grid, .treasury-grid, .lineage-grid,
+  .wishlist-grid, .shelf-grid, .halls-grid, .buildings-grid, .colony-grid, .pay-grid {
     grid-template-columns: 1fr !important;
   }
 
@@ -906,11 +887,6 @@ main.main-viewport {
 }
 
 @media (max-width: 420px) {
-  .header-row .brand-badge {
-    display: none !important;
-  }
-  .zmw-pill {
-    padding: 0 10px;
-    font-size: 11.5px;
-  }
+  .header-row .brand-badge { display: none !important; }
+  .zmw-pill { padding: 0 10px; font-size: 11.5px; }
 }
